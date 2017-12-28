@@ -117,16 +117,16 @@
 <meta name="description" content="让 CPU 告诉你硬盘和网络到底有多慢 本文转载自 cizixs  简介经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。 最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感">
 <meta name="keywords" content="cpu memory disk network">
 <meta property="og:type" content="article">
-<meta property="og:title" content="how-slow-is-disk-and-network">
+<meta property="og:title" content="让 CPU 告诉你硬盘和网络到底有多慢">
 <meta property="og:url" content="http://yoursite.com/2017/12/28/how-slow-is-disk-and-network/index.html">
 <meta property="og:site_name" content="SEE">
 <meta property="og:description" content="让 CPU 告诉你硬盘和网络到底有多慢 本文转载自 cizixs  简介经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。 最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$">
 <meta property="og:image" content="http://photocdn.sohu.com/20141022/Img405364158.jpg">
-<meta property="og:updated_time" content="2017-12-28T08:19:51.000Z">
+<meta property="og:updated_time" content="2017-12-28T08:22:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="how-slow-is-disk-and-network">
+<meta name="twitter:title" content="让 CPU 告诉你硬盘和网络到底有多慢">
 <meta name="twitter:description" content="让 CPU 告诉你硬盘和网络到底有多慢 本文转载自 cizixs  简介经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。 最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感">
 <meta name="twitter:image" content="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$">
 
@@ -164,7 +164,7 @@
 
 
 
-  <title>how-slow-is-disk-and-network | SEE</title>
+  <title>让 CPU 告诉你硬盘和网络到底有多慢 | SEE</title>
   
 
 
@@ -382,7 +382,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 
         
         
-          <h2 class="post-title" itemprop="name headline">how-slow-is-disk-and-network</h2>
+          <h2 class="post-title" itemprop="name headline">让 CPU 告诉你硬盘和网络到底有多慢</h2>
         
 
         <div class="post-meta">
@@ -410,7 +410,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-12-28T16:19:51+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-28T16:22:30+08:00">
                 2017-12-28
               </time>
             
@@ -482,6 +482,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感觉，并没有对各个速度和性能做出量化的说明和解释。而实际上，不同层级之间的差异要比这张图大的多。这篇文章就让你站在 CPU 的角度看这个世界，说说到底它们有多慢。</p>
 <p><img src="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$" alt="img"></p>
 <p>希望你看到看完这篇文章能明白两件事情：磁盘和网络真的很慢，性能优化是个复杂的系统性的活。</p>
+<a id="more"></a>
 <p>注：所有的数据都是来自<a href="https://gist.github.com/hellerbarde/2843375" target="_blank" rel="noopener">这个地址</a>。所有的数据会因为机器配置不同，或者硬件的更新而有出入，但是不影响我们直觉的感受。如果对这些数据比较感兴趣，<a href="https://people.eecs.berkeley.edu/~rcs/research/interactive_latency.html" target="_blank" rel="noopener">这个网址</a>给出了不同年份一些指标的数值。</p>
 <h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><ul>
 <li>先来看看 CPU 的速度，就拿我的电脑来说，主频是 2.6G，也就是说每秒可以执行 <code>2.6*10^9</code>个指令，每个指令只需要 <code>0.38ns</code>（现在很多个人计算机的主频要比这个高，配置比较高的能达到 3.0G+）。我们把这个时间当做基本单位 <code>1s</code>，因为 <code>1s</code> 大概是人类能感知的最小时间单位。</li>
@@ -633,7 +634,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -738,7 +739,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">2.3k</span>
+    <span title="Site words total count">2.2k</span>
   
 </div>
 
@@ -1290,13 +1291,13 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       var articles = db.collection('articles')
 
       //https://hexo.io/zh-tw/docs/variables.html
-      var isPost = 'how-slow-is-disk-and-network'.length > 0
+      var isPost = '让 CPU 告诉你硬盘和网络到底有多慢'.length > 0
       var isArchive = '' === 'true'
       var isCategory = ''.length > 0
       var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = 'how-slow-is-disk-and-network'
+        var title = '让 CPU 告诉你硬盘和网络到底有多慢'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
