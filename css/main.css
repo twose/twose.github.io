@@ -624,7 +624,7 @@ pre .xml .cdata,
 pre .special,
 pre .number,
 pre .formula {
-  color: #718c00;
+  color: #1c9821;
 }
 pre .title,
 pre .css .hexcolor {
@@ -1849,7 +1849,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c2d6c9;
+  background: #ff6e01;
 }
 .links-of-blogroll {
   font-size: 13px;
