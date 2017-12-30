@@ -101,7 +101,7 @@
 
 
 
-  <meta name="keywords" content="SEE is the sea of cc" />
+  <meta name="keywords" content="PDO,Mysql,参数化," />
 
 
 
@@ -114,17 +114,18 @@
 
 
 
-<meta name="description" content="show you my code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="文章分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta name="description" content="如何在PDO查询中返回强类型  有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE ），或试着使用本地预处理语句（如果为 FALSE）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool 类型。  PDO::ATTR_EMULATE_PREPARES 启用或禁用预处理语句的模拟。 这是之前我说的默认总是模拟prepare,因">
+<meta name="keywords" content="PDO,Mysql,参数化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="how to use strong type in pdo">
+<meta property="og:url" content="http://yoursite.com/2017/12/30/how-to-use-strong-type-in-pdo/index.html">
 <meta property="og:site_name" content="SEE">
-<meta property="og:description" content="show you my code">
+<meta property="og:description" content="如何在PDO查询中返回强类型  有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE ），或试着使用本地预处理语句（如果为 FALSE）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool 类型。  PDO::ATTR_EMULATE_PREPARES 启用或禁用预处理语句的模拟。 这是之前我说的默认总是模拟prepare,因">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-28T05:55:07.000Z">
+<meta property="og:updated_time" content="2017-12-30T06:20:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文章分类">
-<meta name="twitter:description" content="show you my code">
+<meta name="twitter:title" content="how to use strong type in pdo">
+<meta name="twitter:description" content="如何在PDO查询中返回强类型  有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE ），或试着使用本地预处理语句（如果为 FALSE）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool 类型。  PDO::ATTR_EMULATE_PREPARES 启用或禁用预处理语句的模拟。 这是之前我说的默认总是模拟prepare,因">
 
 
 
@@ -154,13 +155,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/30/how-to-use-strong-type-in-pdo/"/>
 
 
 
 
 
-  <title>文章分类 | SEE</title>
+  <title>how to use strong type in pdo | SEE</title>
   
 
 
@@ -349,40 +350,236 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/30/how-to-use-strong-type-in-pdo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Twosee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SEE">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">文章分类</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                目前共计 3 个分类
+          <h2 class="post-title" itemprop="name headline">how to use strong type in pdo</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T13:11:36+08:00">
+                2017-12-30
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-30T14:20:04+08:00">
+                2017-12-30
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/Mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  427
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
             </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/Mysql/">Mysql</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程原理/">编程原理</a><span class="category-list-count">1</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="如何在PDO查询中返回强类型"><a href="#如何在PDO查询中返回强类型" class="headerlink" title="如何在PDO查询中返回强类型"></a>如何在PDO查询中返回强类型</h1><blockquote>
+<p> 有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE ），或试着使用本地预处理语句（如果为 FALSE）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool 类型。</p>
+</blockquote>
+<p>PDO::ATTR_EMULATE_PREPARES 启用或禁用预处理语句的模拟。</p>
+<p>这是之前我说的默认总是模拟prepare,因为低版本MYSQL驱动不支持prepare.<br>数据类型问题,在旧版本的MySQL中还真是不能解决的。它直接返回字符串给外部系统。稍微新一点的MySQL和客户端驱动可以直接内部的本地类型而不再进行内部转换为字符串了。有了这个基础，就有解决的可能了。</p>
+<h4 id="Test-code"><a href="#Test-code" class="headerlink" title="Test-code"></a>Test-code</h4><p>此处用query测试证明,prepare_excute二连也是一样的</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$db = <span class="keyword">new</span> \PDO(<span class="string">'mysql:dbname='</span>.$options[<span class="string">'database'</span>].<span class="string">';host='</span>.$options[<span class="string">'host'</span>], $options[<span class="string">'user'</span>], $options[<span class="string">'password'</span>]);</span><br><span class="line">$db-&gt;setAttribute(\PDO::ATTR_EMULATE_PREPARES, <span class="keyword">false</span>);<span class="comment">//关闭预处理语句模拟</span></span><br><span class="line">$r = ($db-&gt;query(<span class="string">'SELECT * FROM test WHERE `id`=1 LIMIT 1'</span>, \PDO::FETCH_ASSOC))-&gt;fetch();</span><br><span class="line">var_dump($r);</span><br></pre></td></tr></table></figure>
+<h4 id="result"><a href="#result" class="headerlink" title="$result"></a>$result</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">array</span>(<span class="number">2</span>) &#123;</span><br><span class="line">  [<span class="number">0</span>]=&gt;</span><br><span class="line">  int(<span class="number">1</span>)</span><br><span class="line">  [<span class="number">1</span>]=&gt;</span><br><span class="line">  string(<span class="number">64</span>) <span class="string">"1dfd47ed5fb0183d05157f21cab0fd8c151379f407a173190445bbd82aa5aeaa"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此外,PDO为参数绑定也提供了强类型的设定,默认传给Mysql的是string,常用的类型如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$data_types = [</span><br><span class="line">  <span class="string">'NULL'</span>    =&gt; PDO::PARAM_NULL,</span><br><span class="line">  <span class="string">'boolean'</span> =&gt; PDO::PARAM_BOOL,</span><br><span class="line">  <span class="string">'integer'</span> =&gt; PDO::PARAM_INT,</span><br><span class="line">  <span class="string">'string'</span>  =&gt; PDO::PARAM_STR,</span><br><span class="line">]</span><br><span class="line"><span class="keyword">$this</span>-&gt;sm-&gt;bindParam(<span class="string">':id'</span>, $id, $data_types[getType($id)]);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>data<em>type: 使用[*PDO :: PARAM</em> ** 常量](<a href="http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO" target="_blank" rel="noopener">http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO</a> :: PARAM_INPUT_OUTPUT位。</p>
+</blockquote>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PDO/" rel="tag"># PDO</a>
+          
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+            <a href="/tags/参数化/" rel="tag"># 参数化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/28/how-slow-is-disk-and-network/" rel="next" title="让 CPU 告诉你硬盘和网络到底有多慢">
+                <i class="fa fa-chevron-left"></i> 让 CPU 告诉你硬盘和网络到底有多慢
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -417,8 +614,17 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -505,6 +711,22 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何在PDO查询中返回强类型"><span class="nav-number">1.</span> <span class="nav-text">如何在PDO查询中返回强类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Test-code"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">Test-code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#result"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">$result</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1087,13 +1309,13 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       var articles = db.collection('articles')
 
       //https://hexo.io/zh-tw/docs/variables.html
-      var isPost = '文章分类'.length > 0
+      var isPost = 'how to use strong type in pdo'.length > 0
       var isArchive = '' === 'true'
       var isCategory = ''.length > 0
       var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = '文章分类'
+        var title = 'how to use strong type in pdo'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
