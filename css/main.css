@@ -1849,7 +1849,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #b320ff;
+  background: #ff7dff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3171,4 +3171,14 @@ pre .javascript .function {
   .pagination {
     margin: 8px 0 0;
   }
+}
+strong {
+  display: inline-block;
+  padding: 1px 5px !important;
+  color: #e02856;
+  background-color: #f7f7f7;
+  font-weight: normal;
+  margin: 1px 0;
+  border-radius: 5px;
+  font-family: "Input Mono", "PT Mono", Consolas, Monaco, Menlo, monospace;
 }
