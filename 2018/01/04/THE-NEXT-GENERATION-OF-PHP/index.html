@@ -122,7 +122,7 @@
 <meta property="og:description" content="2017年第三届PHP开发者大会总结 鸟哥JIT篇鸟哥本次分享的主要内容是，在php7发布的这两年期间他们的主要工作，包括release的7.1和正在开发中的jit分支。说实话，由于本人水平有限，鸟哥分享的内容只能大概听懂意思，知道他们在做什么，但具体原理细节，鸟哥分享的我还真听不懂。这里就对鸟哥的分享内容做个总结。 php7之后还有什么？JITphp7于15年正式发布，他的最大卖点是，无感知的1">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006DQdzWgy1fn44fznqc8j317u0f6wg1.jpg">
-<meta property="og:updated_time" content="2018-01-03T21:24:29.000Z">
+<meta property="og:updated_time" content="2018-01-03T21:32:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2017年PHP开发者大会总结 鸟哥JIT篇">
 <meta name="twitter:description" content="2017年第三届PHP开发者大会总结 鸟哥JIT篇鸟哥本次分享的主要内容是，在php7发布的这两年期间他们的主要工作，包括release的7.1和正在开发中的jit分支。说实话，由于本人水平有限，鸟哥分享的内容只能大概听懂意思，知道他们在做什么，但具体原理细节，鸟哥分享的我还真听不懂。这里就对鸟哥的分享内容做个总结。 php7之后还有什么？JITphp7于15年正式发布，他的最大卖点是，无感知的1">
@@ -408,7 +408,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:24:29+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:32:54+08:00">
                 2018-01-04
               </time>
             
@@ -487,6 +487,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <li><strong>对码农透明</strong>。JIT无须码农自己对程序根据不同平台进行编译发布，只需要写高级代码即可</li>
 </ul>
 <p>基于以上几个优点，再结合php一贯的简单易用原则，我想JIT确实是不错的选择。不过php也是支持AOT的，有兴趣的同学可以查一下。</p>
+<a id="more"></a>
 <p>但JIT技术也绝不是灵丹妙药，<code>即便是编译也是需要时间的，当代码编译的时间消耗大于运行收益时，程序反而会变慢！</code>会有这种情况吗？有的，比如某个项目中，热点并不明显，JIT编译的代码执行次数都很少，那么编译带来的收益是有可能小于编译本身的消耗的</p>
 <p>以下是在标准测试中引入JIT技术后，php运行效率比7.2有100%的性能提升，不过在实际生产环境中效果不会有这么好</p>
 <p><img src="http://ww1.sinaimg.cn/large/006DQdzWgy1fn44fznqc8j317u0f6wg1.jpg" alt=""></p>
