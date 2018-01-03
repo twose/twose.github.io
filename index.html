@@ -361,6 +361,349 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/AI-everyone-plus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Twosee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SEE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/04/AI-everyone-plus/" itemprop="url">人人都可以做深度学习应用 加强篇</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:40:56+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:42:54+08:00">
+                2018-01-04
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,591
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="四、经典入门demo：识别手写数字（MNIST）"><a href="#四、经典入门demo：识别手写数字（MNIST）" class="headerlink" title="四、经典入门demo：识别手写数字（MNIST）"></a>四、经典入门demo：识别手写数字（MNIST）</h2><p>常规的编程入门有“Hello world”程序，而深度学习的入门程序则是MNIST，一个识别28×28像素的图片中的手写数字的程序。</p>
+<p><img src="https://blog-10039692.file.myqcloud.com/1487835237768_1640_1487835232627.png" alt="img"></p>
+<p>备注：<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">MNIST 的数据和官网</a></p>
+<p>深度学习的内容，其背后会涉及比较多的数学原理，作为一个初学者，受限于我个人的数学和技术水平，也许并不足以准确讲述相关的数学原理，因此，本文会更多的关注“应用层面”，不对背后的数学原理进行展开，感谢谅解。</p>
+<h3 id="1-加载数据"><a href="#1-加载数据" class="headerlink" title="1. 加载数据"></a>1. 加载数据</h3><p>程序执行的第一步当然是加载数据，根据我们之前获得的数据集主要包括两部分：60000的训练数据集（mnist.train）和10000的测试数据集（mnist.test）。里面每一行，是一个28×28=784的数组，数组的本质就是将28×28像素的图片，转化成对应的像素点阵。</p>
+<p>例如手写字1的图片转换出来的对应矩阵表示如下：</p>
+<p><img src="https://blog-10039692.file.myqcloud.com/1487835254243_8947_1487835249287.png" alt="img"></p>
+<p>之前我们经常听说，图片方面的深度学习需要大量的计算能力，甚至需要采用昂贵、专业的GPU（Nvidia的GPU），从上述转化的案例我们就已经可以获得一些答案了。一张784像素的图片，对学习模型来说，就有784个特征，而我们实际的相片和图片动辄几十万、百万级别，则对应的基础特征数也是这个数量级，基于这样数量级的数组进行大规模运算，没有强大的计算能力支持，确实寸步难行。当然，这个入门的MNIST的demo还是可以比较快速的跑完。</p>
+<p>Demo中的关键代码（读取并且加载数据到数组对象中，方便后面使用）：</p>
+<p><img src="https://blog-10039692.file.myqcloud.com/1487835274838_4756_1487835269849.png" alt="img"></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/04/AI-everyone-plus/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/AI-everyone/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Twosee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SEE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/04/AI-everyone/" itemprop="url">人人都可以做深度学习应用 入门篇</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:38:41+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:40:36+08:00">
+                2018-01-04
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,491
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="一、人工智能和新科技革命"><a href="#一、人工智能和新科技革命" class="headerlink" title="一、人工智能和新科技革命"></a>一、人工智能和新科技革命</h2><p>2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年里，深刻地改变我们的生活。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/04/AI-everyone/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/PHP-Next-JIT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1318,7 +1661,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1340,7 +1683,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1416,7 +1759,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">6.0k</span>
+    <span title="Site words total count">16.1k</span>
   
 </div>
 
@@ -1978,7 +2321,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("人人都可以做深度学习应用 加强篇");titles.push("人人都可以做深度学习应用 入门篇");titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
