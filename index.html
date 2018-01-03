@@ -361,6 +361,174 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/PHP-callback/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Twosee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SEE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/04/PHP-callback/" itemprop="url">4种PHP回调函数</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:47:33+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:49:45+08:00">
+                2018-01-04
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  117
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="4种PHP回调函数"><a href="#4种PHP回调函数" class="headerlink" title="4种PHP回调函数"></a>4种PHP回调函数</h1><blockquote>
+<p>以Swoole服务事件回调为例</p>
+</blockquote>
+<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($req, $resp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/AI-everyone-plus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -479,7 +647,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>深度学习的内容，其背后会涉及比较多的数学原理，作为一个初学者，受限于我个人的数学和技术水平，也许并不足以准确讲述相关的数学原理，因此，本文会更多的关注“应用层面”，不对背后的数学原理进行展开，感谢谅解。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/AI-everyone-plus/#more" rel="contents">
+            <a class="btn" href="/2018/01/04/AI-everyone-plus/#meer" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +814,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
           <h2 id="一、人工智能和新科技革命"><a href="#一、人工智能和新科技革命" class="headerlink" title="一、人工智能和新科技革命"></a>一、人工智能和新科技革命</h2><p>2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年里，深刻地改变我们的生活。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/AI-everyone/#more" rel="contents">
+            <a class="btn" href="/2018/01/04/AI-everyone/#meer" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -817,7 +985,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p><img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740.jpeg" alt="鸟哥：PHP Next: JIT"></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/PHP-Next-JIT/#more" rel="contents">
+            <a class="btn" href="/2018/01/04/PHP-Next-JIT/#meer" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -997,7 +1165,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>基于以上几个优点，再结合php一贯的简单易用原则，我想JIT确实是不错的选择。不过php也是支持AOT的，有兴趣的同学可以查一下。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/#more" rel="contents">
+            <a class="btn" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/#meer" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1400,7 +1568,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>希望你看到看完这篇文章能明白两件事情：磁盘和网络真的很慢，性能优化是个复杂的系统性的活。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/28/how-slow-is-disk-and-network/#more" rel="contents">
+            <a class="btn" href="/2017/12/28/how-slow-is-disk-and-network/#meer" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1654,7 +1822,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1676,7 +1844,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1752,7 +1920,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">16.1k</span>
+    <span title="Site words total count">16.3k</span>
   
 </div>
 
@@ -2314,7 +2482,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("人人都可以做深度学习应用 加强篇");titles.push("人人都可以做深度学习应用 入门篇");titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("4种PHP回调函数");titles.push("人人都可以做深度学习应用 加强篇");titles.push("人人都可以做深度学习应用 入门篇");titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
