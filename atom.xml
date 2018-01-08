@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>SEE</title>
+  <title>TWO SEE</title>
   
   <subtitle>SEE is the sea of cc</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="http://www.twosee.cn/"/>
   <updated>2018-01-08T07:19:39.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://www.twosee.cn/</id>
   
   <author>
     <name>Twosee</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Mysql注入后利用</title>
-    <link href="http://yoursite.com/2018/01/06/mysql-injection/"/>
-    <id>http://yoursite.com/2018/01/06/mysql-injection/</id>
+    <link href="http://www.twosee.cn/2018/01/06/mysql-injection/"/>
+    <id>http://www.twosee.cn/2018/01/06/mysql-injection/</id>
     <published>2018-01-05T17:33:18.000Z</published>
     <updated>2018-01-08T07:19:39.000Z</updated>
     
@@ -40,18 +40,18 @@
     </summary>
     
     
-      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
+      <category term="mysql" scheme="http://www.twosee.cn/tags/mysql/"/>
     
-      <category term="sql" scheme="http://yoursite.com/tags/sql/"/>
+      <category term="sql" scheme="http://www.twosee.cn/tags/sql/"/>
     
-      <category term="injection" scheme="http://yoursite.com/tags/injection/"/>
+      <category term="injection" scheme="http://www.twosee.cn/tags/injection/"/>
     
   </entry>
   
   <entry>
     <title>2018 PHP 应用程序安全设计指北</title>
-    <link href="http://yoursite.com/2018/01/06/php-app-security/"/>
-    <id>http://yoursite.com/2018/01/06/php-app-security/</id>
+    <link href="http://www.twosee.cn/2018/01/06/php-app-security/"/>
+    <id>http://www.twosee.cn/2018/01/06/php-app-security/</id>
     <published>2018-01-05T17:33:18.000Z</published>
     <updated>2018-01-08T07:28:51.000Z</updated>
     
@@ -75,18 +75,18 @@
     </summary>
     
     
-      <category term="php" scheme="http://yoursite.com/tags/php/"/>
+      <category term="php" scheme="http://www.twosee.cn/tags/php/"/>
     
-      <category term="security" scheme="http://yoursite.com/tags/security/"/>
+      <category term="security" scheme="http://www.twosee.cn/tags/security/"/>
     
-      <category term="hack" scheme="http://yoursite.com/tags/hack/"/>
+      <category term="hack" scheme="http://www.twosee.cn/tags/hack/"/>
     
   </entry>
   
   <entry>
     <title>4种PHP回调函数</title>
-    <link href="http://yoursite.com/2018/01/04/PHP-callback/"/>
-    <id>http://yoursite.com/2018/01/04/PHP-callback/</id>
+    <link href="http://www.twosee.cn/2018/01/04/PHP-callback/"/>
+    <id>http://www.twosee.cn/2018/01/04/PHP-callback/</id>
     <published>2018-01-03T21:47:33.000Z</published>
     <updated>2018-01-08T07:19:25.000Z</updated>
     
@@ -105,14 +105,14 @@
     </summary>
     
     
-      <category term="PHP" scheme="http://yoursite.com/tags/PHP/"/>
+      <category term="PHP" scheme="http://www.twosee.cn/tags/PHP/"/>
     
   </entry>
   
   <entry>
     <title>人人都可以做深度学习应用 加强篇</title>
-    <link href="http://yoursite.com/2018/01/04/AI-everyone-plus/"/>
-    <id>http://yoursite.com/2018/01/04/AI-everyone-plus/</id>
+    <link href="http://www.twosee.cn/2018/01/04/AI-everyone-plus/"/>
+    <id>http://www.twosee.cn/2018/01/04/AI-everyone-plus/</id>
     <published>2018-01-03T21:40:56.000Z</published>
     <updated>2018-01-08T07:19:53.000Z</updated>
     
@@ -127,14 +127,14 @@
     </summary>
     
     
-      <category term="AI" scheme="http://yoursite.com/tags/AI/"/>
+      <category term="AI" scheme="http://www.twosee.cn/tags/AI/"/>
     
   </entry>
   
   <entry>
     <title>人人都可以做深度学习应用 入门篇</title>
-    <link href="http://yoursite.com/2018/01/04/AI-everyone/"/>
-    <id>http://yoursite.com/2018/01/04/AI-everyone/</id>
+    <link href="http://www.twosee.cn/2018/01/04/AI-everyone/"/>
+    <id>http://www.twosee.cn/2018/01/04/AI-everyone/</id>
     <published>2018-01-03T21:38:41.000Z</published>
     <updated>2018-01-08T07:19:45.000Z</updated>
     
@@ -147,22 +147,22 @@
     </summary>
     
     
-      <category term="AI" scheme="http://yoursite.com/tags/AI/"/>
+      <category term="AI" scheme="http://www.twosee.cn/tags/AI/"/>
     
   </entry>
   
   <entry>
     <title>PHP Next JIT</title>
-    <link href="http://yoursite.com/2018/01/04/PHP-Next-JIT/"/>
-    <id>http://yoursite.com/2018/01/04/PHP-Next-JIT/</id>
+    <link href="http://www.twosee.cn/2018/01/04/PHP-Next-JIT/"/>
+    <id>http://www.twosee.cn/2018/01/04/PHP-Next-JIT/</id>
     <published>2018-01-03T21:28:57.000Z</published>
-    <updated>2018-01-03T21:32:34.000Z</updated>
+    <updated>2018-01-08T07:43:56.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="鸟哥：PHP-Next-JIT"><a href="#鸟哥：PHP-Next-JIT" class="headerlink" title="鸟哥：PHP Next: JIT"></a>鸟哥：PHP Next: JIT</h1><p>12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。</p><h2 id="惠新宸"><a href="#惠新宸" class="headerlink" title="惠新宸"></a>惠新宸</h2><p>惠新宸 ，国内最有影响力的PHP技术专家， PHP开发组核心成员 , PECL开发者 , Zend公司外聘顾问, 曾供职于雅虎，百度，新浪。现任链家集团技术副总裁兼总架构师。PHP 7 的核心开发者，PHP5.4，5.5的主要开发者。也是Yaf (Yet another framework)，Yar(Yet another RPC framework) 以及Yac(Yet another Cache)、Taint等多个开源项目的作者，同时也是APC，Opcache ，Msgpack等项目的维护者。</p><h2 id="演讲实录"><a href="#演讲实录" class="headerlink" title="演讲实录"></a>演讲实录</h2><p><strong>PHP Next: JIT</strong></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626739-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><a id="more"></a><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626741.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626742.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626742-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626743.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626743-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626744.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626744-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626745.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626745-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626746.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626746-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626747.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626747-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626747-2.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626748.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626748-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626749.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626749-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626750.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626750-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626750-2.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626751.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure>]]></content>
+    <content type="html"><![CDATA[<p>12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。</p><h2 id="惠新宸"><a href="#惠新宸" class="headerlink" title="惠新宸"></a>惠新宸</h2><p>惠新宸 ，国内最有影响力的PHP技术专家， PHP开发组核心成员 , PECL开发者 , Zend公司外聘顾问, 曾供职于雅虎，百度，新浪。现任链家集团技术副总裁兼总架构师。PHP 7 的核心开发者，PHP5.4，5.5的主要开发者。也是Yaf (Yet another framework)，Yar(Yet another RPC framework) 以及Yac(Yet another Cache)、Taint等多个开源项目的作者，同时也是APC，Opcache ，Msgpack等项目的维护者。</p><h2 id="演讲实录"><a href="#演讲实录" class="headerlink" title="演讲实录"></a>演讲实录</h2><p><strong>PHP Next: JIT</strong></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626739-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><a id="more"></a><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626741.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626742.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626742-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626743.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626743-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626744.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626744-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626745.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626745-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626746.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626746-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626747.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626747-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626747-2.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626748.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626748-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626749.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626749-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626750.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626750-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626750-2.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626751.jpeg" alt="鸟哥：PHP Next: JIT" title="">                </div>                <div class="image-caption">鸟哥：PHP Next: JIT</div>            </figure>]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;鸟哥：PHP-Next-JIT&quot;&gt;&lt;a href=&quot;#鸟哥：PHP-Next-JIT&quot; class=&quot;headerlink&quot; title=&quot;鸟哥：PHP Next: JIT&quot;&gt;&lt;/a&gt;鸟哥：PHP Next: JIT&lt;/h1&gt;&lt;p&gt;12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。&lt;/p&gt;
+      &lt;p&gt;12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。&lt;/p&gt;
 &lt;h2 id=&quot;惠新宸&quot;&gt;&lt;a href=&quot;#惠新宸&quot; class=&quot;headerlink&quot; title=&quot;惠新宸&quot;&gt;&lt;/a&gt;惠新宸&lt;/h2&gt;&lt;p&gt;惠新宸 ，国内最有影响力的PHP技术专家， PHP开发组核心成员 , PECL开发者 , Zend公司外聘顾问, 曾供职于雅虎，百度，新浪。现任链家集团技术副总裁兼总架构师。PHP 7 的核心开发者，PHP5.4，5.5的主要开发者。也是Yaf (Yet another framework)，Yar(Yet another RPC framework) 以及Yac(Yet another Cache)、Taint等多个开源项目的作者，同时也是APC，Opcache ，Msgpack等项目的维护者。&lt;/p&gt;
 &lt;h2 id=&quot;演讲实录&quot;&gt;&lt;a href=&quot;#演讲实录&quot; class=&quot;headerlink&quot; title=&quot;演讲实录&quot;&gt;&lt;/a&gt;演讲实录&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;PHP Next: JIT&lt;/strong&gt;&lt;/p&gt;
 &lt;figure class=&quot;image-bubble&quot;&gt;
@@ -183,12 +183,14 @@
     </summary>
     
     
+      <category term="php" scheme="http://www.twosee.cn/tags/php/"/>
+    
   </entry>
   
   <entry>
     <title>2017年PHP开发者大会总结 鸟哥JIT篇</title>
-    <link href="http://yoursite.com/2018/01/04/THE-NEXT-GENERATION-OF-PHP/"/>
-    <id>http://yoursite.com/2018/01/04/THE-NEXT-GENERATION-OF-PHP/</id>
+    <link href="http://www.twosee.cn/2018/01/04/THE-NEXT-GENERATION-OF-PHP/"/>
+    <id>http://www.twosee.cn/2018/01/04/THE-NEXT-GENERATION-OF-PHP/</id>
     <published>2018-01-03T21:21:37.000Z</published>
     <updated>2018-01-08T07:19:13.000Z</updated>
     
@@ -214,14 +216,14 @@
     </summary>
     
     
-      <category term="php" scheme="http://yoursite.com/tags/php/"/>
+      <category term="php" scheme="http://www.twosee.cn/tags/php/"/>
     
   </entry>
   
   <entry>
     <title>如何在PDO查询中返回强类型</title>
-    <link href="http://yoursite.com/2017/12/30/how-to-use-strong-type-in-pdo/"/>
-    <id>http://yoursite.com/2017/12/30/how-to-use-strong-type-in-pdo/</id>
+    <link href="http://www.twosee.cn/2017/12/30/how-to-use-strong-type-in-pdo/"/>
+    <id>http://www.twosee.cn/2017/12/30/how-to-use-strong-type-in-pdo/</id>
     <published>2017-12-30T05:11:36.000Z</published>
     <updated>2018-01-08T07:18:43.000Z</updated>
     
@@ -238,23 +240,23 @@
     
     </summary>
     
-      <category term="PHP" scheme="http://yoursite.com/categories/PHP/"/>
+      <category term="PHP" scheme="http://www.twosee.cn/categories/PHP/"/>
     
-      <category term="Mysql" scheme="http://yoursite.com/categories/PHP/Mysql/"/>
+      <category term="Mysql" scheme="http://www.twosee.cn/categories/PHP/Mysql/"/>
     
     
-      <category term="PDO" scheme="http://yoursite.com/tags/PDO/"/>
+      <category term="PDO" scheme="http://www.twosee.cn/tags/PDO/"/>
     
-      <category term="Mysql" scheme="http://yoursite.com/tags/Mysql/"/>
+      <category term="Mysql" scheme="http://www.twosee.cn/tags/Mysql/"/>
     
-      <category term="参数化" scheme="http://yoursite.com/tags/%E5%8F%82%E6%95%B0%E5%8C%96/"/>
+      <category term="参数化" scheme="http://www.twosee.cn/tags/%E5%8F%82%E6%95%B0%E5%8C%96/"/>
     
   </entry>
   
   <entry>
     <title>让 CPU 告诉你硬盘和网络到底有多慢</title>
-    <link href="http://yoursite.com/2017/12/28/how-slow-is-disk-and-network/"/>
-    <id>http://yoursite.com/2017/12/28/how-slow-is-disk-and-network/</id>
+    <link href="http://www.twosee.cn/2017/12/28/how-slow-is-disk-and-network/"/>
+    <id>http://www.twosee.cn/2017/12/28/how-slow-is-disk-and-network/</id>
     <published>2017-12-28T08:18:03.000Z</published>
     <updated>2018-01-08T07:19:42.000Z</updated>
     
@@ -278,23 +280,23 @@
     
     </summary>
     
-      <category term="编程原理" scheme="http://yoursite.com/categories/%E7%BC%96%E7%A8%8B%E5%8E%9F%E7%90%86/"/>
+      <category term="编程原理" scheme="http://www.twosee.cn/categories/%E7%BC%96%E7%A8%8B%E5%8E%9F%E7%90%86/"/>
     
     
-      <category term="cpu" scheme="http://yoursite.com/tags/cpu/"/>
+      <category term="cpu" scheme="http://www.twosee.cn/tags/cpu/"/>
     
-      <category term="memory" scheme="http://yoursite.com/tags/memory/"/>
+      <category term="memory" scheme="http://www.twosee.cn/tags/memory/"/>
     
-      <category term="disk" scheme="http://yoursite.com/tags/disk/"/>
+      <category term="disk" scheme="http://www.twosee.cn/tags/disk/"/>
     
-      <category term="network" scheme="http://yoursite.com/tags/network/"/>
+      <category term="network" scheme="http://www.twosee.cn/tags/network/"/>
     
   </entry>
   
   <entry>
     <title>woo</title>
-    <link href="http://yoursite.com/2017/12/28/test/"/>
-    <id>http://yoursite.com/2017/12/28/test/</id>
+    <link href="http://www.twosee.cn/2017/12/28/test/"/>
+    <id>http://www.twosee.cn/2017/12/28/test/</id>
     <published>2017-12-28T02:40:00.000Z</published>
     <updated>2017-12-28T02:51:09.000Z</updated>
     
