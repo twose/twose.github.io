@@ -1,120 +1,26 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
+    
+
+    
+
+    
 
 
 
-  
-  
+    <meta charset="utf-8">
     
     
-  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
+    
+    <title>SEE | SEE is the sea of cc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
     
     
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="SEE is the sea of cc" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="SEE" type="application/atom+xml" />
-
-
-
-
-
-
-<meta name="description" content="show you my code">
+    <meta name="keywords" content="">
+    <meta name="description" content="show you my code">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SEE">
 <meta property="og:url" content="http://yoursite.com/index.html">
@@ -124,357 +30,160 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SEE">
 <meta name="twitter:description" content="show you my code">
+    
+        <link rel="alternate" type="application/atom+xml" title="SEE" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.3',
-    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: "",
-      labels: ""
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/"/>
-
-
-
-
-
-  <title>SEE - SEE is the sea of cc</title>
-  
-
-
-
-
-
-
-
-
-  
-<div id="hexo-helper-live2d">
-  <canvas id="live2dcanvas" width="150" height="300"></canvas>
-</div>
-<style>
-  #live2dcanvas{
-    position: fixed;
-    width: 150px;
-    height: 300px;
-    opacity:0.7;
-    right: 0px;
-    z-index: 999;
-    pointer-events: none;
-    bottom: -20px;
-  }
-</style>
-<script type="text/javascript" src="/live2d/device.min.js"></script>
-<script type="text/javascript">
-const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
-(function(){
-  if((typeof(device) != 'undefined') && (device.mobile())){
-    var trElement = document.getElementById('hexo-helper-live2d');
-    trElement.parentNode.removeChild(trElement);
-    return;
-  }else
-    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
-  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/hijiki.model.json", 0.5);});
-})();
-</script>
+    <!-- custom head -->
+    
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body>
+    <div id="loading" class="active"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-right 
-  page-home">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">SEE</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Twosee</h5>
+          <a href="mailto:twose@qq.com" title="twose@qq.com" class="mail">twose@qq.com</a>
+        </hgroup>
+      </div>
     </div>
-      
-        <h1 class="site-subtitle" itemprop="description">SEE is the sea of cc</h1>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
+            <li class="waves-block waves-effect active">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
         
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/twose" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/twoseee" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
     </div>
   </div>
-  <div id="local-search-result"></div>
-</div>
+</aside>
 
-
-
-    </div>
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/mysql-injection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
-
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SEE</div>
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/mysql-injection/" itemprop="url">Mysql注入后利用</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T01:33:18+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:13:20+08:00">
-                2018-01-08
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,448
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-          
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
         
-          <h1 id="Mysql注入后利用的心得"><a href="#Mysql注入后利用的心得" class="headerlink" title="Mysql注入后利用的心得"></a>Mysql注入后利用的心得</h1><p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header index-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SEE</h1>
+        <h5 class="subtitle">
+            
+                SEE is the sea of cc
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+<div class="container body-wrap">
+
+    <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
 <p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
 <ol>
 <li>BIGINT等数据类型溢出</li>
@@ -483,176 +192,53 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <li>一些特性</li>
 </ol>
 <p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/06/mysql-injection/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+    </div>
     
+</article>
+
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-php-app-security"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/php-app-security/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/php-app-security/" itemprop="url">2018 PHP 应用程序安全设计指北</a></h2>
-        
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T01:33:18+08:00">
-                2018-01-06
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:11:01+08:00">
-                2018-01-08
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  8,408
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  32
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          <h1 id="译-2018-PHP-应用程序安全设计指北"><a href="#译-2018-PHP-应用程序安全设计指北" class="headerlink" title="[译] 2018 PHP 应用程序安全设计指北"></a>[译] 2018 PHP 应用程序安全设计指北</h1><blockquote>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/php-app-security/">2018 PHP 应用程序安全设计指北</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <blockquote>
 <p>The 2018 Guide to Building Secure PHP Software！</p>
 </blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[TOC]</p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2018 年将至，一般程序员（特别是 Web 开发程序员）应当抛弃过去开发PHP程序的很多不好的习惯和观念了。虽然部分人不以为意，但是这确实是事实。</p>
 <p>这个指南应该以重点部分作为 <a href="https://link.juejin.im/?target=http%3A%2F%2Fwww.phptherightway.com%2F" target="_blank" rel="noopener">PHP: The Right Way</a> 安全章节的补充，而不是以一般的 PHP 编程话题。</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="PHP-版本"><a href="#PHP-版本" class="headerlink" title="PHP 版本"></a>PHP 版本</h2><blockquote>
@@ -662,848 +248,249 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>写这篇文章的时候，只有 7.1 和 7.2 版本还在被 PHP 官方积极维护，而 5.6 和 7.0 只在大概1年内提供安全补丁更新。</p>
 <p>对于其他官方不维护的 PHP 版本，虽然某些操作系统会提供长期支持和维护，但这其实通常是有害的。尤其是他们提供安全支持补丁却没有版本号，这使得很难解释系统的安全性（仅仅知道 PHP 版本）。</p>
 <p>因此，无论其他供应商提出了什么承诺，如果可以，你就应该在任何时候都坚决地使用<a href="https://link.juejin.im/?target=http%3A%2F%2Fphp.net%2Fsupported-versions.php" target="_blank" rel="noopener">官方提供支持的 PHP 版本</a>。这样，尽管最终是一个短暂的安全版本，但一个不断致力于升级的版本，总会让你收获一些意外的惊喜。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/06/php-app-security/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
+    
+
+        <a href="/2018/01/06/php-app-security/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+
+    </div>
     
+</article>
+
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-PHP-callback"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/PHP-callback/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:47:33" datetime="2018-01-03T21:47:33.000Z"  itemprop="datePublished">2018-01-04</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/04/PHP-callback/" itemprop="url">4种PHP回调函数</a></h2>
-        
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:47:33+08:00">
-                2018-01-04
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:12:24+08:00">
-                2018-01-08
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  112
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          
-            <h1 id="4种PHP回调函数"><a href="#4种PHP回调函数" class="headerlink" title="4种PHP回调函数"></a>4种PHP回调函数</h1><blockquote>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/PHP-callback/">4种PHP回调函数</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <blockquote>
 <p>以Swoole服务事件回调为例</p>
 </blockquote>
 <h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($req, $resp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
 <h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
 <h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
-          
-        
-      
+    
+
+        <a href="/2018/01/04/PHP-callback/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
+    </div>
     
+</article>
+
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-AI-everyone-plus"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/AI-everyone-plus/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:40:56" datetime="2018-01-03T21:40:56.000Z"  itemprop="datePublished">2018-01-04</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/04/AI-everyone-plus/" itemprop="url">人人都可以做深度学习应用 加强篇</a></h2>
-        
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:40:56+08:00">
-                2018-01-04
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:46:35+08:00">
-                2018-01-04
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  5,598
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  20
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          <h2 id="经典入门demo：识别手写数字（MNIST）"><a href="#经典入门demo：识别手写数字（MNIST）" class="headerlink" title="经典入门demo：识别手写数字（MNIST）"></a>经典入门demo：识别手写数字（MNIST）</h2><p>常规的编程入门有“Hello world”程序，而深度学习的入门程序则是MNIST，一个识别28×28像素的图片中的手写数字的程序。</p>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/AI-everyone-plus/">人人都可以做深度学习应用 加强篇</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h2 id="经典入门demo：识别手写数字（MNIST）"><a href="#经典入门demo：识别手写数字（MNIST）" class="headerlink" title="经典入门demo：识别手写数字（MNIST）"></a>经典入门demo：识别手写数字（MNIST）</h2><p>常规的编程入门有“Hello world”程序，而深度学习的入门程序则是MNIST，一个识别28×28像素的图片中的手写数字的程序。</p>
 <p>备注：<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">MNIST 的数据和官网</a></p>
 <p>深度学习的内容，其背后会涉及比较多的数学原理，作为一个初学者，受限于我个人的数学和技术水平，也许并不足以准确讲述相关的数学原理，因此，本文会更多的关注“应用层面”，不对背后的数学原理进行展开，感谢谅解。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/AI-everyone-plus/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
+    
+
+        <a href="/2018/01/04/AI-everyone-plus/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/AI-everyone/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
-
+    <div class="post-footer">
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/04/AI-everyone/" itemprop="url">人人都可以做深度学习应用 入门篇</a></h2>
-        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:38:41+08:00">
-                2018-01-04
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:40:36+08:00">
-                2018-01-04
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  4,491
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  16
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="一、人工智能和新科技革命"><a href="#一、人工智能和新科技革命" class="headerlink" title="一、人工智能和新科技革命"></a>一、人工智能和新科技革命</h2><p>2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年里，深刻地改变我们的生活。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/AI-everyone/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
     </div>
     
+</article>
+
+        </li>
     
-    
+        <li class="post-list-item fade">
+            <article id="post-AI-everyone"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/PHP-Next-JIT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:38:41" datetime="2018-01-03T21:38:41.000Z"  itemprop="datePublished">2018-01-04</time>
 
         
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/AI-everyone/">人人都可以做深度学习应用 入门篇</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年里，深刻地改变我们的生活。</p>
+    
+
+        <a href="/2018/01/04/AI-everyone/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
         
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/04/PHP-Next-JIT/" itemprop="url">PHP Next JIT</a></h2>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-PHP-Next-JIT"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:28:57" datetime="2018-01-03T21:28:57.000Z"  itemprop="datePublished">2018-01-04</time>
+
         
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:28:57+08:00">
-                2018-01-04
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:32:34+08:00">
-                2018-01-04
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  464
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          <h1 id="鸟哥：PHP-Next-JIT"><a href="#鸟哥：PHP-Next-JIT" class="headerlink" title="鸟哥：PHP Next: JIT"></a>鸟哥：PHP Next: JIT</h1><p>12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。</p>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/PHP-Next-JIT/">PHP Next JIT</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h1 id="鸟哥：PHP-Next-JIT"><a href="#鸟哥：PHP-Next-JIT" class="headerlink" title="鸟哥：PHP Next: JIT"></a>鸟哥：PHP Next: JIT</h1><p>12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。</p>
 <h2 id="惠新宸"><a href="#惠新宸" class="headerlink" title="惠新宸"></a>惠新宸</h2><p>惠新宸 ，国内最有影响力的PHP技术专家， PHP开发组核心成员 , PECL开发者 , Zend公司外聘顾问, 曾供职于雅虎，百度，新浪。现任链家集团技术副总裁兼总架构师。PHP 7 的核心开发者，PHP5.4，5.5的主要开发者。也是Yaf (Yet another framework)，Yar(Yet another RPC framework) 以及Yac(Yet another Cache)、Taint等多个开源项目的作者，同时也是APC，Opcache ，Msgpack等项目的维护者。</p>
 <h2 id="演讲实录"><a href="#演讲实录" class="headerlink" title="演讲实录"></a>演讲实录</h2><p><strong>PHP Next: JIT</strong></p>
-<p><img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626739-1.jpeg" alt="鸟哥：PHP Next: JIT"></p>
-<p><img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740.jpeg" alt="鸟哥：PHP Next: JIT"></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/PHP-Next-JIT/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626739-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">
+                </div>
+                <div class="image-caption">鸟哥：PHP Next: JIT</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740.jpeg" alt="鸟哥：PHP Next: JIT" title="">
+                </div>
+                <div class="image-caption">鸟哥：PHP Next: JIT</div>
+            </figure>
+    
+
+        <a href="/2018/01/04/PHP-Next-JIT/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+</article>
+
+        </li>
     
-    
+        <li class="post-list-item fade">
+            <article id="post-THE-NEXT-GENERATION-OF-PHP"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/THE-NEXT-GENERATION-OF-PHP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:21:37" datetime="2018-01-03T21:21:37.000Z"  itemprop="datePublished">2018-01-04</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/" itemprop="url">2017年PHP开发者大会总结 鸟哥JIT篇</a></h2>
-        
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T05:21:37+08:00">
-                2018-01-04
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:32:54+08:00">
-                2018-01-04
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2,937
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  10
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          <h1 id="2017年第三届PHP开发者大会总结-鸟哥JIT篇"><a href="#2017年第三届PHP开发者大会总结-鸟哥JIT篇" class="headerlink" title="2017年第三届PHP开发者大会总结 鸟哥JIT篇"></a>2017年第三届PHP开发者大会总结 鸟哥JIT篇</h1><p>鸟哥本次分享的主要内容是，在php7发布的这两年期间他们的主要工作，包括release的7.1和正在开发中的jit分支。说实话，由于本人水平有限，鸟哥分享的内容只能大概听懂意思，知道他们在做什么，但具体原理细节，鸟哥分享的我还真听不懂。这里就对鸟哥的分享内容做个总结。</p>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/">2017年PHP开发者大会总结 鸟哥JIT篇</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>鸟哥本次分享的主要内容是，在php7发布的这两年期间他们的主要工作，包括release的7.1和正在开发中的jit分支。说实话，由于本人水平有限，鸟哥分享的内容只能大概听懂意思，知道他们在做什么，但具体原理细节，鸟哥分享的我还真听不懂。这里就对鸟哥的分享内容做个总结。</p>
 <h4 id="php7之后还有什么？JIT"><a href="#php7之后还有什么？JIT" class="headerlink" title="php7之后还有什么？JIT"></a>php7之后还有什么？JIT</h4><p>php7于15年正式发布，他的最大卖点是，无感知的100%性能提升，包含了运行速度与内存消耗。那么在此之后php该往哪里发展呢？目前已经在开发的一个大方向就是JIT</p>
 <p><strong>JIT是什么？为什么是JIT？</strong><br>鸟哥并没有做过多的解释。我就谈一些我的肤浅认识，给phper们提供些参考。</p>
 <p>首先JIT（just in time）并非是新技术，一大批语言如java早已实现。JIT的思想很简单，即在程序运行时动态对程序进行编译，生成平台相关的机器码，从而加快程序运行速度。</p>
@@ -1517,207 +504,53 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <li><strong>对码农透明</strong>。JIT无须码农自己对程序根据不同平台进行编译发布，只需要写高级代码即可</li>
 </ul>
 <p>基于以上几个优点，再结合php一贯的简单易用原则，我想JIT确实是不错的选择。不过php也是支持AOT的，有兴趣的同学可以查一下。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
+    
+
+        <a href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+
+    </div>
     
+</article>
+
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-how-to-use-strong-type-in-pdo"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/30/how-to-use-strong-type-in-pdo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2017-12-30 13:11:36" datetime="2017-12-30T05:11:36.000Z"  itemprop="datePublished">2017-12-30</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/how-to-use-strong-type-in-pdo/" itemprop="url">如何在PDO查询中返回强类型</a></h2>
-        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/Mysql/">Mysql</a></li></ul></li></ul>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T13:11:36+08:00">
-                2017-12-30
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
 
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-12-30T14:21:29+08:00">
-                2017-12-30
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">Mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  427
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          
-            <h1 id="如何在PDO查询中返回强类型"><a href="#如何在PDO查询中返回强类型" class="headerlink" title="如何在PDO查询中返回强类型"></a>如何在PDO查询中返回强类型</h1><blockquote>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/12/30/how-to-use-strong-type-in-pdo/">如何在PDO查询中返回强类型</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <blockquote>
 <p> 有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE ），或试着使用本地预处理语句（如果为 FALSE）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool 类型。</p>
 </blockquote>
 <p>PDO::ATTR_EMULATE_PREPARES 启用或禁用预处理语句的模拟。</p>
@@ -1731,1146 +564,266 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>data<em>type: 使用[*PDO :: PARAM</em> ** 常量](<a href="http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO" target="_blank" rel="noopener">http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO</a> :: PARAM_INPUT_OUTPUT位。</p>
 </blockquote>
 
-          
-        
-      
+    
+
+        <a href="/2017/12/30/how-to-use-strong-type-in-pdo/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mysql/">Mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PDO/">PDO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/参数化/">参数化</a></li></ul>
+
+    </div>
     
+</article>
+
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-how-slow-is-disk-and-network"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/28/how-slow-is-disk-and-network/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2017-12-28 16:18:03" datetime="2017-12-28T08:18:03.000Z"  itemprop="datePublished">2017-12-28</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/how-slow-is-disk-and-network/" itemprop="url">让 CPU 告诉你硬盘和网络到底有多慢</a></h2>
-        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程原理/">编程原理</a></li></ul>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T16:18:03+08:00">
-                2017-12-28
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
 
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-12-30T13:08:35+08:00">
-                2017-12-30
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/编程原理/" itemprop="url" rel="index">
-                    <span itemprop="name">编程原理</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2,205
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  8
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          <h1 id="让-CPU-告诉你硬盘和网络到底有多慢"><a href="#让-CPU-告诉你硬盘和网络到底有多慢" class="headerlink" title="让 CPU 告诉你硬盘和网络到底有多慢"></a>让 CPU 告诉你硬盘和网络到底有多慢</h1><blockquote>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/12/28/how-slow-is-disk-and-network/">让 CPU 告诉你硬盘和网络到底有多慢</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <blockquote>
 <p>本文转载自 <a href="http://cizixs.com/2017/01/03/how-slow-is-disk-and-network" target="_blank" rel="noopener">cizixs</a></p>
 </blockquote>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。</p>
 <p>最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感觉，并没有对各个速度和性能做出量化的说明和解释。而实际上，不同层级之间的差异要比这张图大的多。这篇文章就让你站在 CPU 的角度看这个世界，说说到底它们有多慢。</p>
-<p><img src="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$" alt="img"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$" alt="img" title="">
+                </div>
+                <div class="image-caption">img</div>
+            </figure>
 <p>希望你看到看完这篇文章能明白两件事情：磁盘和网络真的很慢，性能优化是个复杂的系统性的活。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/28/how-slow-is-disk-and-network/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
+    
+
+        <a href="/2017/12/28/how-slow-is-disk-and-network/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpu/">cpu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/disk/">disk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memory/">memory</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+
+    </div>
     
+</article>
+
+        </li>
     
+        <li class="post-list-item fade">
+            <article id="post-test"
+  class="article-card article-type-post" itemprop="blogPost">
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/28/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
+    <div class="post-meta">
+        <time class="post-time" title="2017-12-28 10:40:00" datetime="2017-12-28T02:40:00.000Z"  itemprop="datePublished">2017-12-28</time>
 
         
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/test/" itemprop="url">woo</a></h2>
-        
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T10:40:00+08:00">
-                2017-12-28
-              </time>
-            
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-12-28T10:51:09+08:00">
-                2017-12-28
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  14
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
+    </div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
 
-      
-        
-          
-            <h1 id="｡･∀･-ﾉﾞ"><a href="#｡･∀･-ﾉﾞ" class="headerlink" title="(｡･∀･)ﾉﾞ"></a>(｡･∀･)ﾉﾞ</h1><h2 id="👁SEE-IS-THE-🐳SEA-OF-CC😎"><a href="#👁SEE-IS-THE-🐳SEA-OF-CC😎" class="headerlink" title="👁SEE IS THE 🐳SEA OF CC😎"></a>👁SEE IS THE 🐳SEA OF CC😎</h2><p>My name is cc,</p>
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/12/28/test/">woo</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h1 id="｡･∀･-ﾉﾞ"><a href="#｡･∀･-ﾉﾞ" class="headerlink" title="(｡･∀･)ﾉﾞ"></a>(｡･∀･)ﾉﾞ</h1><h2 id="👁SEE-IS-THE-🐳SEA-OF-CC😎"><a href="#👁SEE-IS-THE-🐳SEA-OF-CC😎" class="headerlink" title="👁SEE IS THE 🐳SEA OF CC😎"></a>👁SEE IS THE 🐳SEA OF CC😎</h2><p>My name is cc,</p>
 <p>so I’m <strong>Twosee</strong>.</p>
 
-          
-        
-      
+    
+
+        <a href="/2017/12/28/test/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
     </div>
     
+</article>
+
+        </li>
     
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
+    </ul>
 
     
-  </section>
 
-  
+</div>
 
-
-          </div>
-          
-
-
-          
-
-        </div>
+        <footer class="footer">
+    <div class="top">
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-      <div id="sidebar-dimmer"></div>
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4"
-                alt="Twosee" />
-            
-              <p class="site-author-name" itemprop="name">Twosee</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">10</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/twose" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="https://www.zhihu.com/people/twosee" target="_blank" title="知乎">
-                    
-                      <i class="fa fa-fw fa-instagram"></i>知乎</a>
-                </span>
-              
-            
-          </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        
-
-<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Twosee</span>
-
-  
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    
-      <span class="post-meta-item-text">Site words total count&#58;</span>
-    
-    <span title="Site words total count">26.1k</span>
-  
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Twosee &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/&title=SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/&title=SEE&source=show you my code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=SEE&url=http://yoursite.com/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABW0lEQVR42u3aQQ7DIAxE0dz/0qnUVaUUMjNOF7W/VxVKw8sCMIbjkON8x6r9M/T/PhCwYDVindu4PqO0XNv1vmDBmszaD2y9S/33jQEWLFjC6/QFGBYsWL9muV3CggVrz1KSZmWy0JPvx3J5WLBasCrLbSVRfri+BQvW37JOM9xlOwtYsKax9CLRfhRXtrhGBgELVlPWSpptSvVk+qYvWLBgRUWiynWEL++BBQuW0KUy1BXWsgUWrGEsN2nOQNJRij67wILVlKUUZCvLuVJsks5gYcFqyqqUbt0jE2PqgQVrMMu9fJAdcCqTCCxY01jZQUi2uS2d/MCC1ZpVuXCQlWul1BwWrGGsLOXdd6kv5PVEHBasTqxsUtDTZXcqgQVrMisr/WTbVOkZWLBgyYPcPcMxMgVYsGA9tL1Uik3Lz4AFayQrS5rd1NmYE2DBGsbKrgtkxFI1CxasnqwXXY7FbVPN83MAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
 
 
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
 
 
 
-        
 
 
 
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-          <span id="scrollpercent"><span>0</span>%</span>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!你回来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
 </script>
 
 
 
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.5.1/bluebird.core.min.js"></script>
-  
-  <script>
-    (function () {
-
-      firebase.initializeApp({
-        apiKey: '',
-        projectId: ''
-      })
-
-      function getCount(doc, increaseCount) {
-        //increaseCount will be false when not in article page
-
-        return doc.get().then(function (d) {
-          var count
-          if (!d.exists) { //has no data, initialize count
-            if (increaseCount) {
-              doc.set({
-                count: 1
-              })
-              count = 1
-            }
-            else {
-              count = 0
-            }
-          }
-          else { //has data
-            count = d.data().count
-            if (increaseCount) {
-              if (!(window.localStorage && window.localStorage.getItem(title))) { //if first view this article
-                doc.set({ //increase count
-                  count: count + 1
-                })
-                count++
-              }
-            }
-          }
-          if (window.localStorage && increaseCount) { //mark as visited
-            localStorage.setItem(title, true)
-          }
-
-          return count
-        })
-      }
-
-      function appendCountTo(el) {
-        return function (count) {
-          $(el).append(
-            $('<span>').addClass('post-visitors-count').append(
-              $('<span>').addClass('post-meta-divider').text('|')
-            ).append(
-              $('<span>').addClass('post-meta-item-icon').append(
-                $('<i>').addClass('fa fa-users')
-              )
-              ).append($('<span>').text('阅读次数 ' + count))
-          )
-        }
-      }
-
-      var db = firebase.firestore()
-      var articles = db.collection('articles')
-
-      //https://hexo.io/zh-tw/docs/variables.html
-      var isPost = ''.length > 0
-      var isArchive = '' === 'true'
-      var isCategory = ''.length > 0
-      var isTag = ''.length > 0
-
-      if (isPost) { //is article page
-        var title = ''
-        var doc = articles.doc(title)
-
-        getCount(doc, true).then(appendCountTo($('.post-meta')))
-      }
-      else if (!isArchive && !isCategory && !isTag) { //is index page
-        var titles = [] //array to titles
-
-        var postsstr = 'titles.push("Mysql注入后利用");titles.push("2018 PHP 应用程序安全设计指北");titles.push("4种PHP回调函数");titles.push("人人都可以做深度学习应用 加强篇");titles.push("人人都可以做深度学习应用 入门篇");titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
-        eval(postsstr)
-
-        var promises = titles.map(function (title) {
-          return articles.doc(title)
-        }).map(function (doc) {
-          return getCount(doc)
-        })
-        Promise.all(promises).then(function (counts) {
-          var metas = $('.post-meta')
-          counts.forEach(function (val, idx) {
-            appendCountTo(metas[idx])(val)
-          })
-        })
-      }
-    })()
-  </script>
-
-
-  
-
-  
-  
-
-  
-
-  
-  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
-  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
-
-
-  
-  <script type="text/javascript" src="/js/src/exturl.js?v=5.1.3"></script>
-
-
-  <script type="text/javascript" src="/js/src/love.js"></script>
 </body>
 </html>
