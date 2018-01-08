@@ -114,19 +114,19 @@
 
 
 
-<meta name="description" content="SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种错误类型看看背后的原理是怎">
+<meta name="description" content="Mysql注入后利用的心得SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种">
 <meta name="keywords" content="sql,injection">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mysql注入后利用">
 <meta property="og:url" content="http://yoursite.com/2018/01/06/mysql-injection/index.html">
 <meta property="og:site_name" content="SEE">
-<meta property="og:description" content="SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种错误类型看看背后的原理是怎">
+<meta property="og:description" content="Mysql注入后利用的心得SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg">
-<meta property="og:updated_time" content="2018-01-05T17:34:58.000Z">
+<meta property="og:updated_time" content="2018-01-08T06:09:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql注入后利用">
-<meta name="twitter:description" content="SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种错误类型看看背后的原理是怎">
+<meta name="twitter:description" content="Mysql注入后利用的心得SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种">
 <meta name="twitter:image" content="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg">
 
 
@@ -409,8 +409,8 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-06T01:34:58+08:00">
-                2018-01-06
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:09:55+08:00">
+                2018-01-08
               </time>
             
           </span>
@@ -437,7 +437,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,439
+                  1,448
                 </span>
               
 
@@ -474,7 +474,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+        <h1 id="Mysql注入后利用的心得"><a href="#Mysql注入后利用的心得" class="headerlink" title="Mysql注入后利用的心得"></a>Mysql注入后利用的心得</h1><p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
 <p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
 <ol>
 <li>BIGINT等数据类型溢出</li>
@@ -483,6 +483,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <li>一些特性</li>
 </ol>
 <p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+<a id="more"></a>
 <h2 id="0x01-数据溢出"><a href="#0x01-数据溢出" class="headerlink" title="0x01 数据溢出"></a>0x01 数据溢出</h2><p>这里可以看到mysql是怎么处理整形的：<a href="https://dev.mysql.com/doc/refman/5.5/en/integer-types.html" target="_blank" rel="noopener">Integer Types (Exact Value)</a>，如下表：</p>
 <p><img src="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg" alt="img"></p>
 <p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明<a href="https://dev.mysql.com/doc/refman/5.5/en/out-of-range-and-overflow.html" target="_blank" rel="noopener">out-of-range-and-overflow</a>，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况：</p>
@@ -807,7 +808,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-数据溢出"><span class="nav-number">1.</span> <span class="nav-text">0x01 数据溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-xpath语法错误"><span class="nav-number">2.</span> <span class="nav-text">0x02 xpath语法错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-主键重复"><span class="nav-number">3.</span> <span class="nav-text">0x03 主键重复</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mysql注入后利用的心得"><span class="nav-number">1.</span> <span class="nav-text">Mysql注入后利用的心得</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-数据溢出"><span class="nav-number">1.1.</span> <span class="nav-text">0x01 数据溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-xpath语法错误"><span class="nav-number">1.2.</span> <span class="nav-text">0x02 xpath语法错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-主键重复"><span class="nav-number">1.3.</span> <span class="nav-text">0x03 主键重复</span></a></li></ol></li></ol></div>
             
 
           </div>
