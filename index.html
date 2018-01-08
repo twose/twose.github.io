@@ -361,185 +361,6 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/07/php-app-security/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Twosee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SEE">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/07/php-app-security/" itemprop="url">未命名</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T23:53:19+08:00">
-                2018-01-07
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:09:32+08:00">
-                2018-01-08
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  8,408
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  32
-                </span>
-              
-            </div>
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="译-2018-PHP-应用程序安全设计指北"><a href="#译-2018-PHP-应用程序安全设计指北" class="headerlink" title="[译] 2018 PHP 应用程序安全设计指北"></a>[译] 2018 PHP 应用程序安全设计指北</h1><blockquote>
-<p>The 2018 Guide to Building Secure PHP Software！</p>
-</blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[TOC]</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2018 年将至，一般程序员（特别是 Web 开发程序员）应当抛弃过去开发PHP程序的很多不好的习惯和观念了。虽然部分人不以为意，但是这确实是事实。</p>
-<p>这个指南应该以重点部分作为 <a href="https://link.juejin.im/?target=http%3A%2F%2Fwww.phptherightway.com%2F" target="_blank" rel="noopener">PHP: The Right Way</a> 安全章节的补充，而不是以一般的 PHP 编程话题。</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="PHP-版本"><a href="#PHP-版本" class="headerlink" title="PHP 版本"></a>PHP 版本</h2><blockquote>
-<p>请在 2018 年使用 PHP 7.2, 并且计划 2019 年初切换到 PHP 7.3。</p>
-</blockquote>
-<p>PHP 7.2 已于 2017 年 11 月 30 日发布。</p>
-<p>写这篇文章的时候，只有 7.1 和 7.2 版本还在被 PHP 官方积极维护，而 5.6 和 7.0 只在大概1年内提供安全补丁更新。</p>
-<p>对于其他官方不维护的 PHP 版本，虽然某些操作系统会提供长期支持和维护，但这其实通常是有害的。尤其是他们提供安全支持补丁却没有版本号，这使得很难解释系统的安全性（仅仅知道 PHP 版本）。</p>
-<p>因此，无论其他供应商提出了什么承诺，如果可以，你就应该在任何时候都坚决地使用<a href="https://link.juejin.im/?target=http%3A%2F%2Fphp.net%2Fsupported-versions.php" target="_blank" rel="noopener">官方提供支持的 PHP 版本</a>。这样，尽管最终是一个短暂的安全版本，但一个不断致力于升级的版本，总会让你收获一些意外的惊喜。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/07/php-app-security/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/mysql-injection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -665,6 +486,185 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/06/mysql-injection/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/php-app-security/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Twosee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SEE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/php-app-security/" itemprop="url">2018 PHP 应用程序安全设计指北</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T01:33:18+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:11:01+08:00">
+                2018-01-08
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  8,408
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  32
+                </span>
+              
+            </div>
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="译-2018-PHP-应用程序安全设计指北"><a href="#译-2018-PHP-应用程序安全设计指北" class="headerlink" title="[译] 2018 PHP 应用程序安全设计指北"></a>[译] 2018 PHP 应用程序安全设计指北</h1><blockquote>
+<p>The 2018 Guide to Building Secure PHP Software！</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[TOC]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2018 年将至，一般程序员（特别是 Web 开发程序员）应当抛弃过去开发PHP程序的很多不好的习惯和观念了。虽然部分人不以为意，但是这确实是事实。</p>
+<p>这个指南应该以重点部分作为 <a href="https://link.juejin.im/?target=http%3A%2F%2Fwww.phptherightway.com%2F" target="_blank" rel="noopener">PHP: The Right Way</a> 安全章节的补充，而不是以一般的 PHP 编程话题。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="PHP-版本"><a href="#PHP-版本" class="headerlink" title="PHP 版本"></a>PHP 版本</h2><blockquote>
+<p>请在 2018 年使用 PHP 7.2, 并且计划 2019 年初切换到 PHP 7.3。</p>
+</blockquote>
+<p>PHP 7.2 已于 2017 年 11 月 30 日发布。</p>
+<p>写这篇文章的时候，只有 7.1 和 7.2 版本还在被 PHP 官方积极维护，而 5.6 和 7.0 只在大概1年内提供安全补丁更新。</p>
+<p>对于其他官方不维护的 PHP 版本，虽然某些操作系统会提供长期支持和维护，但这其实通常是有害的。尤其是他们提供安全支持补丁却没有版本号，这使得很难解释系统的安全性（仅仅知道 PHP 版本）。</p>
+<p>因此，无论其他供应商提出了什么承诺，如果可以，你就应该在任何时候都坚决地使用<a href="https://link.juejin.im/?target=http%3A%2F%2Fphp.net%2Fsupported-versions.php" target="_blank" rel="noopener">官方提供支持的 PHP 版本</a>。这样，尽管最终是一个短暂的安全版本，但一个不断致力于升级的版本，总会让你收获一些意外的惊喜。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/06/php-app-security/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2198,7 +2198,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2836,7 +2836,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("");titles.push("Mysql注入后利用");titles.push("4种PHP回调函数");titles.push("人人都可以做深度学习应用 加强篇");titles.push("人人都可以做深度学习应用 入门篇");titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("Mysql注入后利用");titles.push("2018 PHP 应用程序安全设计指北");titles.push("4种PHP回调函数");titles.push("人人都可以做深度学习应用 加强篇");titles.push("人人都可以做深度学习应用 入门篇");titles.push("PHP Next JIT");titles.push("2017年PHP开发者大会总结 鸟哥JIT篇");titles.push("如何在PDO查询中返回强类型");titles.push("让 CPU 告诉你硬盘和网络到底有多慢");titles.push("woo");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
