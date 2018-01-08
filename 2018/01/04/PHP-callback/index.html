@@ -114,18 +114,18 @@
 
 
 
-<meta name="description" content="4种PHP回调函数 以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法123456789class A&amp;#123;    static function test($req, $resp)    &amp;#123;">
+<meta name="description" content="4种PHP回调函数 以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        ec">
 <meta name="keywords" content="PHP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="4种PHP回调函数">
 <meta property="og:url" content="http://yoursite.com/2018/01/04/PHP-callback/index.html">
 <meta property="og:site_name" content="SEE">
-<meta property="og:description" content="4种PHP回调函数 以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法123456789class A&amp;#123;    static function test($req, $resp)    &amp;#123;">
+<meta property="og:description" content="4种PHP回调函数 以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        ec">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-03T21:49:45.000Z">
+<meta property="og:updated_time" content="2018-01-08T06:12:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="4种PHP回调函数">
-<meta name="twitter:description" content="4种PHP回调函数 以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法123456789class A&amp;#123;    static function test($req, $resp)    &amp;#123;">
+<meta name="twitter:description" content="4种PHP回调函数 以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        ec">
 
 
 
@@ -407,8 +407,8 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-04T05:49:45+08:00">
-                2018-01-04
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T14:12:24+08:00">
+                2018-01-08
               </time>
             
           </span>
@@ -435,7 +435,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  117
+                  112
                 </span>
               
 
@@ -476,9 +476,9 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>以Swoole服务事件回调为例</p>
 </blockquote>
 <h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($req, $resp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -518,8 +518,8 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/06/php-app-security/" rel="prev" title="2018 PHP 应用程序安全设计指北">
-                2018 PHP 应用程序安全设计指北 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/06/mysql-injection/" rel="prev" title="Mysql注入后利用">
+                Mysql注入后利用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
