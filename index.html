@@ -157,6 +157,74 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-php-coredump-in-docker"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-03-04 21:03:01" datetime="2018-03-04T13:03:01.000Z"  itemprop="datePublished">2018-03-04</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/03/04/php-coredump-in-docker/">在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需要在dev设置中开启), 写起来也是十分舒服, 爬完数据并处理过后通过xhr扔给后端服务器即可, 后端是用Swoole负责接收并向数据库进行大文本插入, 不幸的是在这时候错误出现了.</p>
+<p>在数千个请求后nginx代理的后端挂掉了,返回了502BadGateWay,肯定要去上游找原因了,由于swoole是跑在docker容器中的, 于是马上查看容器日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker logs custed_swoole_1 --tail 100</span><br></pre></td></tr></table></figure>
+<p>可以看到如下报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ WARNING	swProcessPool_wait: worker<span class="comment">#0 abnormal exit, status=0, signal=11</span></span><br></pre></td></tr></table></figure>
+<p>google了一下没找到相关问题, 只能请教rango, 说是signal11是coredump了, 让我抓一下core文件</p>
+<p>然后就开始踩坑了, 我的服务是运行在docker中的, docker里要抓core文件需要一波操作了…</p>
+<p>废话不多说直接总结一下坑</p>
+<h4 id="1-开启容器特权"><a href="#1-开启容器特权" class="headerlink" title="1. 开启容器特权"></a>1. 开启容器特权</h4><p>没有特权模式, 容器里就无法使用gdb调试</p>
+<p>我用的是docker-compose 所以配置里需要加这么一行</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">privileged:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>如果是run的话, 加:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--privileged</span><br></pre></td></tr></table></figure>
+<h4 id="2-开启coredump文件配置"><a href="#2-开启coredump文件配置" class="headerlink" title="2.开启coredump文件配置"></a>2.开启coredump文件配置</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ulimits:</span></span><br><span class="line"><span class="attr">      core:</span> <span class="bullet">-1</span> <span class="comment"># core_dump debug</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--<span class="built_in">ulimit</span> core=-1</span><br></pre></td></tr></table></figure>
+<h4 id="3-在容器里安装GDB"><a href="#3-在容器里安装GDB" class="headerlink" title="3. 在容器里安装GDB"></a>3. 在容器里安装GDB</h4><p>重新做镜像是不可能的了, 临时装一个吧(ps: 如果你不想在配置文件里开启core可以在这里临时设置)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br><span class="line">apt-get install -y gdb</span><br></pre></td></tr></table></figure>
+<h4 id="4-触发coredump测试"><a href="#4-触发coredump测试" class="headerlink" title="4. 触发coredump测试"></a>4. 触发coredump测试</h4><p>我们可以用一段c代码死循环来尝试触发一个coredump</p>
+<p>使用<figure class="highlight plain"><figcaption><span>-g```编译, 加-g选项是为了保证debug信息生成在应用程序当中.</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;stdio.h&gt;  </span><br><span class="line">int main(int argc, char** argv) &#123;  </span><br><span class="line">  int* p = NULL;  </span><br><span class="line">  *p = 10;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb a.out core</span><br></pre></td></tr></table></figure>
+<h4 id="5-修改core文件命名"><a href="#5-修改core文件命名" class="headerlink" title="5. 修改core文件命名"></a>5. 修改core文件命名</h4><p>坑爹的是, 项目里根目录恰好有个Core文件夹,我的mac硬盘分区给的又是大小写不敏感, GG, 改一波命名..</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'core.%e.%p'</span> &gt; /proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+
+    
+
+        <a href="/2018/03/04/php-coredump-in-docker/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/coredump/">coredump</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-PHPDoc-type-hinting-for-array-of-objects"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -204,6 +272,59 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP-PHPstorm-IDE/">PHP PHPstorm IDE</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
@@ -260,59 +381,6 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-mysql-injection"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/mysql-injection/">Mysql注入后利用</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-    
-
-        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
@@ -635,65 +703,6 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mysql/">Mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PDO/">PDO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/参数化/">参数化</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-how-slow-is-disk-and-network"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-12-28 16:18:03" datetime="2017-12-28T08:18:03.000Z"  itemprop="datePublished">2017-12-28</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程原理/">编程原理</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/12/28/how-slow-is-disk-and-network/">让 CPU 告诉你硬盘和网络到底有多慢</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <blockquote>
-<p>本文转载自 <a href="http://cizixs.com/2017/01/03/how-slow-is-disk-and-network" target="_blank" rel="noopener">cizixs</a></p>
-</blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。</p>
-<p>最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感觉，并没有对各个速度和性能做出量化的说明和解释。而实际上，不同层级之间的差异要比这张图大的多。这篇文章就让你站在 CPU 的角度看这个世界，说说到底它们有多慢。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$" alt="img" title="">
-                </div>
-                <div class="image-caption">img</div>
-            </figure>
-<p>希望你看到看完这篇文章能明白两件事情：磁盘和网络真的很慢，性能优化是个复杂的系统性的活。</p>
-    
-
-        <a href="/2017/12/28/how-slow-is-disk-and-network/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpu/">cpu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/disk/">disk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memory/">memory</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
 
     </div>
     
