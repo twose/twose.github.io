@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需要在dev设置中开启), 写起来也是十分舒服, 爬完数据并处理过后通过xhr扔给后端服务器即可, 后端是用Swoole负责接收并向数据库进行大文本插入, 不幸的是在这时候错误出现了. 在数千个请求后nginx代理的后端挂掉了,返回了502BadG">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-04T13:52:49.206Z">
+<meta property="og:updated_time" content="2018-03-05T07:13:05.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用">
 <meta name="twitter:description" content="前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需要在dev设置中开启), 写起来也是十分舒服, 爬完数据并处理过后通过xhr扔给后端服务器即可, 后端是用Swoole负责接收并向数据库进行大文本插入, 不幸的是在这时候错误出现了. 在数千个请求后nginx代理的后端挂掉了,返回了502BadG">
@@ -200,12 +200,14 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">privileged:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 <p>如果是run的话, 加:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--privileged</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h4 id="2-开启coredump文件配置"><a href="#2-开启coredump文件配置" class="headerlink" title="2.开启coredump文件配置"></a>2.开启coredump文件配置</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ulimits:</span></span><br><span class="line"><span class="attr">      core:</span> <span class="bullet">-1</span> <span class="comment"># core_dump debug</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--<span class="built_in">ulimit</span> core=-1</span><br></pre></td></tr></table></figure>
 <h4 id="3-在容器里安装GDB"><a href="#3-在容器里安装GDB" class="headerlink" title="3. 在容器里安装GDB"></a>3. 在容器里安装GDB</h4><p>重新做镜像是不可能的了, 临时装一个吧(ps: 如果你不想在配置文件里开启core可以在这里临时设置)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br><span class="line">apt-get install -y gdb</span><br></pre></td></tr></table></figure>
 <h4 id="4-触发coredump测试"><a href="#4-触发coredump测试" class="headerlink" title="4. 触发coredump测试"></a>4. 触发coredump测试</h4><p>我们可以用一段c代码死循环来尝试触发一个coredump</p>
-<p>使用<figure class="highlight plain"><figcaption><span>-g```编译, 加-g选项是为了保证debug信息生成在应用程序当中.</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;stdio.h&gt;  </span><br><span class="line">int main(int argc, char** argv) &#123;  </span><br><span class="line">  int* p = NULL;  </span><br><span class="line">  *p = 10;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>g++ -g</code>编译, 加-g选项是为了保证debug信息生成在应用程序当中.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;  </span><br><span class="line">  <span class="keyword">int</span>* p = <span class="literal">NULL</span>;  </span><br><span class="line">  *p = <span class="number">10</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb a.out core</span><br></pre></td></tr></table></figure>
 <h4 id="5-修改core文件命名"><a href="#5-修改core文件命名" class="headerlink" title="5. 修改core文件命名"></a>5. 修改core文件命名</h4><p>坑爹的是, 项目里根目录恰好有个Core文件夹,我的mac硬盘分区给的又是大小写不敏感, GG, 改一波命名..</p>
@@ -217,7 +219,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-03-04T13:52:49.206Z" itemprop="dateUpdated">2018-03-04 21:52:49</time>
+    Last updated: <time datetime="2018-03-05T07:13:05.736Z" itemprop="dateUpdated">2018-03-05 15:13:05</time>
 </span><br>
 
 
@@ -262,7 +264,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&source=前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -408,7 +410,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&source=前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
