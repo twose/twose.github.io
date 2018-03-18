@@ -157,6 +157,55 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-stronger-shell"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-03-18 16:58:16" datetime="2018-03-18T08:58:16.000Z"  itemprop="datePublished">2018-03-18</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/03/18/stronger-shell/">写出健壮的Shell脚本及Shell异常处理</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。</p>
+<h1 id="使用set-u"><a href="#使用set-u" class="headerlink" title="使用set -u"></a>使用set -u</h1><p>你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chroot=$1</span><br><span class="line">...</span><br><span class="line">rm -rf $chroot/usr/share/doc</span><br></pre></td></tr></table></figure>
+<p>如果上面的代码你没有给参数就运行，你不会仅仅删除掉chroot中的文档，而是将系统的所有文档都删除。那你应该做些什么呢？好在bash提供了<em>set -u</em>，当你使用未初始化的变量时，让bash自动退出。你也可以使用可读性更强一点的<code>set -o nounset</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span> bash /tmp/shrink-chroot.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span>chroot=</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span> bash -u /tmp/shrink-chroot.sh</span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span></span><br></pre></td></tr></table></figure>
+    
+
+        <a href="/2018/03/18/stronger-shell/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-php-coredump-in-docker"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -632,66 +681,6 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-how-to-use-strong-type-in-pdo"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-12-30 13:11:36" datetime="2017-12-30T05:11:36.000Z"  itemprop="datePublished">2017-12-30</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/Mysql/">Mysql</a></li></ul></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/12/30/how-to-use-strong-type-in-pdo/">如何在PDO查询中返回强类型</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <blockquote>
-<p> 有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE ），或试着使用本地预处理语句（如果为 FALSE）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool 类型。</p>
-</blockquote>
-<p>PDO::ATTR_EMULATE_PREPARES 启用或禁用预处理语句的模拟。</p>
-<p>这是之前我说的默认总是模拟prepare,因为低版本MYSQL驱动不支持prepare.<br>数据类型问题,在旧版本的MySQL中还真是不能解决的。它直接返回字符串给外部系统。稍微新一点的MySQL和客户端驱动可以直接内部的本地类型而不再进行内部转换为字符串了。有了这个基础，就有解决的可能了。</p>
-<h4 id="Test-code"><a href="#Test-code" class="headerlink" title="Test-code"></a>Test-code</h4><p>此处用query测试证明,prepare_excute二连也是一样的</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$db = <span class="keyword">new</span> \PDO(<span class="string">'mysql:dbname='</span>.$options[<span class="string">'database'</span>].<span class="string">';host='</span>.$options[<span class="string">'host'</span>], $options[<span class="string">'user'</span>], $options[<span class="string">'password'</span>]);</span><br><span class="line">$db-&gt;setAttribute(\PDO::ATTR_EMULATE_PREPARES, <span class="keyword">false</span>);<span class="comment">//关闭预处理语句模拟</span></span><br><span class="line">$r = ($db-&gt;query(<span class="string">'SELECT * FROM test WHERE `id`=1 LIMIT 1'</span>, \PDO::FETCH_ASSOC))-&gt;fetch();</span><br><span class="line">var_dump($r);</span><br></pre></td></tr></table></figure>
-<h4 id="result"><a href="#result" class="headerlink" title="$result"></a>$result</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">array</span>(<span class="number">2</span>) &#123;</span><br><span class="line">  [<span class="number">0</span>]=&gt;</span><br><span class="line">  int(<span class="number">1</span>)</span><br><span class="line">  [<span class="number">1</span>]=&gt;</span><br><span class="line">  string(<span class="number">64</span>) <span class="string">"1dfd47ed5fb0183d05157f21cab0fd8c151379f407a173190445bbd82aa5aeaa"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此外,PDO为参数绑定也提供了强类型的设定,默认传给Mysql的是string,常用的类型如下:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$data_types = [</span><br><span class="line">  <span class="string">'NULL'</span>    =&gt; PDO::PARAM_NULL,</span><br><span class="line">  <span class="string">'boolean'</span> =&gt; PDO::PARAM_BOOL,</span><br><span class="line">  <span class="string">'integer'</span> =&gt; PDO::PARAM_INT,</span><br><span class="line">  <span class="string">'string'</span>  =&gt; PDO::PARAM_STR,</span><br><span class="line">]</span><br><span class="line"><span class="keyword">$this</span>-&gt;sm-&gt;bindParam(<span class="string">':id'</span>, $id, $data_types[getType($id)]);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>data<em>type: 使用[*PDO :: PARAM</em> ** 常量](<a href="http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO" target="_blank" rel="noopener">http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO</a> :: PARAM_INPUT_OUTPUT位。</p>
-</blockquote>
-
-    
-
-        <a href="/2017/12/30/how-to-use-strong-type-in-pdo/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mysql/">Mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PDO/">PDO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/参数化/">参数化</a></li></ul>
 
     </div>
     
