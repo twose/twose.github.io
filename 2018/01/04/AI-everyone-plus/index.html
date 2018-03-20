@@ -856,10 +856,11 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
     var OriginTitile = document.title, titleTime;
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
+            document.title_bak = document.title
             document.title = '死鬼去哪里了！';
             clearTimeout(titleTime);
         } else {
-            document.title = '(つェ⊂)咦!你回来啦~';
+            document.title = document.title_bak;
             titleTime = setTimeout(function() {
                 document.title = OriginTitile;
             },2000);

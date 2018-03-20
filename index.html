@@ -187,7 +187,7 @@
 <h1 id="使用set-u"><a href="#使用set-u" class="headerlink" title="使用set -u"></a>使用set -u</h1><p>你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chroot=$1</span><br><span class="line">...</span><br><span class="line">rm -rf $chroot/usr/share/doc</span><br></pre></td></tr></table></figure>
 <p>如果上面的代码你没有给参数就运行，你不会仅仅删除掉chroot中的文档，而是将系统的所有文档都删除。那你应该做些什么呢？好在bash提供了<em>set -u</em>，当你使用未初始化的变量时，让bash自动退出。你也可以使用可读性更强一点的<code>set -o nounset</code>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span> bash /tmp/shrink-chroot.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span>chroot=</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span> bash -u /tmp/shrink-chroot.sh</span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span><span class="bash"> bash /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">chroot=</span></span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"> bash -u /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
     
 
         <a href="/2018/03/18/stronger-shell/" class="post-more waves-effect waves-button">
@@ -824,10 +824,11 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
     var OriginTitile = document.title, titleTime;
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
+            document.title_bak = document.title
             document.title = '死鬼去哪里了！';
             clearTimeout(titleTime);
         } else {
-            document.title = '(つェ⊂)咦!你回来啦~';
+            document.title = document.title_bak;
             titleTime = setTimeout(function() {
                 document.title = OriginTitile;
             },2000);
