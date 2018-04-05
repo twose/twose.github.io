@@ -173,7 +173,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/03/18/stronger-shell/">写出健壮的Shell脚本及Shell异常处理</a>
+      <a class="post-title-link" href="/2018/03/18/stronger-shell/">[整理] 写出健壮的Shell脚本及Shell异常处理</a>
     </h3>
   
 
@@ -279,7 +279,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/">PHPDoc类型提示数组的对象</a>
+      <a class="post-title-link" href="/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/">[译] PHPDoc类型提示数组的对象</a>
     </h3>
   
 
@@ -318,6 +318,59 @@
         </li>
     
         <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-php-app-security"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -334,7 +387,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/php-app-security/">2018 PHP 应用程序安全设计指北</a>
+      <a class="post-title-link" href="/2018/01/06/php-app-security/">[转] 2018 PHP 应用程序安全设计指北</a>
     </h3>
   
 
@@ -374,59 +427,6 @@
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-mysql-injection"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/mysql-injection/">Mysql注入后利用</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-    
-
-        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
             <article id="post-PHP-callback"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -443,7 +443,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/PHP-callback/">4种PHP回调函数</a>
+      <a class="post-title-link" href="/2018/01/04/PHP-callback/">[转] 4种PHP回调函数</a>
     </h3>
   
 
@@ -494,7 +494,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/AI-everyone-plus/">人人都可以做深度学习应用 加强篇</a>
+      <a class="post-title-link" href="/2018/01/04/AI-everyone-plus/">[转] 人人都可以做深度学习应用 加强篇</a>
     </h3>
   
 
@@ -541,7 +541,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/AI-everyone/">人人都可以做深度学习应用 入门篇</a>
+      <a class="post-title-link" href="/2018/01/04/AI-everyone/">[转] 人人都可以做深度学习应用 入门篇</a>
     </h3>
   
 
@@ -586,7 +586,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/PHP-Next-JIT/">PHP Next JIT</a>
+      <a class="post-title-link" href="/2018/01/04/PHP-Next-JIT/">[转] PHP Next JIT</a>
     </h3>
   
 
@@ -647,7 +647,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/">2017年PHP开发者大会总结 鸟哥JIT篇</a>
+      <a class="post-title-link" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/">[转] 2017年PHP开发者大会总结 鸟哥JIT篇</a>
     </h3>
   
 
