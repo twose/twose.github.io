@@ -157,6 +157,66 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-mask-code"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-04-06 23:03:01" datetime="2018-04-06T15:03:01.000Z"  itemprop="datePublished">2018-04-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/04/06/mask-code/">[整理]【位运算经典应用】 标志位与掩码</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h3 id="整理-【位运算经典应用】-标志位与掩码"><a href="#整理-【位运算经典应用】-标志位与掩码" class="headerlink" title="[整理]【位运算经典应用】 标志位与掩码"></a>[整理]【位运算经典应用】 标志位与掩码</h3><blockquote>
+<p>本文原文来源自 <a href="http://www.cnblogs.com/zichi/p/4792589.html" target="_blank" rel="noopener">http://www.cnblogs.com/zichi/p/4792589.html</a></p>
+<p>相关内容经过整理, ABCD几个水果单词更加容易对应起来</p>
+</blockquote>
+<p>前面我们已经了解了六大位操作符（<code>&amp;</code> <code>|</code> <code>~</code> <code>^</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code>)的用法（<a href="http://www.cnblogs.com/zichi/p/4787145.html" target="_blank" rel="noopener">javascript 位运算</a>），也整理了一些常用的位运算操作（<a href="http://www.cnblogs.com/zichi/p/4789439.html" target="_blank" rel="noopener">常用位运算整理</a>），本文我们继续深入位运算，来了解下二进制的经典应用-标志位与掩码。</p>
+<p>位运算经常被用来创建、处理以及读取标志位序列——一种类似二进制的变量。虽然可以使用变量代替标志位序列，但是这样可以节省内存（1/32）。</p>
+<p>例如有4个标志位：</p>
+<ol>
+<li>标志位A： 我们有 Apple</li>
+<li>标志位B： 我们有 Banana</li>
+<li>标志位C： 我们有 Cherry</li>
+<li>标志位D： 我们有 Dew</li>
+</ol>
+<p>标志位通过位序列DCBA来表示，当一个位置被置为1时，表示有该项，置为0时，表示没有该项。例如一个变量flag=9，二进制表示为1001，就表示我们有D和A。</p>
+<p>掩码 (bitmask) 是一个通过与/或来读取标志位的位序列。典型的定义每个标志位的原语掩码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> FLAG_A = <span class="number">1</span>; <span class="comment">// 0001</span></span><br><span class="line"><span class="keyword">var</span> FLAG_B = <span class="number">2</span>; <span class="comment">// 0010</span></span><br><span class="line"><span class="keyword">var</span> FLAG_C = <span class="number">4</span>; <span class="comment">// 0100</span></span><br><span class="line"><span class="keyword">var</span> FLAG_D = <span class="number">8</span>; <span class="comment">// 1000</span></span><br></pre></td></tr></table></figure>
+    
+
+        <a href="/2018/04/06/mask-code/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mask/">mask</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-stronger-shell"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -318,59 +378,6 @@
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-mysql-injection"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-    
-
-        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
             <article id="post-php-app-security"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -419,6 +426,59 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
@@ -616,64 +676,6 @@
     
 
         <a href="/2018/01/04/PHP-Next-JIT/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-THE-NEXT-GENERATION-OF-PHP"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-04 05:21:37" datetime="2018-01-03T21:21:37.000Z"  itemprop="datePublished">2018-01-04</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/">[转] 2017年PHP开发者大会总结 鸟哥JIT篇</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>鸟哥本次分享的主要内容是，在php7发布的这两年期间他们的主要工作，包括release的7.1和正在开发中的jit分支。说实话，由于本人水平有限，鸟哥分享的内容只能大概听懂意思，知道他们在做什么，但具体原理细节，鸟哥分享的我还真听不懂。这里就对鸟哥的分享内容做个总结。</p>
-<h4 id="php7之后还有什么？JIT"><a href="#php7之后还有什么？JIT" class="headerlink" title="php7之后还有什么？JIT"></a>php7之后还有什么？JIT</h4><p>php7于15年正式发布，他的最大卖点是，无感知的100%性能提升，包含了运行速度与内存消耗。那么在此之后php该往哪里发展呢？目前已经在开发的一个大方向就是JIT</p>
-<p><strong>JIT是什么？为什么是JIT？</strong><br>鸟哥并没有做过多的解释。我就谈一些我的肤浅认识，给phper们提供些参考。</p>
-<p>首先JIT（just in time）并非是新技术，一大批语言如java早已实现。JIT的思想很简单，即在程序运行时动态对程序进行编译，生成平台相关的机器码，从而加快程序运行速度。</p>
-<p>php文件的执行流程大致是首先引擎加载php文件，解释器逐条解释执行代码。引入JIT后，前面一样，重点是JIT编译器会根据Runtime信息对热点代码进行动态编译生成机器码，然后这部分代码以后就可以直接执行了，而不需要解释器逐条解释执行了，运行效率便得到了提升</p>
-<p><code>看到这里不知道大家是否和我有一样的疑问，既然编译为机器码执行的效率那么高，为何不在项目正式部署前全部进行编译，何必在运行时编译？</code>要知道运行时编译也会增加程序的执行时间的。我在查阅了一些资料和一番思考后，有以下一些浅见</p>
-<p>代码发布前先编译，是比JIT更早的通用办法，称为<code>AOT（ahead of time）</code>，c语言便是这种执行模式。关于这两种模式孰优孰劣，学术界一直争论不休，目前也没有定论。但JIT相比AOT有这样几个优点</p>
-<ul>
-<li><strong>发布速度快</strong>。不用每次都编译，发布速度自然快</li>
-<li><strong>优化效率更好</strong>。因为JIT是基于Runtime信息，比AOT更“了解”代码，优化的效率更好。比如分析Runtime得知某个变量虽然声明是10个字节，但运行过程中一直是1个字节，那么就可以减小程序内存消耗；再比如某段代码始终未被执行，JIT则可以直接将其忽略</li>
-<li><strong>粒度更精细</strong>。JIT可以只针对hotspot（热点）进行编译，热点可能是一个函数或者只是一个代码段</li>
-<li><strong>对码农透明</strong>。JIT无须码农自己对程序根据不同平台进行编译发布，只需要写高级代码即可</li>
-</ul>
-<p>基于以上几个优点，再结合php一贯的简单易用原则，我想JIT确实是不错的选择。不过php也是支持AOT的，有兴趣的同学可以查一下。</p>
-    
-
-        <a href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/" class="post-more waves-effect waves-button">
             Continue reading...
         </a>
     </div>
