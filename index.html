@@ -157,6 +157,107 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-swoole-mysql-analyzation-1"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-05-11 20:48:00" datetime="2018-05-11T12:48:00.000Z"  itemprop="datePublished">2018-05-11</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/05/11/swoole-mysql-analyzation-1/">Swoole的Mysql模块浅析-1</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>众所周知, PHP是由C语言编写的, 扩展也不例外, Swoole又是PHP扩展中发展的比较快且很权威的一个扩展, 对于MySQL这部分模块的浅析, 暂可不必了解Swoole底层的实现, 而先关注应用层面的实现.</p>
+<h2 id="基础要求"><a href="#基础要求" class="headerlink" title="基础要求"></a>基础要求</h2><p>所以除了PHP我们仅需了解以下几个方面的知识:</p>
+<ol>
+<li>MySQL基础</li>
+<li>TCP网络协议基础(MySQL协议)</li>
+<li>C语言基础及其简单调试</li>
+</ol>
+<p>而使用过Swoole的同学一定对以下工具不陌生:</p>
+<ol>
+<li><code>GDB</code>(Mac下用<code>LLDB</code>)和<code>Valgrind</code>作为源码/内存分析</li>
+<li><code>Wireshark</code>或<code>TcpDump</code>作为网络分析</li>
+</ol>
+    
+
+        <a href="/2018/05/11/swoole-mysql-analyzation-1/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-why-not-http2"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-04-09 11:07:20" datetime="2018-04-09T03:07:20.000Z"  itemprop="datePublished">2018-04-09</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/04/09/why-not-http2/">why-not-http2</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h1 id="Why-not-HTTP2"><a href="#Why-not-HTTP2" class="headerlink" title="Why not HTTP2"></a>Why not HTTP2</h1>
+    
+
+        <a href="/2018/04/09/why-not-http2/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http2/">Http2</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-mask-code"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -378,6 +479,59 @@
         </li>
     
         <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-php-app-security"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -426,59 +580,6 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-mysql-injection"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-    
-
-        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
@@ -577,112 +678,6 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-AI-everyone"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-04 05:38:41" datetime="2018-01-03T21:38:41.000Z"  itemprop="datePublished">2018-01-04</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/AI-everyone/">[转] 人人都可以做深度学习应用 入门篇</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年里，深刻地改变我们的生活。</p>
-    
-
-        <a href="/2018/01/04/AI-everyone/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-PHP-Next-JIT"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-04 05:28:57" datetime="2018-01-03T21:28:57.000Z"  itemprop="datePublished">2018-01-04</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/04/PHP-Next-JIT/">[转] PHP Next JIT</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>12月23日，由开源中国联合中国电子技术标准化研究院主办的2017源创会年终盛典在北京万豪酒店顺利举行。作为年末最受期待的开源技术分享盛会，国内顶尖技术大拿、知名技术团队、优秀开源项目作者，及近1000名技术爱好者共聚一堂，探讨最前沿、最流行的技术话题和方向，推动国内开源创新体系发展，共建国内开源生态标准。PHP7 已发布近两年, 大幅的性能提升使得 PHP 的应用场景更加广泛，刚刚发布的 PHP7.2 相比 PHP7.1 又有了近 10% 的提升。在本次大会上，链家集团技术副总裁、PHP 开发组核心成员鸟哥发表了以 “ PHP Next: JIT ”为主题的演讲，分享了 PHP 的下一个性能提升的主要举措：JIT 的进展, 以及下一个大版本的 PHP 可能的特性。他表示，JIT 相比 PHP7.2 ，在一些场景可以达到三倍，但由于 JIT 的核心前提是类型推断，得到的信息越多效果越好，因此也容易受到限制。 JIT 发布后，随着更优秀的代码出现，性能提升会更明显。</p>
-<h2 id="惠新宸"><a href="#惠新宸" class="headerlink" title="惠新宸"></a>惠新宸</h2><p>惠新宸 ，国内最有影响力的PHP技术专家， PHP开发组核心成员 , PECL开发者 , Zend公司外聘顾问, 曾供职于雅虎，百度，新浪。现任链家集团技术副总裁兼总架构师。PHP 7 的核心开发者，PHP5.4，5.5的主要开发者。也是Yaf (Yet another framework)，Yar(Yet another RPC framework) 以及Yac(Yet another Cache)、Taint等多个开源项目的作者，同时也是APC，Opcache ，Msgpack等项目的维护者。</p>
-<h2 id="演讲实录"><a href="#演讲实录" class="headerlink" title="演讲实录"></a>演讲实录</h2><p><strong>PHP Next: JIT</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626739-1.jpeg" alt="鸟哥：PHP Next: JIT" title="">
-                </div>
-                <div class="image-caption">鸟哥：PHP Next: JIT</div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://blog.p2hp.com/wp-content/uploads/2017/12/beepress-beepress-weixin-zhihu-jianshu-plugin-2-4-2-4899-1514626740.jpeg" alt="鸟哥：PHP Next: JIT" title="">
-                </div>
-                <div class="image-caption">鸟哥：PHP Next: JIT</div>
-            </figure>
-    
-
-        <a href="/2018/01/04/PHP-Next-JIT/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
 
     </div>
     

@@ -13,25 +13,25 @@
     
     
     
-    <title>[转] 4种PHP回调函数 | TWO SEE | SEE is the sea of cc</title>
+    <title>why-not-http2 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="PHP">
-    <meta name="description" content="以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        echo &quot;hello">
-<meta name="keywords" content="PHP">
+    <meta name="keywords" content="Http2">
+    <meta name="description" content="Why not HTTP2">
+<meta name="keywords" content="Http2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[转] 4种PHP回调函数">
-<meta property="og:url" content="http://www.twosee.cn/2018/01/04/PHP-callback/index.html">
+<meta property="og:title" content="why-not-http2">
+<meta property="og:url" content="http://www.twosee.cn/2018/04/09/why-not-http2/index.html">
 <meta property="og:site_name" content="TWO SEE">
-<meta property="og:description" content="以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        echo &quot;hello">
+<meta property="og:description" content="Why not HTTP2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-05T08:44:54.248Z">
+<meta property="og:updated_time" content="2018-04-09T03:07:39.538Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[转] 4种PHP回调函数">
-<meta name="twitter:description" content="以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        echo &quot;hello">
+<meta name="twitter:title" content="why-not-http2">
+<meta name="twitter:description" content="Why not HTTP2">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -119,7 +119,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">[转] 4种PHP回调函数</div>
+        <div class="flex-col header-title ellipsis">why-not-http2</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -141,11 +141,11 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">[转] 4种PHP回调函数</h1>
+        <h1 class="title">why-not-http2</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-01-03T21:47:33.000Z" itemprop="datePublished" class="page-time">
-  2018-01-04
+                <time datetime="2018-04-09T03:07:20.000Z" itemprop="datePublished" class="page-time">
+  2018-04-09
 </time>
 
 
@@ -164,17 +164,17 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#匿名函数"><span class="post-toc-number">1.</span> <span class="post-toc-text">匿名函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#类静态方法"><span class="post-toc-number">2.</span> <span class="post-toc-text">类静态方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数"><span class="post-toc-number">3.</span> <span class="post-toc-text">函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对象方法"><span class="post-toc-number">4.</span> <span class="post-toc-text">对象方法</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Why-not-HTTP2"><span class="post-toc-number">1.</span> <span class="post-toc-text">Why not HTTP2</span></a></li></ol>
         </nav>
     </aside>
     
-<article id="post-PHP-callback"
+<article id="post-why-not-http2"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">[转] 4种PHP回调函数</h1>
+        <h1 class="post-card-title">why-not-http2</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-01-04 05:47:33" datetime="2018-01-03T21:47:33.000Z"  itemprop="datePublished">2018-01-04</time>
+            <time class="post-time" title="2018-04-09 11:07:20" datetime="2018-04-09T03:07:20.000Z"  itemprop="datePublished">2018-04-09</time>
 
             
 
@@ -187,25 +187,19 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <blockquote>
-<p>以Swoole服务事件回调为例</p>
-</blockquote>
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($req, $resp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
+            <h1 id="Why-not-HTTP2"><a href="#Why-not-HTTP2" class="headerlink" title="Why not HTTP2"></a>Why not HTTP2</h1>
         </div>
 
         <blockquote class="post-copyright">
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-04-05T08:44:54.248Z" itemprop="dateUpdated">2018-04-05 16:44:54</time>
+    Last updated: <time datetime="2018-04-09T03:07:39.538Z" itemprop="dateUpdated">2018-04-09 11:07:39</time>
 </span><br>
 
 
         
-        <a href="/2018/01/04/PHP-callback/" target="_blank" rel="external">http://www.twosee.cn/2018/01/04/PHP-callback/</a>
+        <a href="/2018/04/09/why-not-http2/" target="_blank" rel="external">http://www.twosee.cn/2018/04/09/why-not-http2/</a>
         
     </div>
     <footer>
@@ -225,7 +219,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http2/">Http2</a></li></ul>
 
 
             
@@ -235,7 +229,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/04/09/why-not-http2/&title=《why-not-http2》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -245,22 +239,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/04/09/why-not-http2/&title=《why-not-http2》 — TWO SEE&source=show you my code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/04/09/why-not-http2/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[转] 4种PHP回调函数》 — TWO SEE&url=http://www.twosee.cn/2018/01/04/PHP-callback/&via=http://www.twosee.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《why-not-http2》 — TWO SEE&url=http://www.twosee.cn/2018/04/09/why-not-http2/&via=http://www.twosee.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/04/09/why-not-http2/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -283,18 +277,18 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/2018/01/06/php-app-security/" id="post-prev" class="post-nav-link">
+      <a href="/2018/05/11/swoole-mysql-analyzation-1/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">[转] 2018 PHP 应用程序安全设计指北</h4>
+        <h4 class="title">Swoole的Mysql模块浅析-1</h4>
       </a>
     </div>
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2018/01/04/AI-everyone-plus/" id="post-next" class="post-nav-link">
+      <a href="/2018/04/06/mask-code/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">[转] 人人都可以做深度学习应用 加强篇</h4>
+        <h4 class="title">[整理]【位运算经典应用】 标志位与掩码</h4>
       </a>
     </div>
   
@@ -388,7 +382,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/04/09/why-not-http2/&title=《why-not-http2》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -398,22 +392,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/04/09/why-not-http2/&title=《why-not-http2》 — TWO SEE&source=show you my code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/04/09/why-not-http2/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[转] 4种PHP回调函数》 — TWO SEE&url=http://www.twosee.cn/2018/01/04/PHP-callback/&via=http://www.twosee.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《why-not-http2》 — TWO SEE&url=http://www.twosee.cn/2018/04/09/why-not-http2/&via=http://www.twosee.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/04/09/why-not-http2/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -424,7 +418,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3awW7sIAwF0Pn/n86Tumr1FObaTisNHFajVAkcFi7Gfr3icX2N5Pn1bayf///77t3HBgYGxscyruVYT5mw70jrNeRrw8DAOIeRLyVnJNOvv5wHegwMDIwkHBemDLYJAwMD46lpkvQ1CcEYGBgYCSMPqVVGchxcHw0fzsUxMDA+kFEtDPzl71+sb2BgYHwI42qN6mSTwB2tBwMDY2tGftE/SUqTtyZFAgwMjBMYj7U7VC/IBgfE279iYGBsykgCWbVhIt+gx/4NYGBgHMPolQTW01fT3aSZ4zaJxcDAOIzR4yVJaRKg83CPgYFxDuPZJq1ec0a+BW8KAxgYGFszegfEaqNYb6HR0RADA2M7xuSiv7oF0Y62tgADA2NvRu/Al9/GV4uUednyzXUbBgbGRoz1xPlBrRciJ1vw4wkGBsZhjF7zVrUxIj9uRmkzBgbG1ozqZVkeFichu9qWgYGBcQIj/0R+iKwmw9XSZtQ5goGBsRHjao0qLP9aNaxjYGCcxqiGvF5DWDWgv3qnRQwMjO0Yk4PapGCZly2jzhEMDIxNGfOUtXeUnATlwrsYGBgfzugtJQ98yYEyT2WjZgsMDIztGL30sjfx5FoNAwMDo1cAqC4ov1arbgoGBsY5jCTITrLk6teSiz8MDAyMQrArBspeKvsmqcbAwMBYBrvJ84QUhWkMDIwDGJPW0vw71W1qdrdhYGBsx+gVBiapabXNoldYxcDA2ILxD2CRS6kXXHuQAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIElEQVR42u3aQW6DQAwF0N7/0qnUVaUW8m0PVRkeqwiRMG8Wjj32x0d8vb6u75+P7vy8n3zr6M7iCwMD47aM1+nVW8TPpSS85DcPqRgYGA9grA2y0Ytj5PnzGBgYGL1nqkufvBcDAwNjssQeBgMDA2NSxJ6nicnWVJd+SS2OgYFxQ0avMfA3ny/vb2BgYPx7xqt45d/Kk8XqL//yOxgYGFsz8hckDYPJ2ET+fCHDxcDA2IhRHaeYB9DqIV3z0A0DA2MLRpLM5cf91dRw1TZhYGDszeidWeXtxjzVq65kwdEbBgbGTRjXjVNckTgerg0DA+MBjNFxfDyKMUn7Fvc3MDAwbsXoDTrkDYOcuqCIxcDAeACj1xhIis9yj6JX0GJgYGzNqAbN+VDFpHkZ/T1gYGBsxJgkedelennZjIGB8QRGdQxibZszD6/NIhYDA2M7xmSQ6zxBrJbH1eCLgYHxHEZv2GKy6Gp4fbNxGBgYD2DkyVx+rNYLxL0CGAMDY1dGrxCdD09UtwwDAwNj1dF8nlDmQTx6CwYGxtaM/Jo0AyZDGPnYGQYGxq6MeWOy90yv2XC4WRgYGFsz5gGxN1oxOeBb8L+BgYFxQ0Y1CJ5jqrtV3e83/Q0MDIytGcnickDepKz+A2BgYGBUl1gNo6vGwjAwMDCS4Fh4waC4LRzwYWBgPIAxKWInQxV5kMXAwHgyo1c65qle9c6qgzwMDIwtGJ90AAo/xNjACAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
