@@ -13,25 +13,25 @@
     
     
     
-    <title>[转] 4种PHP回调函数 | TWO SEE | SEE is the sea of cc</title>
+    <title>[整理]MySQL查看连接数以及状态 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="php">
-    <meta name="description" content="以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        echo &quot;hello">
-<meta name="keywords" content="php">
+    <meta name="keywords" content="mysql">
+    <meta name="description" content="Connections命令：show processlist;如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。show processlist只列出前100条 如果想全列出请使用show full processlist; 1mysql&amp;gt; show processlist; Status命令： show status; 命令：show status">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[转] 4种PHP回调函数">
-<meta property="og:url" content="http://www.twosee.cn/2018/01/04/PHP-callback/index.html">
+<meta property="og:title" content="[整理]MySQL查看连接数以及状态">
+<meta property="og:url" content="http://www.twosee.cn/2018/05/12/mysql-status-check/index.html">
 <meta property="og:site_name" content="TWO SEE">
-<meta property="og:description" content="以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        echo &quot;hello">
+<meta property="og:description" content="Connections命令：show processlist;如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。show processlist只列出前100条 如果想全列出请使用show full processlist; 1mysql&amp;gt; show processlist; Status命令： show status; 命令：show status">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-12T03:19:48.734Z">
+<meta property="og:updated_time" content="2018-05-12T03:22:18.467Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[转] 4种PHP回调函数">
-<meta name="twitter:description" content="以Swoole服务事件回调为例  匿名函数123$server-&amp;gt;on(&apos;Request&apos;, function ($req, $resp) &amp;#123;    echo &quot;hello world&quot;;&amp;#125;); 类静态方法1234567class A &amp;#123;    static function test($req, $resp)&amp;#123;        echo &quot;hello">
+<meta name="twitter:title" content="[整理]MySQL查看连接数以及状态">
+<meta name="twitter:description" content="Connections命令：show processlist;如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。show processlist只列出前100条 如果想全列出请使用show full processlist; 1mysql&amp;gt; show processlist; Status命令： show status; 命令：show status">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -119,7 +119,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">[转] 4种PHP回调函数</div>
+        <div class="flex-col header-title ellipsis">[整理]MySQL查看连接数以及状态</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -141,11 +141,11 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">[转] 4种PHP回调函数</h1>
+        <h1 class="title">[整理]MySQL查看连接数以及状态</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-01-03T21:47:33.000Z" itemprop="datePublished" class="page-time">
-  2018-01-04
+                <time datetime="2018-05-12T03:05:53.000Z" itemprop="datePublished" class="page-time">
+  2018-05-12
 </time>
 
 
@@ -164,17 +164,17 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#匿名函数"><span class="post-toc-number">1.</span> <span class="post-toc-text">匿名函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#类静态方法"><span class="post-toc-number">2.</span> <span class="post-toc-text">类静态方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数"><span class="post-toc-number">3.</span> <span class="post-toc-text">函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对象方法"><span class="post-toc-number">4.</span> <span class="post-toc-text">对象方法</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Connections"><span class="post-toc-number">1.</span> <span class="post-toc-text">Connections</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Status"><span class="post-toc-number">2.</span> <span class="post-toc-text">Status</span></a></li></ol>
         </nav>
     </aside>
     
-<article id="post-PHP-callback"
+<article id="post-mysql-status-check"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">[转] 4种PHP回调函数</h1>
+        <h1 class="post-card-title">[整理]MySQL查看连接数以及状态</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-01-04 05:47:33" datetime="2018-01-03T21:47:33.000Z"  itemprop="datePublished">2018-01-04</time>
+            <time class="post-time" title="2018-05-12 11:05:53" datetime="2018-05-12T03:05:53.000Z"  itemprop="datePublished">2018-05-12</time>
 
             
 
@@ -187,25 +187,163 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <blockquote>
-<p>以Swoole服务事件回调为例</p>
-</blockquote>
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($req, $resp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
+            <h2 id="Connections"><a href="#Connections" class="headerlink" title="Connections"></a>Connections</h2><p><strong>命令：<code>show processlist;</code></strong><br><strong>如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。</strong><br><code>show processlist</code>只列出前100条</p>
+<p>如果想全列出请使用<strong><code>show full processlist;</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show processlist;</span><br></pre></td></tr></table></figure>
+<h2 id="Status"><a href="#Status" class="headerlink" title="Status"></a>Status</h2><p><strong>命令： <code>show status;</code></strong></p>
+<p><strong>命令：<code>show status like &#39;%下面变量%&#39;;</code></strong></p>
+<a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aborted_clients</td>
+<td>由于客户没有正确关闭连接已经死掉，已经放弃的连接数量。</td>
+</tr>
+<tr>
+<td>Aborted_connects</td>
+<td>尝试已经失败的MySQL服务器的连接的次数。</td>
+</tr>
+<tr>
+<td>Connections</td>
+<td>试图连接MySQL服务器的次数。</td>
+</tr>
+<tr>
+<td>Created_tmp_tables</td>
+<td>当执行语句时，已经被创造了的隐含临时表的数量。</td>
+</tr>
+<tr>
+<td>Delayed_insert_threads</td>
+<td>正在使用的延迟插入处理器线程的数量。</td>
+</tr>
+<tr>
+<td>Delayed_writes</td>
+<td>用INSERT/DELAYED写入的行数。</td>
+</tr>
+<tr>
+<td>Delayed_errors</td>
+<td>用INSERT/DELAYED写入的发生某些错误(可能重复键值)的行数。</td>
+</tr>
+<tr>
+<td>Flush_commands</td>
+<td>执行FLUSH命令的次数。</td>
+</tr>
+<tr>
+<td>Handler_delete</td>
+<td>请求从一张表中删除行的次数。</td>
+</tr>
+<tr>
+<td>Handler_read_first</td>
+<td>请求读入表中第一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_read_key</td>
+<td>请求数字基于键读行。</td>
+</tr>
+<tr>
+<td>Handler_read_next</td>
+<td>请求读入基于一个键的一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_read_rnd</td>
+<td>请求读入基于一个固定位置的一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_update</td>
+<td>请求更新表中一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_write</td>
+<td>请求向表中插入一行的次数。</td>
+</tr>
+<tr>
+<td>Key_blocks_used</td>
+<td>用于关键字缓存的块的数量。</td>
+</tr>
+<tr>
+<td>Key_read_requests</td>
+<td>请求从缓存读入一个键值的次数。</td>
+</tr>
+<tr>
+<td>Key_reads</td>
+<td>从磁盘物理读入一个键值的次数。</td>
+</tr>
+<tr>
+<td>Key_write_requests</td>
+<td>请求将一个关键字块写入缓存次数。</td>
+</tr>
+<tr>
+<td>Key_writes</td>
+<td>将一个键值块物理写入磁盘的次数。</td>
+</tr>
+<tr>
+<td>Max_used_connections</td>
+<td>同时使用的连接的最大数目。</td>
+</tr>
+<tr>
+<td>Not_flushed_key_blocks</td>
+<td>在键缓存中已经改变但是还没被清空到磁盘上的键块。</td>
+</tr>
+<tr>
+<td>Not_flushed_delayed_rows</td>
+<td>在INSERT/DELAY队列中等待写入的行的数量。</td>
+</tr>
+<tr>
+<td>Open_tables</td>
+<td>打开表的数量。</td>
+</tr>
+<tr>
+<td>Open_files</td>
+<td>打开文件的数量。</td>
+</tr>
+<tr>
+<td>Open_streams</td>
+<td>打开流的数量(主要用于日志记载）</td>
+</tr>
+<tr>
+<td>Opened_tables</td>
+<td>已经打开的表的数量。</td>
+</tr>
+<tr>
+<td>Questions</td>
+<td>发往服务器的查询的数量。</td>
+</tr>
+<tr>
+<td>Slow_queries</td>
+<td>要花超过long_query_time时间的查询数量。</td>
+</tr>
+<tr>
+<td>Threads_connected</td>
+<td>当前打开的连接的数量。</td>
+</tr>
+<tr>
+<td>Threads_running</td>
+<td>不在睡眠的线程数量。</td>
+</tr>
+<tr>
+<td>Uptime</td>
+<td>服务器工作了多少秒。</td>
+</tr>
+</tbody>
+</table>
+
         </div>
 
         <blockquote class="post-copyright">
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-05-12T03:19:48.734Z" itemprop="dateUpdated">2018-05-12 11:19:48</time>
+    Last updated: <time datetime="2018-05-12T03:22:18.467Z" itemprop="dateUpdated">2018-05-12 11:22:18</time>
 </span><br>
 
 
         
-        <a href="/2018/01/04/PHP-callback/" target="_blank" rel="external">http://www.twosee.cn/2018/01/04/PHP-callback/</a>
+        <a href="/2018/05/12/mysql-status-check/" target="_blank" rel="external">http://www.twosee.cn/2018/05/12/mysql-status-check/</a>
         
     </div>
     <footer>
@@ -225,7 +363,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
 
 
             
@@ -235,7 +373,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/05/12/mysql-status-check/&title=《[整理]MySQL查看连接数以及状态》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -245,22 +383,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/05/12/mysql-status-check/&title=《[整理]MySQL查看连接数以及状态》 — TWO SEE&source=Connections命令：show processlist;如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/05/12/mysql-status-check/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[转] 4种PHP回调函数》 — TWO SEE&url=http://www.twosee.cn/2018/01/04/PHP-callback/&via=http://www.twosee.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[整理]MySQL查看连接数以及状态》 — TWO SEE&url=http://www.twosee.cn/2018/05/12/mysql-status-check/&via=http://www.twosee.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/05/12/mysql-status-check/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -280,21 +418,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2018/01/06/php-app-security/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">[转] 2018 PHP 应用程序安全设计指北</h4>
-      </a>
-    </div>
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2018/01/04/AI-everyone-plus/" id="post-next" class="post-nav-link">
+      <a href="/2018/05/11/swoole-mysql-analyzation-1/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">[转] 人人都可以做深度学习应用 加强篇</h4>
+        <h4 class="title">Swoole的Mysql模块浅析-1</h4>
       </a>
     </div>
   
@@ -388,7 +519,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/05/12/mysql-status-check/&title=《[整理]MySQL查看连接数以及状态》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -398,22 +529,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/01/04/PHP-callback/&title=《[转] 4种PHP回调函数》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/05/12/mysql-status-check/&title=《[整理]MySQL查看连接数以及状态》 — TWO SEE&source=Connections命令：show processlist;如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/05/12/mysql-status-check/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[转] 4种PHP回调函数》 — TWO SEE&url=http://www.twosee.cn/2018/01/04/PHP-callback/&via=http://www.twosee.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[整理]MySQL查看连接数以及状态》 — TWO SEE&url=http://www.twosee.cn/2018/05/12/mysql-status-check/&via=http://www.twosee.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/01/04/PHP-callback/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/05/12/mysql-status-check/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -424,7 +555,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3awW7sIAwF0Pn/n86Tumr1FObaTisNHFajVAkcFi7Gfr3icX2N5Pn1bayf///77t3HBgYGxscyruVYT5mw70jrNeRrw8DAOIeRLyVnJNOvv5wHegwMDIwkHBemDLYJAwMD46lpkvQ1CcEYGBgYCSMPqVVGchxcHw0fzsUxMDA+kFEtDPzl71+sb2BgYHwI42qN6mSTwB2tBwMDY2tGftE/SUqTtyZFAgwMjBMYj7U7VC/IBgfE279iYGBsykgCWbVhIt+gx/4NYGBgHMPolQTW01fT3aSZ4zaJxcDAOIzR4yVJaRKg83CPgYFxDuPZJq1ec0a+BW8KAxgYGFszegfEaqNYb6HR0RADA2M7xuSiv7oF0Y62tgADA2NvRu/Al9/GV4uUednyzXUbBgbGRoz1xPlBrRciJ1vw4wkGBsZhjF7zVrUxIj9uRmkzBgbG1ozqZVkeFichu9qWgYGBcQIj/0R+iKwmw9XSZtQ5goGBsRHjao0qLP9aNaxjYGCcxqiGvF5DWDWgv3qnRQwMjO0Yk4PapGCZly2jzhEMDIxNGfOUtXeUnATlwrsYGBgfzugtJQ98yYEyT2WjZgsMDIztGL30sjfx5FoNAwMDo1cAqC4ov1arbgoGBsY5jCTITrLk6teSiz8MDAyMQrArBspeKvsmqcbAwMBYBrvJ84QUhWkMDIwDGJPW0vw71W1qdrdhYGBsx+gVBiapabXNoldYxcDA2ILxD2CRS6kXXHuQAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aQY7DMAhA0d7/0pltpcr0A+5Ixt+rqE3tvCyoAb9eeDxvg3z7LMbqW7LKhiFDhoxjGU844gXiX73f83kdz8OfTYYMGfcwVlOv7iHsbBiN5/nyzDJkyJCBgyAPwfH8MmTIkNEPuPGWLrvtq60rQ4aM2xh8q8d/2ynP/TAXlyFDxoEMXnX//+uf9DdkyJBxFKOWiHaS0p88lQwZMkYz+DI8Ed27NUwc/pAhQ8ZQRi113Fv6j4toCCZDhozRDNIeIJPWQjZ/iTFShgwZtzE6y3RqfrXZZMiQcQ+jFtp2NSz5J19gMmTIGMogySSZLr4mn7RelgwZMkYzEskhTi+z4NoGdLk1lCFDxmgGL8rX0t29SeyyEytDhoyhDL4dLFbyGmltAiBDhozRjNp2jT9W7UBGOj+VIUPGaAZJOGvbNd5yqCET/x4yZMg4lpFtPdZSUF6eS7QB+IPKkCFjECO7WKdhmW2Lor2tDBkyhjL6i5FRC7jpdFeGDBmXMfimrXMsgxfU0MEOGTJkXMnoNBf3Ft2KcV2GDBlDGZ3CGS/S8VfDX5YMGTKmMp7kIEWx2qaQpNBoUyhDhoxxjH7JbEO8xwc+OqvLkCHjdEY2yO7lkdIeCrgyZMi4gMEDX63dmC3AFXNxGTJkyMBNR/5w2fQYTSRDhozrGdmDp/0yGQr3MmTIuIBBkth+isvvzzZBZciQMZuxtxyWbXBmj7S2wrcMGTLOY/wBMbUi4BC0v1YAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 

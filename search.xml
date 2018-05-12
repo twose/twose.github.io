@@ -3,6 +3,164 @@
   
     
     <entry>
+      <title><![CDATA[[整理]MySQL查看连接数以及状态]]></title>
+      <url>/2018/05/12/mysql-status-check/</url>
+      <content type="html"><![CDATA[<h2 id="Connections"><a href="#Connections" class="headerlink" title="Connections"></a>Connections</h2><p><strong>命令：<code>show processlist;</code></strong><br><strong>如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。</strong><br><code>show processlist</code>只列出前100条</p>
+<p>如果想全列出请使用<strong><code>show full processlist;</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show processlist;</span><br></pre></td></tr></table></figure>
+<h2 id="Status"><a href="#Status" class="headerlink" title="Status"></a>Status</h2><p><strong>命令： <code>show status;</code></strong></p>
+<p><strong>命令：<code>show status like &#39;%下面变量%&#39;;</code></strong></p>
+<a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aborted_clients</td>
+<td>由于客户没有正确关闭连接已经死掉，已经放弃的连接数量。</td>
+</tr>
+<tr>
+<td>Aborted_connects</td>
+<td>尝试已经失败的MySQL服务器的连接的次数。</td>
+</tr>
+<tr>
+<td>Connections</td>
+<td>试图连接MySQL服务器的次数。</td>
+</tr>
+<tr>
+<td>Created_tmp_tables</td>
+<td>当执行语句时，已经被创造了的隐含临时表的数量。</td>
+</tr>
+<tr>
+<td>Delayed_insert_threads</td>
+<td>正在使用的延迟插入处理器线程的数量。</td>
+</tr>
+<tr>
+<td>Delayed_writes</td>
+<td>用INSERT/DELAYED写入的行数。</td>
+</tr>
+<tr>
+<td>Delayed_errors</td>
+<td>用INSERT/DELAYED写入的发生某些错误(可能重复键值)的行数。</td>
+</tr>
+<tr>
+<td>Flush_commands</td>
+<td>执行FLUSH命令的次数。</td>
+</tr>
+<tr>
+<td>Handler_delete</td>
+<td>请求从一张表中删除行的次数。</td>
+</tr>
+<tr>
+<td>Handler_read_first</td>
+<td>请求读入表中第一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_read_key</td>
+<td>请求数字基于键读行。</td>
+</tr>
+<tr>
+<td>Handler_read_next</td>
+<td>请求读入基于一个键的一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_read_rnd</td>
+<td>请求读入基于一个固定位置的一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_update</td>
+<td>请求更新表中一行的次数。</td>
+</tr>
+<tr>
+<td>Handler_write</td>
+<td>请求向表中插入一行的次数。</td>
+</tr>
+<tr>
+<td>Key_blocks_used</td>
+<td>用于关键字缓存的块的数量。</td>
+</tr>
+<tr>
+<td>Key_read_requests</td>
+<td>请求从缓存读入一个键值的次数。</td>
+</tr>
+<tr>
+<td>Key_reads</td>
+<td>从磁盘物理读入一个键值的次数。</td>
+</tr>
+<tr>
+<td>Key_write_requests</td>
+<td>请求将一个关键字块写入缓存次数。</td>
+</tr>
+<tr>
+<td>Key_writes</td>
+<td>将一个键值块物理写入磁盘的次数。</td>
+</tr>
+<tr>
+<td>Max_used_connections</td>
+<td>同时使用的连接的最大数目。</td>
+</tr>
+<tr>
+<td>Not_flushed_key_blocks</td>
+<td>在键缓存中已经改变但是还没被清空到磁盘上的键块。</td>
+</tr>
+<tr>
+<td>Not_flushed_delayed_rows</td>
+<td>在INSERT/DELAY队列中等待写入的行的数量。</td>
+</tr>
+<tr>
+<td>Open_tables</td>
+<td>打开表的数量。</td>
+</tr>
+<tr>
+<td>Open_files</td>
+<td>打开文件的数量。</td>
+</tr>
+<tr>
+<td>Open_streams</td>
+<td>打开流的数量(主要用于日志记载）</td>
+</tr>
+<tr>
+<td>Opened_tables</td>
+<td>已经打开的表的数量。</td>
+</tr>
+<tr>
+<td>Questions</td>
+<td>发往服务器的查询的数量。</td>
+</tr>
+<tr>
+<td>Slow_queries</td>
+<td>要花超过long_query_time时间的查询数量。</td>
+</tr>
+<tr>
+<td>Threads_connected</td>
+<td>当前打开的连接的数量。</td>
+</tr>
+<tr>
+<td>Threads_running</td>
+<td>不在睡眠的线程数量。</td>
+</tr>
+<tr>
+<td>Uptime</td>
+<td>服务器工作了多少秒。</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Swoole的Mysql模块浅析-1]]></title>
       <url>/2018/05/11/swoole-mysql-analyzation-1/</url>
       <content type="html"><![CDATA[<p>众所周知, PHP是由C语言编写的, 扩展也不例外, Swoole又是PHP扩展中发展的比较快且很权威的一个扩展, 对于MySQL这部分模块的浅析, 暂可不必了解Swoole底层的实现, 而先关注应用层面的实现.</p>
@@ -366,7 +524,11 @@
         
         <tags>
             
-            <tag> PHP PHPstorm IDE </tag>
+            <tag> php </tag>
+            
+            <tag> phpstorm </tag>
+            
+            <tag> ide </tag>
             
         </tags>
         
@@ -905,7 +1067,7 @@
         
         <tags>
             
-            <tag> PHP </tag>
+            <tag> php </tag>
             
         </tags>
         
@@ -1274,7 +1436,7 @@
         
         <tags>
             
-            <tag> AI </tag>
+            <tag> ai </tag>
             
         </tags>
         
@@ -1504,7 +1666,7 @@
         
         <tags>
             
-            <tag> AI </tag>
+            <tag> ai </tag>
             
         </tags>
         
@@ -1775,20 +1937,18 @@
       
         <categories>
             
-            <category> PHP </category>
+            <category> php </category>
             
-            <category> Mysql </category>
+            <category> mysql </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> PDO </tag>
+            <tag> pdo </tag>
             
-            <tag> Mysql </tag>
-            
-            <tag> 参数化 </tag>
+            <tag> mysql </tag>
             
         </tags>
         
