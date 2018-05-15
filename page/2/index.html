@@ -123,7 +123,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="検索">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -155,6 +155,57 @@
 <div class="container body-wrap">
 
     <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-PHP-callback"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-04 05:47:33" datetime="2018-01-03T21:47:33.000Z"  itemprop="datePublished">2018-01-04</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/04/PHP-callback/">[转] 4种PHP回调函数</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <blockquote>
+<p>以Swoole服务事件回调为例</p>
+</blockquote>
+<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($req, $resp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="类静态方法"><a href="#类静态方法" class="headerlink" title="类静态方法"></a>类静态方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'A::Test'</span>);</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>(<span class="string">'A'</span>, <span class="string">'Test'</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_onRequest</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">&#125;</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="string">'my_onRequest'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">($req, $resp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"hello world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$object = <span class="keyword">new</span> A();</span><br><span class="line">$server-&gt;on(<span class="string">'Request'</span>, <span class="keyword">array</span>($object, <span class="string">'test'</span>));</span><br></pre></td></tr></table></figure>
+    
+
+        <a href="/2018/01/04/PHP-callback/" class="post-more waves-effect waves-button">
+            続きを読む…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
     
         <li class="post-list-item fade">
             <article id="post-AI-everyone-plus"
@@ -189,7 +240,7 @@
     
 
         <a href="/2018/01/04/AI-everyone-plus/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -234,7 +285,7 @@
     
 
         <a href="/2018/01/04/AI-everyone/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -295,7 +346,7 @@
     
 
         <a href="/2018/01/04/PHP-Next-JIT/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -353,7 +404,7 @@
     
 
         <a href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -413,7 +464,7 @@
     
 
         <a href="/2017/12/30/how-to-use-strong-type-in-pdo/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -472,7 +523,7 @@
     
 
         <a href="/2017/12/28/how-slow-is-disk-and-network/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -519,7 +570,7 @@
     
 
         <a href="/2017/12/28/test/" class="post-more waves-effect waves-button">
-            Continue reading...
+            続きを読む…
         </a>
     </div>
     
@@ -556,7 +607,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>このブログの内容物は<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示 - 非営利 - 継承 4.0 国際ライセンスの下に提供されています</a></span>
         </p>
     </div>
     <div class="bottom">
