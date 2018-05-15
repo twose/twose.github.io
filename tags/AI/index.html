@@ -123,7 +123,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="検索">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -149,7 +149,7 @@
 <div class="tabs-bar container">
     <nav class="tags-list">
         <a href="/tags" style="-webkit-order:-1;order:-1" class="tags-list-item waves-effect waves-button waves-light
-            ">全て</a>
+            ">All</a>
         
 
             <a href="/tags/php/" style="-webkit-order:18;order:18" class="tags-list-item waves-effect waves-button waves-light">php</a>
@@ -168,15 +168,15 @@
 
         
 
-            <a href="/tags/pdo/" style="-webkit-order:2;order:2" class="tags-list-item waves-effect waves-button waves-light">pdo</a>
+            <a href="/tags/mask/" style="-webkit-order:2;order:2" class="tags-list-item waves-effect waves-button waves-light">mask</a>
 
         
 
-            <a href="/tags/mysql/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">mysql</a>
+            <a href="/tags/pdo/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">pdo</a>
 
         
 
-            <a href="/tags/mask/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">mask</a>
+            <a href="/tags/mysql/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">mysql</a>
 
         
 
@@ -333,7 +333,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>このブログの内容物は<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示 - 非営利 - 継承 4.0 国際ライセンスの下に提供されています</a></span>
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
@@ -434,24 +434,6 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title_bak = document.title
-            document.title = '死鬼去哪里了！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = document.title_bak;
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
-</script>
 
 
 
