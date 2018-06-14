@@ -141,9 +141,9 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="http://hutaow.com/images/articles/201311/mysql_protocol_message.png" alt="MySQL客户端与服务器交互示意图" title="">
+                    <img src="https://ws1.sinaimg.cn/large/006DQdzWly1fsb7y00rsyj30cc0ddwew.jpg" alt="" title="">
                 </div>
-                <div class="image-caption">MySQL客户端与服务器交互示意图</div>
+                <div class="image-caption"></div>
             </figure>
 <h2 id="2-基本类型"><a href="#2-基本类型" class="headerlink" title="2 基本类型"></a>2 基本类型</h2><h3 id="2-1-整型值"><a href="#2-1-整型值" class="headerlink" title="2.1 整型值"></a>2.1 整型值</h3><p>MySQL报文中整型值分别有1、2、3、4、8字节长度，使用小字节序传输。</p>
 <h3 id="2-2-字符串（以NULL结尾）（Null-Terminated-String）"><a href="#2-2-字符串（以NULL结尾）（Null-Terminated-String）" class="headerlink" title="2.2 字符串（以NULL结尾）（Null-Terminated String）"></a>2.2 字符串（以NULL结尾）（Null-Terminated String）</h3><p>字符串长度不固定，当遇到’NULL’（0x00）字符时结束。</p>

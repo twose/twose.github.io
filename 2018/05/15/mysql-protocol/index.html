@@ -28,17 +28,17 @@
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="目录[TOC] 1 交互过程MySQL客户端与服务器的交互主要分为两个阶段：握手认证阶段和命令执行阶段。 1.1 握手认证阶段握手认证阶段为客户端与服务器建立连接后进行，交互过程如下：  服务器 -&amp;gt; 客户端：握手初始化消息 客户端 -&amp;gt; 服务器：登陆认证消息 服务器 -&amp;gt; 客户端：认证结果消息  1.2 命令执行阶段客户端认证成功后，会进入命令执行阶段，交互过程如下：  客户端">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_message.png">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006DQdzWly1fsb7y00rsyj30cc0ddwew.jpg">
 <meta property="og:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_struct.png">
 <meta property="og:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_handshake.png">
 <meta property="og:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_auth_40.png">
 <meta property="og:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_auth_41.png">
 <meta property="og:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_command.png">
-<meta property="og:updated_time" content="2018-05-15T08:14:14.861Z">
+<meta property="og:updated_time" content="2018-06-14T17:26:23.435Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[整理] MySQL协议分析">
 <meta name="twitter:description" content="目录[TOC] 1 交互过程MySQL客户端与服务器的交互主要分为两个阶段：握手认证阶段和命令执行阶段。 1.1 握手认证阶段握手认证阶段为客户端与服务器建立连接后进行，交互过程如下：  服务器 -&amp;gt; 客户端：握手初始化消息 客户端 -&amp;gt; 服务器：登陆认证消息 服务器 -&amp;gt; 客户端：认证结果消息  1.2 命令执行阶段客户端认证成功后，会进入命令执行阶段，交互过程如下：  客户端">
-<meta name="twitter:image" content="http://hutaow.com/images/articles/201311/mysql_protocol_message.png">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006DQdzWly1fsb7y00rsyj30cc0ddwew.jpg">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -212,9 +212,9 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="http://hutaow.com/images/articles/201311/mysql_protocol_message.png" alt="MySQL客户端与服务器交互示意图" title="">
+                    <img src="https://ws1.sinaimg.cn/large/006DQdzWly1fsb7y00rsyj30cc0ddwew.jpg" alt="" title="">
                 </div>
-                <div class="image-caption">MySQL客户端与服务器交互示意图</div>
+                <div class="image-caption"></div>
             </figure>
 <h2 id="2-基本类型"><a href="#2-基本类型" class="headerlink" title="2 基本类型"></a>2 基本类型</h2><h3 id="2-1-整型值"><a href="#2-1-整型值" class="headerlink" title="2.1 整型值"></a>2.1 整型值</h3><p>MySQL报文中整型值分别有1、2、3、4、8字节长度，使用小字节序传输。</p>
 <h3 id="2-2-字符串（以NULL结尾）（Null-Terminated-String）"><a href="#2-2-字符串（以NULL结尾）（Null-Terminated-String）" class="headerlink" title="2.2 字符串（以NULL结尾）（Null-Terminated String）"></a>2.2 字符串（以NULL结尾）（Null-Terminated String）</h3><p>字符串长度不固定，当遇到’NULL’（0x00）字符时结束。</p>
@@ -1883,7 +1883,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-05-15T08:14:14.861Z" itemprop="dateUpdated">2018-05-15 16:14:14</time>
+    Last updated: <time datetime="2018-06-14T17:26:23.435Z" itemprop="dateUpdated">2018-06-15 01:26:23</time>
 </span><br>
 
 
