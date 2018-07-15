@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.twosee.cn/"/>
-  <updated>2018-06-14T04:09:09.452Z</updated>
+  <updated>2018-07-15T03:22:11.226Z</updated>
   <id>http://www.twosee.cn/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PHP内核 - ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX 分析</title>
+    <link href="http://www.twosee.cn/2018/07/15/php-zend-arg-info/"/>
+    <id>http://www.twosee.cn/2018/07/15/php-zend-arg-info/</id>
+    <published>2018-07-15T02:38:48.000Z</published>
+    <updated>2018-07-15T03:22:11.226Z</updated>
+    
+    <content type="html"><![CDATA[<p>前一部分内容抄自振宇哥的博客: <a href="http://kuangjue.com/article/70" target="_blank" rel="noopener">旷绝一世</a>, 在此基础后续扩写一部分</p><p>我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)//名字,unused,引用返回,参数个数</span><br><span class="line">  ZEND_ARG_INFO(0, host)</span><br><span class="line">  ZEND_ARG_INFO(0, port)</span><br><span class="line">  ZEND_ARG_INFO(0, sock_type)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure><p>这个宏组合是用来定义函数的参数，我们不妨去跟下<code>ZEND_BEGIN_ARG_INFO_EX</code> 与<code>ZEND_END_ARG_INFO</code>的定义。<br>定义在zend_API.h文件中，<code>ZEND_BEGIN_ARG_INFO_EX</code>的定义为：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_BEGIN_ARG_INFO_EX(name, _unused, return_reference, required_num_args)  \</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info name[] = &#123; \</span><br><span class="line">   &#123;(<span class="keyword">const</span> <span class="keyword">char</span>*)(<span class="keyword">zend_uintptr_t</span>)(required_num_args), <span class="number">0</span>, return_reference, <span class="number">0</span> &#125;,</span><br></pre></td></tr></table></figure><p>ZEND_END_ARG_INFO的定义为：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ARG_INFO(pass_by_ref, name)&#123; #name, 0, pass_by_ref, 0&#125;,</span></span><br></pre></td></tr></table></figure><p>那么组合起来变成c代码就是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info arginfo_swoole_server_listen[] = &#123; \</span><br><span class="line">   &#123;<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span> &#125;,</span><br><span class="line">   &#123; host, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; port, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; sock_type, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>现在看来就是定义了一个zend_internal_arg_info结构数组，在zend/zend_compile.h文件中定义：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">zend_internal_arg_info</span> &#123;</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;      <span class="comment">//参数名称</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *class_name;  <span class="comment">//当参数类型为类时，指定类的名称</span></span><br><span class="line">    zend_uchar type_hint;    <span class="comment">//参数类型是否为数组</span></span><br><span class="line">    zend_uchar pass_by_reference;  <span class="comment">//是否设置为引用，即&amp;</span></span><br><span class="line">    zend_bool allow_null;   <span class="comment">//是否允许设置为空</span></span><br><span class="line">    zend_bool is_variadic;<span class="comment">//**是否为可变参数**</span></span><br><span class="line">&#125; zend_internal_arg_info;</span><br></pre></td></tr></table></figure></p><p>PHP7中还加入了返回值类型声明这一新特性, 但是到目前为止, 各种扩展几乎没有添加返回值声明的意思, 但是这一特性对于IDE提示的生成非常有帮助</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(name, return_reference, required_num_args, type, allow_null) \</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info name[] = &#123; \</span><br><span class="line">&#123; (<span class="keyword">const</span> <span class="keyword">char</span>*)(<span class="keyword">zend_uintptr_t</span>)(required_num_args), ZEND_TYPE_ENCODE(type, allow_null), return_reference, <span class="number">0</span> &#125;,</span><br><span class="line"></span><br><span class="line">#define ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(name, type, allow_null) \</span><br><span class="line">ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(name, <span class="number">0</span>, <span class="number">-1</span>, type, allow_null)</span><br></pre></td></tr></table></figure><p>在ZEND API头文件中我们可以看到新添加的宏<code>ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX</code>, 还有<code>ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX</code>等等</p><p>我们可以这样使用它</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_swoole_http2_client_coro_recv, <span class="number">0</span>, <span class="number">1</span>, Swoole\\Http2\\Response, <span class="number">0</span>)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br><span class="line">    </span><br><span class="line">ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(arginfo_swoole_http2_client_coro_balabala, _IS_BOOL, <span class="number">0</span>)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure><p>这样就可以为这个方法声明返回值类型了</p><p>当然, 我实际并没有这么做, 因为好像<code>ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX</code>这个宏在PHP7最初版本有<a href="https://github.com/php/php-src/commit/141d1ba9801f742dc5d9ccd06e02b94284c4deb7" target="_blank" rel="noopener">BUG</a>, 我们可以通过git blame看到几次修复, 而且并没有看到任何扩展使用了它, 如果要使用, 需要添加一些版本判断, 实在麻烦, 而且指不定会出什么问题, 这个需求也不是特别重要, 而且全部使用它工程量挺大的, 可能需要过一阵子再考虑统一添加一下</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;前一部分内容抄自振宇哥的博客: &lt;a href=&quot;http://kuangjue.com/article/70&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;旷绝一世&lt;/a&gt;, 在此基础后续扩写一部分&lt;/p&gt;
+&lt;p&gt;我们在写扩展的时候很常见的这样的宏，就比
+      
+    
+    </summary>
+    
+    
+      <category term="PHP" scheme="http://www.twosee.cn/tags/PHP/"/>
+    
+  </entry>
   
   <entry>
     <title>Ubuntu下编译PHP所需的依赖库</title>
@@ -575,27 +599,6 @@
       <category term="disk" scheme="http://www.twosee.cn/tags/disk/"/>
     
       <category term="network" scheme="http://www.twosee.cn/tags/network/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>woo</title>
-    <link href="http://www.twosee.cn/2017/12/28/test/"/>
-    <id>http://www.twosee.cn/2017/12/28/test/</id>
-    <published>2017-12-28T02:40:00.000Z</published>
-    <updated>2017-12-28T02:51:09.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="｡･∀･-ﾉﾞ"><a href="#｡･∀･-ﾉﾞ" class="headerlink" title="(｡･∀･)ﾉﾞ"></a>(｡･∀･)ﾉﾞ</h1><h2 id="👁SEE-IS-THE-🐳SEA-OF-CC😎"><a href="#👁SEE-IS-THE-🐳SEA-OF-CC😎" class="headerlink" title="👁SEE IS THE 🐳SEA OF CC😎"></a>👁SEE IS THE 🐳SEA OF CC😎</h2><p>My name is cc,</p><p>so I’m <strong>Twosee</strong>.</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;｡･∀･-ﾉﾞ&quot;&gt;&lt;a href=&quot;#｡･∀･-ﾉﾞ&quot; class=&quot;headerlink&quot; title=&quot;(｡･∀･)ﾉﾞ&quot;&gt;&lt;/a&gt;(｡･∀･)ﾉﾞ&lt;/h1&gt;&lt;h2 id=&quot;👁SEE-IS-THE-🐳SEA-OF-CC😎&quot;&gt;&lt;a href=&quot;#👁SEE
-      
-    
-    </summary>
-    
     
   </entry>
   
