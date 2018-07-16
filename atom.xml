@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.twosee.cn/"/>
-  <updated>2018-07-15T03:22:11.226Z</updated>
+  <updated>2018-07-16T16:06:13.461Z</updated>
   <id>http://www.twosee.cn/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在Swoole中实现MySQL存储过程</title>
+    <link href="http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/"/>
+    <id>http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/</id>
+    <published>2018-07-16T15:59:58.000Z</published>
+    <updated>2018-07-16T16:06:13.461Z</updated>
+    
+    <content type="html"><![CDATA[<p>大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 <a href="https://www.zhihu.com/question/57545650" target="_blank" rel="noopener"><strong>为什么不要使用存储过程</strong></a> 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我分配了这个任务, 于是我就马上进行了一番研究.</p><p>其实内容当时在PR里都贴了, <a href="https://github.com/swoole/swoole-src/pull/1688" target="_blank" rel="noopener">https://github.com/swoole/swoole-src/pull/1688</a>, 现在在博客补个票</p><p>完整的MySQL存储过程支持</p><hr><p>做了以下几件事:</p><h2 id="fetch-mode"><a href="#fetch-mode" class="headerlink" title="fetch mode"></a>fetch mode</h2><p>一开始先想着和PDO一样给Swoole做一个fetch模式</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'fetch_mode'</span> =&gt; <span class="keyword">true</span>] <span class="comment">//连接配置里加入这个</span></span><br></pre></td></tr></table></figure><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$stmt = $db-&gt;prepare(<span class="string">'SELECT `id` FROM `userinfo` LIMIT 2'</span>);</span><br><span class="line">$stmt-&gt;execute(); <span class="comment">// true = success</span></span><br><span class="line">$stmt-&gt;fetch(); <span class="comment">// result-set array 1</span></span><br><span class="line">$stmt-&gt;fetch(); <span class="comment">// result-set array 2</span></span><br></pre></td></tr></table></figure><h2 id="分离client和statement"><a href="#分离client和statement" class="headerlink" title="分离client和statement"></a>分离client和statement</h2><p>加了一个 <code>MYSQL_RESPONSE_BUFFER</code> 宏, 处理了一些代码分离了client和statement的buffer</p><p>并给statement结构上也挂了一个result的zval指针</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    swString *buffer; <span class="comment">/* save the mysql multi responses data */</span></span><br><span class="line">    zval *result; <span class="comment">/* save the zval array result */</span></span><br><span class="line">&#125; mysql_statement;</span><br></pre></td></tr></table></figure><p>这样就可以实现以下代码:</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$stmt1 = $db-&gt;prepare(<span class="string">'SELECT * FROM ckl LIMIT 1'</span>);</span><br><span class="line">$stmt1-&gt;execute();</span><br><span class="line">$stmt2 = $db-&gt;prepare(<span class="string">'SELECT * FROM ckl LIMIT 2'</span>);</span><br><span class="line">$stmt2-&gt;execute();</span><br><span class="line">$stmt1-&gt;fetchAll();</span><br><span class="line">$stmt2-&gt;fetchAll();</span><br></pre></td></tr></table></figure><p>因为现在result是挂在statement上的, 和client分离干净, 就不会因为这样的写法产生错误</p><p>当然这并没有多大用, <strong>主要还是为了后面处理多响应多结果集</strong></p><h2 id="分离mysql-parse-response"><a href="#分离mysql-parse-response" class="headerlink" title="分离mysql_parse_response"></a>分离mysql_parse_response</h2><p>这样就就可以在除了<code>onRead</code>回调之外的别的地方复用这个方法, 处理多结果集了</p><h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><p>存储过程会返回多个响应, 如果和swoole之前的设计一样, 一次性全返回是不太现实的</p><p>PDO和MySQLi的设计都是用一个 next 方法来切换到下一个响应</p><p>刚开始是想做一个链表存储多个响应, 很快就发现并不需要</p><p>所以首先做了一个 <a href="https://github.com/twose/swoole-src/blob/13ff4ff8ac2723649f05b69f337f49557cf74546/swoole_mysql.c#L1478" target="_blank" rel="noopener"><code>mysql_is_over</code></a>方法</p><p>它用来<strong>校验MySQL包的完整性</strong>, 这是swoole以前没有的, 所以在之前的PR后虽然可以使用存储过程, 但是并不能每次都收到完整的响应包, 第一次没收到的包会被丢弃</p><p>然后说一下几个注意点</p><ol><li>MySQL协议决定了并不能倒着检查status flag, 我们必须把每个包的包头都扫描一遍, 通过package length快速扫描到最后一个已接收的包体, 这里只是每次只是检查每个包前几个字节, 消耗不大</li><li>MySQL其它包体中的 <code>MYSQL_SERVER_MORE_RESULTS_EXISTS</code> 的标志位并不准确, 不可采信, 只有<code>eof</code>和<code>ok</code>包中的是准确的 (这里一定要注意)</li><li>在存储过程中执行一个耗时操作的话, recv一次性收不完, 而且会等很久, 这时候需要return等下一次onRead触发(之前的代码里是continue阻塞), 这就不得不在client上加一个check_offset来保存上次完整性校验的位置, 从上个位置开始继续校验后续的MySQL包是否完整, 节省时间</li><li>存储过程中遇到错误(error响应)就可以直接终止接收了</li><li>在PHP7的zval使用上踩了点坑, 现在理解了, 幸好有鸟哥的文章<a href="https://github.com/laruence/php7-internal/blob/master/zval.md" target="_blank" rel="noopener">zval</a>给我解惑..</li></ol><p><strong>校验包的完整性直到所有数据接收完毕</strong></p><p>(分离了client和statement后, execute获取的数据是被存在<code>statement-&gt;buffer</code>里而不是<code>client-&gt;buffer</code>)</p><p><strong>这时候onRead中只会解析第一个响应的结果, 并置到statement对象上, 而剩下的数据仍在buffer中, 并等待nextResult来推动offset解析下一个, 可以说是懒解析了, 有时候会比一次性解析所有响应划算, 而且我们可以清楚的知道每一次nextResult切换前后, 对应的affected_rows和insert_id的值(如果一次性读完, 只能知道最后的)</strong></p><p>最后效果就是以下代码</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$stmt = $db-&gt;prepare(<span class="string">'CALL reply(?)'</span>);</span><br><span class="line">$stmt-&gt;execute([<span class="string">'hello mysql!'</span>]); <span class="comment">// true</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    $res = $stmt-&gt;fetchAll();</span><br><span class="line">    var_dump($res);</span><br><span class="line">&#125; <span class="keyword">while</span> ($stmt-&gt;nextResult());</span><br></pre></td></tr></table></figure><p>非fetch_mode模式下这么写</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$stmt = $db-&gt;prepare(<span class="string">'CALL reply(?)'</span>);</span><br><span class="line">$res = $stmt-&gt;execute([<span class="string">'hello mysql!'</span>]); <span class="comment">// the first result</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    var_dump($res);</span><br><span class="line">&#125; <span class="keyword">while</span> ($res = $stmt-&gt;nextResult());</span><br></pre></td></tr></table></figure><p>比较巧妙的是nextResult推到最后一个response_ok包的时候会返回null, while循环终止, 我们就可以在循环后读取ok包的affected_rows, 如果最后存储过程最后一个语句是insert成功, 这里会显示1</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var_dump($stmt-&gt;affected_rows); <span class="comment">//1</span></span><br></pre></td></tr></table></figure><p>最近忙起来真的是很少时间能写文章了, 慢慢补吧.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用
+      
+    
+    </summary>
+    
+    
+      <category term="swoole" scheme="http://www.twosee.cn/tags/swoole/"/>
+    
+      <category term="mysql" scheme="http://www.twosee.cn/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>PHP内核 - ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX 分析</title>
@@ -169,9 +194,9 @@
     </summary>
     
     
-      <category term="mysql" scheme="http://www.twosee.cn/tags/mysql/"/>
-    
       <category term="swoole" scheme="http://www.twosee.cn/tags/swoole/"/>
+    
+      <category term="mysql" scheme="http://www.twosee.cn/tags/mysql/"/>
     
   </entry>
   
@@ -556,49 +581,9 @@
       <category term="mysql" scheme="http://www.twosee.cn/categories/php/mysql/"/>
     
     
-      <category term="pdo" scheme="http://www.twosee.cn/tags/pdo/"/>
-    
       <category term="mysql" scheme="http://www.twosee.cn/tags/mysql/"/>
     
-  </entry>
-  
-  <entry>
-    <title>[转] 让 CPU 告诉你硬盘和网络到底有多慢</title>
-    <link href="http://www.twosee.cn/2017/12/28/how-slow-is-disk-and-network/"/>
-    <id>http://www.twosee.cn/2017/12/28/how-slow-is-disk-and-network/</id>
-    <published>2017-12-28T08:18:03.000Z</published>
-    <updated>2018-04-05T08:44:15.603Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>本文转载自 <a href="http://cizixs.com/2017/01/03/how-slow-is-disk-and-network" target="_blank" rel="noopener">cizixs</a></p></blockquote><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。</p><p>最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感觉，并没有对各个速度和性能做出量化的说明和解释。而实际上，不同层级之间的差异要比这张图大的多。这篇文章就让你站在 CPU 的角度看这个世界，说说到底它们有多慢。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$" alt="img" title="">                </div>                <div class="image-caption">img</div>            </figure><p>希望你看到看完这篇文章能明白两件事情：磁盘和网络真的很慢，性能优化是个复杂的系统性的活。</p><a id="more"></a><p>注：所有的数据都是来自<a href="https://gist.github.com/hellerbarde/2843375" target="_blank" rel="noopener">这个地址</a>。所有的数据会因为机器配置不同，或者硬件的更新而有出入，但是不影响我们直觉的感受。如果对这些数据比较感兴趣，<a href="https://people.eecs.berkeley.edu/~rcs/research/interactive_latency.html" target="_blank" rel="noopener">这个网址</a>给出了不同年份一些指标的数值。</p><h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><ul><li>先来看看 CPU 的速度，就拿我的电脑来说，主频是 2.6G，也就是说每秒可以执行 <code>2.6*10^9</code>个指令，每个指令只需要 <code>0.38ns</code>（现在很多个人计算机的主频要比这个高，配置比较高的能达到 3.0G+）。我们把这个时间当做基本单位 <code>1s</code>，因为 <code>1s</code> 大概是人类能感知的最小时间单位。</li></ul><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://photocdn.sohu.com/20141022/Img405364158.jpg" alt="img" title="">                </div>                <div class="image-caption">img</div>            </figure><ul><li>一级缓存读取时间为 <code>0.5ns</code>，换算成人类时间大约是 <code>1.3s</code>，大约一次或者两次心跳的时间。这里能看出缓存的重要性，因为它的速度可以赶上 CPU，程序本身的 locality 特性加上指令层级上的优化，cache 访问的命中率很高，这最终能极大提高效率。</li><li>分支预测错误需要耗时 <code>5ns</code>，换算成人类时间大约是 <code>13s</code>，这个就有点久了，所以你会看到很多文章分析如何优化代码来降低分支预测的几率，比如<a href="http://stackoverflow.com/questions/11227809/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array" target="_blank" rel="noopener">这个得分非常高的 stackoverflow 问题</a>。</li><li>二级缓存时间就比较久了，大约在 <code>7ns</code>，换算成人类时间大约是 <code>18.2s</code>，可以看到的是如果一级缓存没有命中，然后去二级缓存读取数据，时间差了一个数量级。</li></ul><p><strong>小知识：</strong>为什么需要多层的 CPU 缓存呢？<a href="https://fgiesen.wordpress.com/2016/08/07/why-do-cpus-have-multiple-cache-levels/" target="_blank" rel="noopener">这篇文章通过一个通俗易懂的例子给出了讲解</a>。</p><ul><li>我们继续，互斥锁的加锁和解锁时间需要 <code>25ns</code>，换算成人类时间大约是 <code>65s</code>，首次达到了一分钟。并发编程中，我们经常听说锁是一个很耗时的东西，因为在微波炉里加热一个东西需要一分钟的话，你要在那傻傻地等蛮久了。</li><li>然后就到了内存，每次内存寻址需要 <code>100ns</code>，换算成人类时间是 <code>260s</code>，也就是<code>4分多钟</code>，如果读一些不需要太多思考的文章，这么久能读完2-3千字（这个快阅读的时代，很少人在手机上能静心多这么字了）。看起来还不算坏，不多要从内存中读取一段数据需要的时间会更多。到了内存之后，时间就变了一个量级，CPU 和内存之间的速度瓶颈被称为<a href="https://en.wikipedia.org/wiki/Von_Neumann_architecture#Von_Neumann_bottleneck" target="_blank" rel="noopener">冯诺依曼瓶颈</a>。</li><li>一次 CPU 上下文切换（系统调用）需要大约 <code>1500ns</code>，也就是 <code>1.5us</code>（这个数字参考了<a href="http://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">这篇文章</a>，采用的是单核 CPU 线程平均时间），换算成人类时间大约是 <code>65分钟</code>，嗯，也就是一个小时。我们也知道上下文切换是很耗时的行为，毕竟每次浪费一个小时，也很让人有罪恶感的。上下文切换更恐怖的事情在于，<strong>这段时间里 CPU 没有做任何有用的计算</strong>，只是切换了两个不同进程的寄存器和内存状态；而且这个过程<strong>还破坏了缓存，</strong>让后续的计算更加耗时。</li><li>在 1Gbps 的网络上传输 2K 的数据需要 <code>20us</code>，换算成人类时间是 <code>14.4小时</code>，这么久都能把《星球大战》六部曲看完了（甚至还加上吃饭撒尿的时间）！可以看到网络上非常少数据传输对于 CPU 来说，已经很漫长。而且这里的时间还是理论最大值，实际过程还要更慢一些。</li><li>SSD 随机读取耗时为 <code>150us</code>，换算成人类时间大约是 <code>4.5天</code>。换句话说，SSD 读点数据，CPU 都能休假，报团参加周边游了。虽然我们知道 SSD 要比机械硬盘快很多，但是这个速度对于 CPU 来说也是像乌龟一样。<code>I/O 设备</code> 从硬盘开始速度开始变得漫长，这个时候我们就想起内存的好处了。尽量减少 IO 设备的读写，把最常用的数据放到内存中作为缓存是所有程序的通识。像 <code>memcached</code> 和 <code>redis</code> 这样的高速缓存系统近几年的异军突起，就是解决了这里的问题。</li><li>从内存中读取 <code>1MB</code> 的连续数据，耗时大约为 <code>250us</code>，换算成人类时间是 <code>7.5天</code>，这次假期升级到国庆七天国外游了。</li><li>同一个数据中心网络上跑一个来回需要 <code>0.5ms</code>，换算成人类时间大约是 <code>15天</code>，也就是半个月的时间。如果你的程序有段代码需要和数据中心的其他服务器交互，在这段时间里 CPU 都已经狂做了半个月的运算。减少不同服务组件的网络请求，是性能优化的一大课题。</li><li>从 SSD 读取 1MB 的顺序数据，大约需要 <code>1ms</code>，换算成人类时间是 <code>1个月</code>。也就是说 SSD 读一个普通的文件，如果要等你做完，CPU 一个月时间就荒废了。尽管如此，<strong>SSD</strong> 已经很快啦，不信你看下面机械磁盘的表现。</li><li>磁盘寻址时间为 <code>10ms</code>，换算成人类时间是 <code>10个月</code>，刚好够人类创造一个新的生命了。如果 CPU 需要让磁盘泡杯咖啡，在它眼里，磁盘去生了个孩子，回来告诉它你让我泡的咖啡好了。机械硬盘使用 <code>RPM(Revolutions Per Minute/每分钟转速)</code> 来评估磁盘的性能：RPM 越大，平均寻址时间更短，磁盘性能越好。寻址只是把磁头移动到正确的磁道上，然后才能读取指定扇区的内容。换句话说，寻址虽然很浪费时间，但其实它并没有办任何的正事（读取磁盘内容）。</li><li>从磁盘读取 1MB 连续数据需要 <code>20ms</code>，换算成人类时间是 <code>20个月</code>。<strong>IO 设备是计算机系统的瓶颈</strong>，希望读到这里你能更深切地理解这句话！如果还不理解，不妨想想你在网上买的东西，快递送了将近两年，你的心情是怎么样的。</li><li>而从世界上不同城市网络上走一个来回，平均需要 <code>150ms</code>（参考<a href="https://wondernetwork.com/pings/" target="_blank" rel="noopener">世界各地 ping 报文的时间</a>），换算成人类时间是 <code>12.5年</code>。不难理解，所有的程序和架构都会尽量避免不同城市甚至是跨国家的网络访问，<a href="https://en.wikipedia.org/wiki/Content_delivery_network" target="_blank" rel="noopener">CDN</a> 就是这个问题的一个解决方案：让用户和最接近自己的服务器交互，从而减少网络上报文的传输时间。</li><li>虚拟机重启一次大约要 <code>4s</code> 时间，换算成人类的时间是 <code>3百多年</code>。对于此，我想到了乔布斯要死命<a href="http://stevejobsdailyquote.com/2014/03/26/boot-time/" target="_blank" rel="noopener">优化 Mac 系统开机启动时间</a>的故事。如果机器能少重启而且每次启动能快一点，不仅能救人命，也能救 CPU 的命。</li><li>物理服务器重启一次需要 <code>5min</code>，换算成人类时间是 <code>2万5千年</code>，快赶上人类的文明史了。5 分钟人类都要等一会了，更别提 CPU 了，所以没事不要乱重启服务器啊，分分钟终结一个文明的节奏。</li></ul><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://www.akkadia.org/drepper/cpumemory.pdf" target="_blank" rel="noopener">What Every Programmer Should Know About Memory</a></li><li><a href="http://duartes.org/gustavo/blog/post/getting-physical-with-memory/" target="_blank" rel="noopener">Getting Physical With Memory</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;本文转载自 &lt;a href=&quot;http://cizixs.com/2017/01/03/how-slow-is-disk-and-network&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;cizixs&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;经常听到有人说磁盘很慢、网络很卡，这都是站在人类的感知维度去表述的，比如拷贝一个文件到硬盘需要几分钟到几十分钟，够我去吃个饭啦；而从网络下载一部电影，有时候需要几个小时，我都可以睡一觉了。&lt;/p&gt;
-&lt;p&gt;最为我们熟知的关于计算机不同组件速度差异的图表，是下面这种金字塔形式：越往上速度越快，容量越小，而价格越高。这张图只是给了我们一个直观地感觉，并没有对各个速度和性能做出量化的说明和解释。而实际上，不同层级之间的差异要比这张图大的多。这篇文章就让你站在 CPU 的角度看这个世界，说说到底它们有多慢。&lt;/p&gt;
-&lt;figure class=&quot;image-bubble&quot;&gt;
-                &lt;div class=&quot;img-lightbox&quot;&gt;
-                    &lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;
-                    &lt;img src=&quot;http://s7.computerhistory.org/is/image/CHM/500004956?$re-zoomed$&quot; alt=&quot;img&quot; title=&quot;&quot;&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;image-caption&quot;&gt;img&lt;/div&gt;
-            &lt;/figure&gt;
-&lt;p&gt;希望你看到看完这篇文章能明白两件事情：磁盘和网络真的很慢，性能优化是个复杂的系统性的活。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="编程原理" scheme="http://www.twosee.cn/categories/%E7%BC%96%E7%A8%8B%E5%8E%9F%E7%90%86/"/>
-    
-    
-      <category term="cpu" scheme="http://www.twosee.cn/tags/cpu/"/>
-    
-      <category term="memory" scheme="http://www.twosee.cn/tags/memory/"/>
-    
-      <category term="disk" scheme="http://www.twosee.cn/tags/disk/"/>
-    
-      <category term="network" scheme="http://www.twosee.cn/tags/network/"/>
+      <category term="pdo" scheme="http://www.twosee.cn/tags/pdo/"/>
     
   </entry>
   
