@@ -19,16 +19,16 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="swoole,mysql">
+    <meta name="keywords" content="mysql,swoole">
     <meta name="description" content="大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 为什么不要使用存储过程 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我">
-<meta name="keywords" content="swoole,mysql">
+<meta name="keywords" content="mysql,swoole">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Swoole中实现MySQL存储过程">
 <meta property="og:url" content="http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 为什么不要使用存储过程 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-16T16:06:13.461Z">
+<meta property="og:updated_time" content="2018-07-16T16:06:50.182Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Swoole中实现MySQL存储过程">
 <meta name="twitter:description" content="大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 为什么不要使用存储过程 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我">
@@ -195,6 +195,7 @@
 <h2 id="fetch-mode"><a href="#fetch-mode" class="headerlink" title="fetch mode"></a>fetch mode</h2><p>一开始先想着和PDO一样给Swoole做一个fetch模式</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'fetch_mode'</span> =&gt; <span class="keyword">true</span>] <span class="comment">//连接配置里加入这个</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$stmt = $db-&gt;prepare(<span class="string">'SELECT `id` FROM `userinfo` LIMIT 2'</span>);</span><br><span class="line">$stmt-&gt;execute(); <span class="comment">// true = success</span></span><br><span class="line">$stmt-&gt;fetch(); <span class="comment">// result-set array 1</span></span><br><span class="line">$stmt-&gt;fetch(); <span class="comment">// result-set array 2</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h2 id="分离client和statement"><a href="#分离client和statement" class="headerlink" title="分离client和statement"></a>分离client和statement</h2><p>加了一个 <code>MYSQL_RESPONSE_BUFFER</code> 宏, 处理了一些代码分离了client和statement的buffer</p>
 <p>并给statement结构上也挂了一个result的zval指针</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    swString *buffer; <span class="comment">/* save the mysql multi responses data */</span></span><br><span class="line">    zval *result; <span class="comment">/* save the zval array result */</span></span><br><span class="line">&#125; mysql_statement;</span><br></pre></td></tr></table></figure>
@@ -233,7 +234,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-07-16T16:06:13.461Z" itemprop="dateUpdated">2018-07-17 00:06:13</time>
+    Last updated: <time datetime="2018-07-16T16:06:50.182Z" itemprop="dateUpdated">2018-07-17 00:06:50</time>
 </span><br>
 
 
@@ -278,7 +279,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/&title=《在Swoole中实现MySQL存储过程》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/&title=《在Swoole中实现MySQL存储过程》 — TWO SEE&source=大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的m..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -448,7 +449,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/&title=《在Swoole中实现MySQL存储过程》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/&title=《在Swoole中实现MySQL存储过程》 — TWO SEE&source=大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的m..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
