@@ -123,7 +123,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="搜尋">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -155,6 +155,52 @@
 <div class="container body-wrap">
 
     <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-tcp-nodelay"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-09-16 23:32:08" datetime="2018-09-16T15:32:08.000Z"  itemprop="datePublished">2018-09-16</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/09/16/tcp-nodelay/">用0.04秒看出大佬的网络编程基本功素养</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>  事情是这样的, 最近在做Swoole的Websocket的底层代码优化, 和编写更多的单元测试来保证代码正确和功能的稳定性, 写了很多高质量的”混沌”测试, 好吧, 其实并不是那么混沌, 只是这个词眼看起来很帅.<br>以往的unit tests更像是一些带着assert的examples, 加之phpt的测试风格, 顶多再来个EXPECT(F/REGEX)的预期输出对比, 只能测试出这个功能能否跑通, 并没有覆盖到功能的健壮性.而每当底层出现BUG接着我们很快就发现了原因时, 都会感叹单元测试不够全面和完善.<br>  所以在新写的测试中, 我尽量引入随机数据和一定量的并发压力来简单的模拟各种情况, 在自动化的单元测试中这样的做法已经是权衡了测试敏捷和健全的最优解了, 比如以下这个名为<code>websocket-fin</code>的测试:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">$count = <span class="number">0</span>;</span><br><span class="line">$pm = <span class="keyword">new</span> ProcessManager;</span><br><span class="line">$pm-&gt;parentFunc = <span class="function"><span class="keyword">function</span> <span class="params">(int $pid)</span> <span class="title">use</span> <span class="params">($pm, &amp;$count)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> ($c = MAX_CONCURRENCY; $c--;) &#123;</span><br><span class="line">        go(<span class="function"><span class="keyword">function</span> <span class="params">()</span> <span class="title">use</span> <span class="params">($pm, &amp;$count)</span> </span>&#123;</span><br><span class="line">            $cli = <span class="keyword">new</span> \Swoole\Coroutine\Http\Client(<span class="string">'127.0.0.1'</span>, $pm-&gt;getFreePort());</span><br><span class="line">            $cli-&gt;set([<span class="string">'timeout'</span> =&gt; <span class="number">5</span>]);</span><br><span class="line">            $ret = $cli-&gt;upgrade(<span class="string">'/'</span>);</span><br><span class="line">            assert($ret);</span><br><span class="line">            $rand_list = [];</span><br><span class="line">            $times = MAX_REQUESTS;</span><br><span class="line">            <span class="keyword">for</span> ($n = $times; $n--;) &#123;</span><br><span class="line">                $rand = openssl_random_pseudo_bytes(mt_rand(<span class="number">0</span>, <span class="number">1280</span>));</span><br><span class="line">                $rand_list[] = $rand;</span><br><span class="line">                $opcode = $n === $times - <span class="number">1</span> ? WEBSOCKET_OPCODE_TEXT : WEBSOCKET_OPCODE_CONTINUATION;</span><br><span class="line">                $finish = $n === <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (mt_rand(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">                    $frame = <span class="keyword">new</span> swoole_websocket_frame;</span><br><span class="line">                    $frame-&gt;opcode = $opcode;</span><br><span class="line">                    $frame-&gt;data = $rand;</span><br><span class="line">                    $frame-&gt;finish = $finish;</span><br><span class="line">                    $ret = $cli-&gt;push($frame);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    $ret = $cli-&gt;push($rand, $opcode, $finish);</span><br><span class="line">                &#125;</span><br><span class="line">                assert($ret);</span><br><span class="line">            &#125;</span><br><span class="line">            $frame = $cli-&gt;recv();</span><br><span class="line">            <span class="keyword">if</span> (assert($frame-&gt;data === implode(<span class="string">''</span>, $rand_list))) &#123;</span><br><span class="line">                $count++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    swoole_event_wait();</span><br><span class="line">    assert($count === MAX_CONCURRENCY);</span><br><span class="line">    $pm-&gt;kill();</span><br><span class="line">&#125;;</span><br><span class="line">$pm-&gt;childFunc = <span class="function"><span class="keyword">function</span> <span class="params">()</span> <span class="title">use</span> <span class="params">($pm)</span> </span>&#123;</span><br><span class="line">    $serv = <span class="keyword">new</span> swoole_websocket_server(<span class="string">'127.0.0.1'</span>, $pm-&gt;getFreePort(), mt_rand(<span class="number">0</span>, <span class="number">1</span>) ? SWOOLE_BASE : SWOOLE_PROCESS);</span><br><span class="line">    $serv-&gt;set([</span><br><span class="line">        <span class="string">'log_file'</span> =&gt; <span class="string">'/dev/null'</span></span><br><span class="line">    ]);</span><br><span class="line">    $serv-&gt;on(<span class="string">'WorkerStart'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> <span class="title">use</span> <span class="params">($pm)</span> </span>&#123;</span><br><span class="line">        $pm-&gt;wakeup();</span><br><span class="line">    &#125;);</span><br><span class="line">    $serv-&gt;on(<span class="string">'Message'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(swoole_websocket_server $serv, swoole_websocket_frame $frame)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mt_rand(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">            $serv-&gt;push($frame-&gt;fd, $frame);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $serv-&gt;push($frame-&gt;fd, $frame-&gt;data, $frame-&gt;opcode, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    $serv-&gt;start();</span><br><span class="line">&#125;;</span><br><span class="line">$pm-&gt;childFirst();</span><br><span class="line">$pm-&gt;run();</span><br></pre></td></tr></table></figure>
+    
+
+        <a href="/2018/09/16/tcp-nodelay/" class="post-more waves-effect waves-button">
+            閱讀全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nagle/">nagle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodelay/">nodelay</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tcp/">tcp"</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
     
         <li class="post-list-item fade">
             <article id="post-custom-zend-object-hack-way"
@@ -195,7 +241,7 @@
     
 
         <a href="/2018/07/17/custom-zend-object-hack-way/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -247,7 +293,7 @@
     
 
         <a href="/2018/07/16/mysql-procedure-implementation-in-swoole/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -299,7 +345,7 @@
     
 
         <a href="/2018/07/15/php-zend-arg-info/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -347,7 +393,7 @@
     
 
         <a href="/2018/06/13/Ubuntu-PHP/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -395,7 +441,7 @@
     
 
         <a href="/2018/05/21/coroutine-boil-water/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -452,7 +498,7 @@
     
 
         <a href="/2018/05/15/mysql-protocol/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -501,7 +547,7 @@
     
 
         <a href="/2018/05/12/mysql-status-check/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -557,7 +603,7 @@
     
 
         <a href="/2018/05/11/swoole-mysql-analyzation-1/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -602,7 +648,7 @@
     
 
         <a href="/2018/04/09/why-not-http2/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -662,7 +708,7 @@
     
 
         <a href="/2018/04/06/mask-code/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -711,7 +757,7 @@
     
 
         <a href="/2018/03/18/stronger-shell/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -768,7 +814,7 @@
     
 
         <a href="/2018/03/04/php-coredump-in-docker/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -823,13 +869,66 @@
     
 
         <a href="/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/phpstorm/">phpstorm</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            閱讀全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
@@ -879,66 +978,13 @@
     
 
         <a href="/2018/01/06/php-app-security/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-mysql-injection"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-    
-
-        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
@@ -983,7 +1029,7 @@
     
 
         <a href="/2018/01/04/PHP-callback/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1030,7 +1076,7 @@
     
 
         <a href="/2018/01/04/AI-everyone-plus/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1075,7 +1121,7 @@
     
 
         <a href="/2018/01/04/AI-everyone/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1136,7 +1182,7 @@
     
 
         <a href="/2018/01/04/PHP-Next-JIT/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1194,7 +1240,7 @@
     
 
         <a href="/2018/01/04/THE-NEXT-GENERATION-OF-PHP/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1254,7 +1300,7 @@
     
 
         <a href="/2017/12/30/how-to-use-strong-type-in-pdo/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1313,7 +1359,7 @@
     
 
         <a href="/2017/12/28/how-slow-is-disk-and-network/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1360,7 +1406,7 @@
     
 
         <a href="/2017/12/28/test/" class="post-more waves-effect waves-button">
-            Continue reading...
+            閱讀全文…
         </a>
     </div>
     
@@ -1391,7 +1437,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>本部落格係採用<a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh_TW">創用 CC 姓名標示 4.0 國際 授權條款授權</a></span>
         </p>
     </div>
     <div class="bottom">
