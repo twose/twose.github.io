@@ -157,6 +157,56 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-what-are-zend-read-property-doing"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-09-23 21:06:26" datetime="2018-09-23T13:06:26.000Z"  itemprop="datePublished">2018-09-23</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/09/23/what-are-zend-read-property-doing/">PHP内核浅析: zend_read_property在键值不存在的时候究竟返回了什么?</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p><code>zend_read_property</code>返回了什么, 其实我从前也未深究, 它的返回值类型是一个<code>zval *</code>, 所以很理所当然的, 大家都会认为如果获取了一个不存在的属性, 它的返回值就是NULL.</p>
+<p>比如<code>zend_hash_str_find</code>这个API, 它会从<code>HashTable</code>里寻找对应的bucket, 然后获取它的值, 如果这个值不存在, 就返回NULL.</p>
+<p>而且我们清楚, 不管是array, 还是object的properties, 都是用<code>HashTable</code>来存储的, 那么不存在的时候返回NULL, 也是理所当然.</p>
+<p>这里还要注意一点, 我所指的不存在, 是在<code>HashTable</code>里没有这个bucket, 举个例子:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$foo = [<span class="string">'bar'</span> =&gt; <span class="keyword">null</span>];</span><br><span class="line">var_dump(<span class="keyword">isset</span>($foo[<span class="string">'bar'</span>])); <span class="comment">// false</span></span><br><span class="line">var_dump(array_key_exists(<span class="string">'bar'</span>, $foo)); <span class="comment">// true</span></span><br><span class="line"><span class="keyword">unset</span>($foo[<span class="string">'bar'</span>]);</span><br><span class="line">var_dump(array_key_exists(<span class="string">'bar'</span>, $foo)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>这样可以很清楚的发现区别了, 在置一个键为<code>null</code>的时候, 实际上是在这个<code>bucket</code>上放了一个<code>type = null</code>的<code>zval</code>,  而当使用<code>unset</code>的时候, 才是真正的把这个<code>bucket</code>从<code>HashTable</code>上删去了, 也就是说这个键和存储键值的容器都不存在了. 所以<code>unset</code>真是个很暴力的连根拔除的操作.</p>
+    
+
+        <a href="/2018/09/23/what-are-zend-read-property-doing/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zend/">zend</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-tcp-nodelay"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -884,59 +934,6 @@
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-mysql-injection"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
-<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
-<ol>
-<li>BIGINT等数据类型溢出</li>
-<li>xpath语法错误</li>
-<li>concat+rand()+group_by()导致主键重复</li>
-<li>一些特性</li>
-</ol>
-<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
-    
-
-        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
-            Continue reading...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
             <article id="post-php-app-security"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -985,6 +982,59 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-mysql-injection"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/06/mysql-injection/">[转] Mysql注入后利用</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+    
+
+        <a href="/2018/01/06/mysql-injection/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 
     </div>
     
