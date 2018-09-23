@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="zend_read_property返回了什么, 其实我从前也未深究, 它的返回值类型是一个zval *, 所以很理所当然的, 大家都会认为如果获取了一个不存在的属性, 它的返回值就是NULL. 比如zend_hash_str_find这个API, 它会从HashTable里寻找对应的bucket, 然后获取它的值, 如果这个值不存在, 就返回NULL. 而且我们清楚, 不管是array, 还是o">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-23T13:53:00.249Z">
+<meta property="og:updated_time" content="2018-09-23T13:55:39.663Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP内核浅析: zend_read_property在键值不存在的时候究竟返回了什么?">
 <meta name="twitter:description" content="zend_read_property返回了什么, 其实我从前也未深究, 它的返回值类型是一个zval *, 所以很理所当然的, 大家都会认为如果获取了一个不存在的属性, 它的返回值就是NULL. 比如zend_hash_str_find这个API, 它会从HashTable里寻找对应的bucket, 然后获取它的值, 如果这个值不存在, 就返回NULL. 而且我们清楚, 不管是array, 还是o">
@@ -207,7 +207,8 @@
 <p>这时候我终于知道去看一眼PHP源码了…马上翻到<code>zend_std_read_property</code>这个标准的handler看一眼:</p>
 <p>入眼就能看到一个:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Z_TYPE_P(rv) != IS_UNDEF) &#123;</span><br><span class="line">    retval = rv;</span><br><span class="line">    <span class="keyword">if</span> (!Z_ISREF_P(rv) &amp;&amp;</span><br><span class="line">        (type == BP_VAR_W || type == BP_VAR_RW  || type == BP_VAR_UNSET)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (UNEXPECTED(Z_TYPE_P(rv) != IS_OBJECT)) &#123;</span><br><span class="line">            zend_error(E_NOTICE, <span class="string">"Indirect modification of overloaded property %s::$%s has no effect"</span>, ZSTR_VAL(zobj-&gt;ce-&gt;name), ZSTR_VAL(name));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    retval = &amp;EG(uninitialized_zval);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>潜意识是没错了…的确有一个标记为UNDEF的情况, 但是zend_std_read_property对其进行了包装了, 返回了一个<code>EG(uninitialized_zval)</code>的指针, 这是个什么东西?</p>
+<p>潜意识是没错了…在property的unset操作中, unset一个属性, 应该是有可能会将它标记为UNDEF的, 因为一般一个类的实例对象的HashTable是不变动的, unset其实是破坏了其结构的, 标记为UNDEF应该是一种优化.</p>
+<p>但是zend_std_read_property对其进行了包装了, 返回了一个<code>EG(uninitialized_zval)</code>的指针, 这是个什么东西?</p>
 <p>这其实就是个<code>type = null</code>的zval, 比较秀的是, 它是一个挂在<code>executor_globals</code>上的全局量, 便于随时取用作为返回值, 它被设计为只读的, 所以我们的千万不能操作它…</p>
 <p>比如mysqli扩展中就用到了它来判断, 规避了非法的写操作:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (value != &amp;EG(uninitialized_zval)) &#123;</span><br><span class="line">    convert_to_boolean(value);</span><br><span class="line">    ret = Z_TYPE_P(value) == IS_TRUE ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -225,7 +226,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-09-23T13:53:00.249Z" itemprop="dateUpdated">2018-09-23 21:53:00</time>
+    Last updated: <time datetime="2018-09-23T13:55:39.663Z" itemprop="dateUpdated">2018-09-23 21:55:39</time>
 </span><br>
 
 
