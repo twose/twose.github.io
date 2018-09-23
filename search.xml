@@ -32,6 +32,10 @@
 <p>所以我们应该纠正为(注释是美德)</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// NOTICE: if user unset the property, zend_read_property will return uninitialized_zval instead of NULL pointer</span></span><br><span class="line"><span class="keyword">if</span> (unlikely(property == &amp;EG(uninitialized_zval)))</span><br><span class="line">&#123;</span><br><span class="line">    property = zend_read_property(class_ptr, obj, s, len, silent, &amp;rv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个包装是很好的, 保证了API返回的一定是一个<strong>可读的zval</strong>, 但是PHP底层的文档实在是太少了, 尤其是中国的开发者, 很难在网上找到任何有价值的东西, 需要一定的源码阅读能力和耐心才行, 否则经常会遇上这种非直觉的设计, 就是地狱难度的开发.</p>
+<blockquote>
+<p>该API起码自PHP7起就一直如此设计, 使用<code>git blame</code>来查看API变动也是良好的习惯之一, 因为ZendVM经常会有一些你意想不到的API改动…</p>
+<p><a href="https://github.com/php/php-src/blob/2bf8f29d16e6875e65eaa538a9740aac31ce650a/Zend/zend_object_handlers.c" target="_blank" rel="noopener">https://github.com/php/php-src/blob/2bf8f29d16e6875e65eaa538a9740aac31ce650a/Zend/zend_object_handlers.c</a></p>
+</blockquote>
 ]]></content>
       
         
