@@ -20,18 +20,17 @@
     
     
     <meta name="keywords" content="PHP">
-    <meta name="description" content="前一部分内容抄自振宇哥的博客: 旷绝一世, 在此基础后续扩写一部分 我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中： 12345ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)//名字,unused,引用返回,参数个数  ZEND_ARG_INFO(0, host)  ZEND_ARG_INFO(0, port">
-<meta name="keywords" content="PHP">
+    <meta name="description" content="前一部分内容抄自振宇哥的博客: 旷绝一世, 在此基础后续扩写一部分 我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中： 12345ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)&#x2F;&#x2F;名字,unused,引用返回,参数个数  ZEND_ARG_INFO(0, host)  ZEND_ARG_IN">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP内核 - ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX 分析">
 <meta property="og:url" content="http://www.twosee.cn/2018/07/15/php-zend-arg-info/index.html">
 <meta property="og:site_name" content="TWO SEE">
-<meta property="og:description" content="前一部分内容抄自振宇哥的博客: 旷绝一世, 在此基础后续扩写一部分 我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中： 12345ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)//名字,unused,引用返回,参数个数  ZEND_ARG_INFO(0, host)  ZEND_ARG_INFO(0, port">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-16T16:07:09.071Z">
+<meta property="og:description" content="前一部分内容抄自振宇哥的博客: 旷绝一世, 在此基础后续扩写一部分 我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中： 12345ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)&#x2F;&#x2F;名字,unused,引用返回,参数个数  ZEND_ARG_INFO(0, host)  ZEND_ARG_IN">
+<meta property="article:published_time" content="2018-07-15T02:38:48.000Z">
+<meta property="article:modified_time" content="2018-07-16T16:07:09.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="PHP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PHP内核 - ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX 分析">
-<meta name="twitter:description" content="前一部分内容抄自振宇哥的博客: 旷绝一世, 在此基础后续扩写一部分 我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中： 12345ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)//名字,unused,引用返回,参数个数  ZEND_ARG_INFO(0, host)  ZEND_ARG_INFO(0, port">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -42,7 +41,7 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body>
     <div id="loading" class="active"></div>
@@ -182,13 +181,12 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             <p>前一部分内容抄自振宇哥的博客: <a href="http://kuangjue.com/article/70" target="_blank" rel="noopener">旷绝一世</a>, 在此基础后续扩写一部分</p>
 <p>我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)//名字,unused,引用返回,参数个数</span><br><span class="line">  ZEND_ARG_INFO(0, host)</span><br><span class="line">  ZEND_ARG_INFO(0, port)</span><br><span class="line">  ZEND_ARG_INFO(0, sock_type)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)&#x2F;&#x2F;名字,unused,引用返回,参数个数</span><br><span class="line">  ZEND_ARG_INFO(0, host)</span><br><span class="line">  ZEND_ARG_INFO(0, port)</span><br><span class="line">  ZEND_ARG_INFO(0, sock_type)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure>
 <p>这个宏组合是用来定义函数的参数，我们不妨去跟下<code>ZEND_BEGIN_ARG_INFO_EX</code> 与<code>ZEND_END_ARG_INFO</code>的定义。<br>定义在zend_API.h文件中，<code>ZEND_BEGIN_ARG_INFO_EX</code>的定义为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_BEGIN_ARG_INFO_EX(name, _unused, return_reference, required_num_args)  \</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info name[] = &#123; \</span><br><span class="line">   &#123;(<span class="keyword">const</span> <span class="keyword">char</span>*)(<span class="keyword">zend_uintptr_t</span>)(required_num_args), <span class="number">0</span>, return_reference, <span class="number">0</span> &#125;,</span><br></pre></td></tr></table></figure>
 <p>ZEND_END_ARG_INFO的定义为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ARG_INFO(pass_by_ref, name)&#123; #name, 0, pass_by_ref, 0&#125;,</span></span><br></pre></td></tr></table></figure>
-<p>那么组合起来变成c代码就是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info arginfo_swoole_server_listen[] = &#123; \</span><br><span class="line">   &#123;<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span> &#125;,</span><br><span class="line">   &#123; host, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; port, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; sock_type, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
+<p>那么组合起来变成c代码就是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info arginfo_swoole_server_listen[] = &#123; \</span><br><span class="line">   &#123;<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span> &#125;,</span><br><span class="line">   &#123; host, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; port, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; sock_type, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><a id="more"></a></p>
 <p>现在看来就是定义了一个zend_internal_arg_info结构数组，在zend/zend_compile.h文件中定义：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">zend_internal_arg_info</span> &#123;</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;      <span class="comment">//参数名称</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *class_name;  <span class="comment">//当参数类型为类时，指定类的名称</span></span><br><span class="line">    zend_uchar type_hint;    <span class="comment">//参数类型是否为数组</span></span><br><span class="line">    zend_uchar pass_by_reference;  <span class="comment">//是否设置为引用，即&amp;</span></span><br><span class="line">    zend_bool allow_null;   <span class="comment">//是否允许设置为空</span></span><br><span class="line">    zend_bool is_variadic;<span class="comment">//**是否为可变参数**</span></span><br><span class="line">&#125; zend_internal_arg_info;</span><br></pre></td></tr></table></figure>
 <p>PHP7中还加入了返回值类型声明这一新特性, 但是到目前为止, 各种扩展几乎没有添加返回值声明的意思, 但是这一特性对于IDE提示的生成非常有帮助</p>
@@ -205,7 +203,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-07-16T16:07:09.071Z" itemprop="dateUpdated">2018-07-17 00:07:09</time>
+    Last updated: <time datetime="2018-07-16T16:07:09.000Z" itemprop="dateUpdated">2018-07-17 00:07:09</time>
 </span><br>
 
 
@@ -230,7 +228,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li></ul>
 
 
             
@@ -397,11 +395,11 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>Twosee &copy; 2003 - 2019</span>
+        <p><span>Twosee &copy; 2003 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>

@@ -21,13 +21,11 @@
     
     <meta name="keywords" content="ai">
     <meta name="description" content="2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年">
-<meta name="keywords" content="ai">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[转] 人人都可以做深度学习应用 入门篇">
 <meta property="og:url" content="http://www.twosee.cn/2018/01/04/AI-everyone/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog-10039692.file.myqcloud.com/1487834861894_8010_1487834857060.png">
 <meta property="og:image" content="https://blog-10039692.file.myqcloud.com/1487834872575_2690_1487834867777.png">
 <meta property="og:image" content="https://blog-10039692.file.myqcloud.com/1487834879897_8519_1487834875505.png">
@@ -42,10 +40,11 @@
 <meta property="og:image" content="https://blog-10039692.file.myqcloud.com/1487835098838_424_1487835093742.png">
 <meta property="og:image" content="https://blog-10039692.file.myqcloud.com/1487835204779_9711_1487835200218.png">
 <meta property="og:image" content="https://blog-10039692.file.myqcloud.com/1487835221851_3503_1487835216851.png">
-<meta property="og:updated_time" content="2018-05-12T03:19:13.477Z">
+<meta property="article:published_time" content="2018-01-03T21:38:41.000Z">
+<meta property="article:modified_time" content="2018-05-12T03:19:13.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="ai">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[转] 人人都可以做深度学习应用 入门篇">
-<meta name="twitter:description" content="2017年围棋界发生了一件比较重要事，Master（Alphago）以60连胜横扫天下，击败各路世界冠军，人工智能以气势如虹的姿态出现在我们人类的面前。围棋曾经一度被称为“人类智慧的堡垒”，如今，这座堡垒也随之成为过去。从2016年三月份AlphaGo击败李世石开始，AI全面进入我们大众的视野，对于它的讨论变得更为火热起来，整个业界普遍认为，它很可能带来下一次科技革命，并且，在未来可预见的10多年">
 <meta name="twitter:image" content="https://blog-10039692.file.myqcloud.com/1487834861894_8010_1487834857060.png">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
@@ -57,7 +56,7 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body>
     <div id="loading" class="active"></div>
@@ -392,7 +391,7 @@
 <p>更详细的安装说明：<a href="https://www.tensorflow.org/install/install_linux" target="_blank" rel="noopener">Installing TensorFlow on Ubuntu</a></p>
 <p><strong>（3）TensorFlow环境测试运行</strong></p>
 <p>测试是否安装成功，可以采用官方的提供的一个短小的例子，demo生成了一些三维数据, 然后用一个平面拟合它们（官网的例子采用的初始化变量的函数是initialize_all_variables，该函数在新版本里已经被废弃了）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line">#coding=utf-8</span><br><span class="line"></span><br><span class="line">import tensorflow as tf</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># 使用 NumPy 生成假数据(phony data), 总共 100 个点.</span><br><span class="line">x_data = np.float32(np.random.rand(2, 100)) # 随机输入</span><br><span class="line">y_data = np.dot([0.100, 0.200], x_data) + 0.300</span><br><span class="line"></span><br><span class="line"># 构造一个线性模型</span><br><span class="line"># </span><br><span class="line">b = tf.Variable(tf.zeros([1]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0))</span><br><span class="line">y = tf.matmul(W, x_data) + b</span><br><span class="line"></span><br><span class="line"># 最小化方差</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_data))</span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(0.5)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"># 初始化变量,旧函数（initialize_all_variables）已经被废弃，替换为新函数</span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line"># 启动图 (graph)</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"># 拟合平面</span><br><span class="line">for step in xrange(0, 201):</span><br><span class="line">    sess.run(train)</span><br><span class="line">    if step % 20 == 0:</span><br><span class="line">        print step, sess.run(W), sess.run(b)</span><br><span class="line"></span><br><span class="line"># 得到最佳拟合结果 W: [[0.100  0.200]], b: [0.300]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;python</span><br><span class="line">#coding&#x3D;utf-8</span><br><span class="line"></span><br><span class="line">import tensorflow as tf</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># 使用 NumPy 生成假数据(phony data), 总共 100 个点.</span><br><span class="line">x_data &#x3D; np.float32(np.random.rand(2, 100)) # 随机输入</span><br><span class="line">y_data &#x3D; np.dot([0.100, 0.200], x_data) + 0.300</span><br><span class="line"></span><br><span class="line"># 构造一个线性模型</span><br><span class="line"># </span><br><span class="line">b &#x3D; tf.Variable(tf.zeros([1]))</span><br><span class="line">W &#x3D; tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0))</span><br><span class="line">y &#x3D; tf.matmul(W, x_data) + b</span><br><span class="line"></span><br><span class="line"># 最小化方差</span><br><span class="line">loss &#x3D; tf.reduce_mean(tf.square(y - y_data))</span><br><span class="line">optimizer &#x3D; tf.train.GradientDescentOptimizer(0.5)</span><br><span class="line">train &#x3D; optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"># 初始化变量,旧函数（initialize_all_variables）已经被废弃，替换为新函数</span><br><span class="line">init &#x3D; tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line"># 启动图 (graph)</span><br><span class="line">sess &#x3D; tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"># 拟合平面</span><br><span class="line">for step in xrange(0, 201):</span><br><span class="line">    sess.run(train)</span><br><span class="line">    if step % 20 &#x3D;&#x3D; 0:</span><br><span class="line">        print step, sess.run(W), sess.run(b)</span><br><span class="line"></span><br><span class="line"># 得到最佳拟合结果 W: [[0.100  0.200]], b: [0.300]</span><br></pre></td></tr></table></figure>
 <p>运行的结果类似如下：</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
@@ -425,7 +424,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-05-12T03:19:13.477Z" itemprop="dateUpdated">2018-05-12 11:19:13</time>
+    Last updated: <time datetime="2018-05-12T03:19:13.000Z" itemprop="dateUpdated">2018-05-12 11:19:13</time>
 </span><br>
 
 
@@ -450,7 +449,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/">ai</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/" rel="tag">ai</a></li></ul>
 
 
             
@@ -615,11 +614,11 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>Twosee &copy; 2003 - 2019</span>
+        <p><span>Twosee &copy; 2003 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>

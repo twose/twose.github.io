@@ -20,18 +20,19 @@
     
     
     <meta name="keywords" content="php,phpstorm,ide">
-    <meta name="description" content="问题描述因此，在PHPDoc中，可以在成员变量声明之上指定@var来提示其类型。然后一个IDE，例如PHPEd将知道它正在使用什么类型的对象，并且能够为该变量提供代码洞察。 123456&amp;lt;?php class Test &amp;#123; /** @var SomeObj */ private $someObjInstance; &amp;#125; 这样做很好，直到我需要对一组对象做同样的事情，以便在以">
-<meta name="keywords" content="php,phpstorm,ide">
+    <meta name="description" content="问题描述因此，在PHPDoc中，可以在成员变量声明之上指定@var来提示其类型。然后一个IDE，例如PHPEd将知道它正在使用什么类型的对象，并且能够为该变量提供代码洞察。 123456&lt;?php class Test &amp;#123; &#x2F;** @var SomeObj *&#x2F; private $someObjInstance; &amp;#125; 这样做很好，直到我需要对一组对象做同样的事情，以便在以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[译] PHPDoc类型提示数组的对象">
 <meta property="og:url" content="http://www.twosee.cn/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/index.html">
 <meta property="og:site_name" content="TWO SEE">
-<meta property="og:description" content="问题描述因此，在PHPDoc中，可以在成员变量声明之上指定@var来提示其类型。然后一个IDE，例如PHPEd将知道它正在使用什么类型的对象，并且能够为该变量提供代码洞察。 123456&amp;lt;?php class Test &amp;#123; /** @var SomeObj */ private $someObjInstance; &amp;#125; 这样做很好，直到我需要对一组对象做同样的事情，以便在以">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-12T03:20:11.732Z">
+<meta property="og:description" content="问题描述因此，在PHPDoc中，可以在成员变量声明之上指定@var来提示其类型。然后一个IDE，例如PHPEd将知道它正在使用什么类型的对象，并且能够为该变量提供代码洞察。 123456&lt;?php class Test &amp;#123; &#x2F;** @var SomeObj *&#x2F; private $someObjInstance; &amp;#125; 这样做很好，直到我需要对一组对象做同样的事情，以便在以">
+<meta property="article:published_time" content="2018-01-28T13:28:29.000Z">
+<meta property="article:modified_time" content="2018-05-12T03:20:11.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="phpstorm">
+<meta property="article:tag" content="ide">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[译] PHPDoc类型提示数组的对象">
-<meta name="twitter:description" content="问题描述因此，在PHPDoc中，可以在成员变量声明之上指定@var来提示其类型。然后一个IDE，例如PHPEd将知道它正在使用什么类型的对象，并且能够为该变量提供代码洞察。 123456&amp;lt;?php class Test &amp;#123; /** @var SomeObj */ private $someObjInstance; &amp;#125; 这样做很好，直到我需要对一组对象做同样的事情，以便在以">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -42,7 +43,7 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body>
     <div id="loading" class="active"></div>
@@ -193,7 +194,7 @@
 <p>那么，有没有办法声明一个PHPDoc标签来指定成员变量是<code>SomeObj</code>的数组？ <code>@var</code>数组是不够的，例如<code>@var array(SomeObj)</code>似乎没有效果。</p>
 <h2 id="最佳解决方案"><a href="#最佳解决方案" class="headerlink" title="最佳解决方案"></a>最佳解决方案</h2><p>在JetBrains的PhpStorm IDE中，您可以使用<code>/** @var SomeObj[] */</code>，例如：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> SomeObj[]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSomeObjects</span><span class="params">()</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="https://segmentfault.com/link.php?target=http%3A//phpdoc.org/docs/latest/references/phpdoc/types.html%23arrays" target="_blank" rel="noopener">phpdoc documentation</a>推荐这种方法：</p>
+<p><a href="https://segmentfault.com/link.php?target=http%3A//phpdoc.org/docs/latest/references/phpdoc/types.html%23arrays">phpdoc documentation</a>推荐这种方法：</p>
 <blockquote>
 <p>specified containing a single type, the Type definition informs the reader of the type of each array element. Only one Type is then expected as element for a given array.</p>
 <p>Example: <code>@return int[]</code></p>
@@ -235,13 +236,13 @@
 <p>最后你完成了看起来很难看看起来像大锤打破一个坚果？不是真的，因为你熟悉那些接口和干净的代码。记住：你的源代码是一次写/读很多。</p>
 <p>如果IDE的代码完成无法使用此方法，请切换到更好的(例如IntelliJ IDEA，PhpStorm，Netbeans)或在IDE生成器的问题跟踪器上提交功能请求。</p>
 <p>感谢Christian Weiss(来自德国)担任我的教练，并教我如此伟大的东西。 PS：在邢会见我和他</p>
-<h2 id="第六种方案"><a href="#第六种方案" class="headerlink" title="第六种方案"></a>第六种方案</h2><p><a href="https://segmentfault.com/link.php?target=https%3A//github.com/php-fig/fig-standards/blob/211063eed7f4d9b4514b728d7b1810d9b3379dd1/proposed/phpdoc.md%23collections" target="_blank" rel="noopener">PSR-5: PHPDoc</a>提出了一种形式的Generics-style表示法。</p>
+<h2 id="第六种方案"><a href="#第六种方案" class="headerlink" title="第六种方案"></a>第六种方案</h2><p><a href="https://segmentfault.com/link.php?target=https%3A//github.com/php-fig/fig-standards/blob/211063eed7f4d9b4514b728d7b1810d9b3379dd1/proposed/phpdoc.md%23collections">PSR-5: PHPDoc</a>提出了一种形式的Generics-style表示法。</p>
 <h3 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Type[]</span><br><span class="line">Type&lt;Type&gt;</span><br><span class="line">Type&lt;Type[, Type]...&gt;</span><br><span class="line">Type&lt;Type[|Type]...&gt;</span><br></pre></td></tr></table></figure>
 <p>集合中的值可能甚至是另一个数组，甚至另一个集合。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Type&lt;Type&lt;Type&gt;&gt;</span><br><span class="line">Type&lt;Type&lt;Type[, Type]...&gt;&gt;</span><br><span class="line">Type&lt;Type&lt;Type[|Type]...&gt;&gt;</span><br></pre></td></tr></table></figure>
 <h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">$x = [<span class="keyword">new</span> Name()];</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $x Name[] */</span></span><br><span class="line"></span><br><span class="line">$y = <span class="keyword">new</span> Collection([<span class="keyword">new</span> Name()]);</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $y Collection&lt;Name&gt; */</span></span><br><span class="line"></span><br><span class="line">$a = <span class="keyword">new</span> Collection(); </span><br><span class="line">$a[] = <span class="keyword">new</span> Model_User(); </span><br><span class="line">$a-&gt;resetChanges(); </span><br><span class="line">$a[<span class="number">0</span>]-&gt;name = <span class="string">"George"</span>; </span><br><span class="line">$a-&gt;echoChanges();</span><br><span class="line"><span class="comment">/* <span class="doctag">@var</span> $a Collection&lt;Model_User&gt; */</span></span><br></pre></td></tr></table></figure>
 <p>注意：如果您期望IDE执行代码辅助，那么另一个问题是IDE是否支持PHPDoc Generic-style集合符号。</p>
-<p>从我的答案到<a href="https://segmentfault.com/link.php?target=https%3A//stackoverflow.com/a/39384337/934739" target="_blank" rel="noopener">this question</a>。</p>
+<p>从我的答案到<a href="https://segmentfault.com/link.php?target=https%3A//stackoverflow.com/a/39384337/934739">this question</a>。</p>
 <h2 id="第七种方案"><a href="#第七种方案" class="headerlink" title="第七种方案"></a>第七种方案</h2><p>在NetBeans 7.0(也可能较低)中，您可以声明返回类型“具有文本对象的数组”，就像<code>@return Text</code>一样，并且代码提示将起作用：</p>
 <p>编辑：使用@Bob Fanger建议更新示例</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * get all Tests</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Test|Array $tests</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllTexts</span><span class="params">()</span></span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">array</span>(<span class="keyword">new</span> Test(), <span class="keyword">new</span> Test());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -273,7 +274,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-05-12T03:20:11.732Z" itemprop="dateUpdated">2018-05-12 11:20:11</time>
+    Last updated: <time datetime="2018-05-12T03:20:11.000Z" itemprop="dateUpdated">2018-05-12 11:20:11</time>
 </span><br>
 
 
@@ -298,7 +299,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/phpstorm/">phpstorm</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/phpstorm/" rel="tag">phpstorm</a></li></ul>
 
 
             
@@ -463,11 +464,11 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>Twosee &copy; 2003 - 2019</span>
+        <p><span>Twosee &copy; 2003 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>

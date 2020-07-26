@@ -26,10 +26,8 @@
 <meta property="og:url" content="http://www.twosee.cn/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="show you my code">
-<meta property="og:locale" content="zh-Hans">
+<meta property="article:author" content="Twosee">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TWO SEE">
-<meta name="twitter:description" content="show you my code">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -40,7 +38,7 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body>
     <div id="loading" class="active"></div>
@@ -157,6 +155,129 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-php8-rfc-named-params"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2020-07-17 18:25:20" datetime="2020-07-17T10:25:20.000Z"  itemprop="datePublished">2020-07-17</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2020/07/17/php8-rfc-named-params/">漫谈PHP8新特性：命名参数</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>本文是对「<a href="https://wiki.php.net/rfc/named_params" target="_blank" rel="noopener">命名参数RFC</a>」的个人解读，先让我们来简单看下RFC的主要内容：</p>
+<p>命名参数特性允许基于参数名称而不是参数位置来传递参数，这使得：</p>
+<ol>
+<li>可以跳过默认值</li>
+<li>参数的传递可与顺序无关</li>
+<li>参数的含义可以自我记录</li>
+</ol>
+<blockquote>
+<p>其实这个特性的RFC早在2013年和2016年就有人建立过了，但一直没有通过或是实施，直到PHP8版本，该RFC终于得到机会再次启用，并且发起人是PHP内核的核心开发者Nikita Popov（nikic），nikic对此做了非常详细的调研，RFC全文字数差不多有三万字（相比于PHP的其它RFC而言已经是相当的多了），该RFC刚开始投票的时候还有一定的悬念（PHP社区的元老级人物对于新特性总是给出反对票），但很快赞同数就远超了2/3多数，目前RFC已投票通过。</p>
+</blockquote>
+<h2 id="命名参数的好处"><a href="#命名参数的好处" class="headerlink" title="命名参数的好处"></a>命名参数的好处</h2><h3 id="允许跳过默认值"><a href="#允许跳过默认值" class="headerlink" title="允许跳过默认值"></a>允许跳过默认值</h3><p>最显著的例子就是：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before</span></span><br><span class="line">htmlspecialchars($string, ENT_COMPAT | ENT_HTML401, ini_get(<span class="string">'default_charset'</span>), <span class="keyword">false</span>);</span><br><span class="line"><span class="comment">// after</span></span><br><span class="line">htmlspecialchars($string, double_encode: <span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
+<p>在没有命名参数特性之前，我们为了设置第四个参数<code>double_encode</code>，不得不给出第二第三个可选参数的默认值，我们可能需要查询文档或是编写冗长的代码，而有了命名参数特性之后，一切都简单了，并且哪怕某个参数的默认值发生了变化，代码也不会受到影响（虽然几乎不存在这样的情况，但某种意义上也是消除了硬编码）。</p>
+<h3 id="参数含义的自我记录及传递顺序无关性"><a href="#参数含义的自我记录及传递顺序无关性" class="headerlink" title="参数含义的自我记录及传递顺序无关性"></a>参数含义的自我记录及传递顺序无关性</h3><p>比如对于某个我们我们不熟的函数（当然实际上来说，array系列函数都不熟的话可能连面试都通不过…）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_fill(value: <span class="number">50</span>, start_index: <span class="number">0</span>, num: <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<p>代码已经包含了对每个入参的意义的表达，并且传参顺序也可以任意改变。</p>
+<p>但我觉得这样的全命名写法一般来说是多此一举，容易造成书写风格的割裂，并且装了插件的编辑器或是IDE都能很好地显示出参数名。</p>
+<p>所以这个特性最大的受益者应该是可选参数特别多或设计不合理的一些API，比如又臭又长的OpenSSL的API：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl_encrypt ( string $data , string $method , string $key [, int $options = <span class="number">0</span> [, string $iv = <span class="string">""</span> [, string &amp;$tag = <span class="keyword">NULL</span> [, string $aad = <span class="string">""</span> [, int $tag_length = <span class="number">16</span> ]]]]] ) : string</span><br></pre></td></tr></table></figure>
+<h3 id="对象属性的初始化"><a href="#对象属性的初始化" class="headerlink" title="对象属性的初始化"></a>对象属性的初始化</h3><p>此外有所受益的是对象属性的初始化：</p>
+<p>其实在早前就有RFC探讨了如何更好地初始化对象属性，以使对象构造更符合人体工程学。写过C++的同学肯定很快就想到了「<a href="https://zh.cppreference.com/w/cpp/language/list_initialization" target="_blank" rel="noopener">初始化列表</a>」，PHP也有人专门为此建立了一个RFC「<a href="https://wiki.php.net/rfc/object-initializer" target="_blank" rel="noopener">对象初始化器</a>」，但是显然专门为此添加一个新语法并不那么值得，以反对票一边倒的结果被拒绝了。但现在我们有了命名参数以后，这个问题自然就解决了：</p>
+<blockquote>
+<p>以下展示还包含了另一个已落地的PHP8新特性，<a href="https://wiki.php.net/rfc/constructor_promotion" target="_blank" rel="noopener">构造函数属性升级</a>，我们可以在声明构造函数的参数的同时将其声明为对象的属性：</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Part of PHP AST representation</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParamNode</span> <span class="keyword">extends</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        public string $name,</span></span></span><br><span class="line"><span class="function"><span class="params">        public ExprNode $default = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        public TypeNode $type = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        public bool $byRef = false,</span></span></span><br><span class="line"><span class="function"><span class="params">        public bool $variadic = false,</span></span></span><br><span class="line"><span class="function"><span class="params">        Location $startLoc = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        Location $endLoc = null</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span> </span>&#123;</span><br><span class="line">        <span class="keyword">parent</span>::__construct($startLoc, $endLoc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> ParamNode(<span class="string">'test'</span>, variadic: <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<p>来看看没有这两个特性之前我们需要以怎样繁琐的方式写出同等的代码吧，我保证你肯定不想按以下方式写代码，除非你已经在用某种代码生成器来帮你完成这一工作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParamNode</span> <span class="keyword">extends</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> string $name;</span><br><span class="line">    <span class="keyword">public</span> ?ExprNode $default;</span><br><span class="line">    <span class="keyword">public</span> ?TypeNode $type;</span><br><span class="line">    <span class="keyword">public</span> bool $byRef;</span><br><span class="line">    <span class="keyword">public</span> bool $variadic;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        string $name,</span></span></span><br><span class="line"><span class="function"><span class="params">        ExprNode $default = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        TypeNode $type = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        bool $byRef = false,</span></span></span><br><span class="line"><span class="function"><span class="params">        bool $variadic = false,</span></span></span><br><span class="line"><span class="function"><span class="params">        Location $startLoc = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        Location $endLoc = null</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;default = $default;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;type = $type;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;byRef = $byRef;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;variadic = $variadic;</span><br><span class="line">        <span class="keyword">parent</span>::__construct($startLoc, $endLoc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> ParamNode(<span class="string">'test'</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<p>或者有的人会选择用数组解决这个问题：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParamNode</span> <span class="keyword">extends</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> string $name;</span><br><span class="line">    <span class="keyword">public</span> ExprNode $default;</span><br><span class="line">    <span class="keyword">public</span> TypeNode $type;</span><br><span class="line">    <span class="keyword">public</span> bool $byRef;</span><br><span class="line">    <span class="keyword">public</span> bool $variadic;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(string $name, array $options = [])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;default = $options[<span class="string">'default'</span>] ?? <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;type = $options[<span class="string">'type'</span>] ?? <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;byRef = $options[<span class="string">'byRef'</span>] ?? <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;variadic = $options[<span class="string">'variadic'</span>] ?? <span class="keyword">false</span>;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">parent</span>::__construct(</span><br><span class="line">            $options[<span class="string">'startLoc'</span>] ?? <span class="keyword">null</span>,</span><br><span class="line">            $options[<span class="string">'endLoc'</span>] ?? <span class="keyword">null</span></span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Usage:</span></span><br><span class="line"><span class="keyword">new</span> ParamNode($name, [<span class="string">'variadic'</span> =&gt; <span class="keyword">true</span>]);</span><br></pre></td></tr></table></figure>
+<p>有点小机灵，但是很遗憾，它的缺点更多：</p>
+<ol>
+<li>无法利用类型系统在传参时自动地检测（而是由于属性类型验证失败而报错）</li>
+<li>你必须查看实现或是文档，且文档无法很好地记录它（没有公认的规范）</li>
+<li>你可以悄无声息地传递未知选项而不会得到报错，这一错误非常普遍，曾经遇到有一个开发者将配置项名打错了一个字母，导致配置无法生效，却也没有得到任何报错，为此debug了一整天</li>
+<li>没法利用新特性「构造函数属性升级」</li>
+<li>如果你想将现有API切换到数组方式，你不得不破坏API兼容性，但命名参数不需要</li>
+</ol>
+<p>nikic非常自信地认为，相比而言，<strong>命名参数提供了同等便利，但没有任何缺点</strong>。</p>
+<p>此外，RFC还简单延伸了一个备选方案，探讨如何解决历史代码中使用数组的缺陷：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParamNode</span> <span class="keyword">extends</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> string $name;</span><br><span class="line">    <span class="keyword">public</span> ExprNode $default;</span><br><span class="line">    <span class="keyword">public</span> TypeNode $type;</span><br><span class="line">    <span class="keyword">public</span> bool $byRef;</span><br><span class="line">    <span class="keyword">public</span> bool $variadic;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        string $name,</span></span></span><br><span class="line"><span class="function"><span class="params">        array [</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="string">'default'</span> =&gt; ExprNode $default = null,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="string">'type'</span> =&gt; TypeNode $type = null,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="string">'byRef'</span> =&gt; bool $type = false,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="string">'variadic'</span> =&gt; bool $variadic = false,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="string">'startLoc'</span> =&gt; Location $startLoc = null,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="string">'endLoc'</span> =&gt; Location $endLoc = null,</span></span></span><br><span class="line"><span class="function"><span class="params">        ],</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;default = $default;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;type = $type;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;byRef = $byRef;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;variadic = $variadic;</span><br><span class="line">        <span class="keyword">parent</span>::__construct($startLoc, $endLoc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然解决了类型安全问题，但无法解决默默接受未知选项的问题，并且还有很多需要考虑的难题，但不值得继续展开讨论。</p>
+<h3 id="更好的注解兼容性"><a href="#更好的注解兼容性" class="headerlink" title="更好的注解兼容性"></a>更好的注解兼容性</h3><p>千呼万唤始出来，PHP8终于有了官方支持的注解特性，对于有些人来说这是比JIT还要让人激动的事情（因为对于他们来说JIT性能提升真的不是很大，PHP5到PHP7的跨越才是永远滴神），那么命名参数对注解又有什么好处呢？</p>
+<p>曾经的路由注解可能是这样的（@Symfony Route）:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Route</span>("/api/posts/&#123;id&#125;", methods=&#123;"GET","HEAD"&#125;)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">(int $id)</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>有了官方注解以后可能是这样的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;Route(<span class="string">"/api/posts/&#123;id&#125;"</span>, [<span class="string">"methods"</span> =&gt; [<span class="string">"GET"</span>, <span class="string">"HEAD"</span>]])&gt;&gt;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">(int $id)</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>那么势必造成API的向下不兼容，但有了命名参数以后，我们完全可以保持相同的API结构：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;Route(<span class="string">"/api/posts/&#123;id&#125;"</span>, methods: [<span class="string">"GET"</span>, <span class="string">"HEAD"</span>])&gt;&gt;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">(int $id)</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于缺乏对嵌套注释的支持，仍然需要进行一些更改，但这会使迁移更加顺畅。</p>
+</blockquote>
+<h2 id="中场休息"><a href="#中场休息" class="headerlink" title="中场休息"></a>中场休息</h2><p>好了，看到这里很多人应该会觉得：命名参数真是个好东西！双脚赞成！<br>如果是，那么很巧，我也是这么想的，尤其是曾经尝试用Python写一个WEB小程序的时候，我有被命名参数特性小小地惊艳到。<br>但是我们不得不知道的是，以上介绍「好处」的内容仅仅是RFC篇幅的小头部分，剩下的上万字内容也是大多数人所并不关心或不需要关心的实施细节。但我们必须以此思考获得的收益是否能弥补变动的成本，这也正是反对者所忧虑的部分。</p>
+<p>我在这里简单罗列一下添加该特性需要考虑的问题们：</p>
+<ul>
+<li>是否支持动态指定命名参数？如果是，如何支持？使用何种语法？和现有语法有何种冲突？可能影响到的未来语法？</li>
+<li>约束条件：如命名参数必须在必选参数之后；不得传递相同的命名参数；不得以命名参数形式覆盖相同位置的参数；不得使用未知的命名参数</li>
+<li>可变参函数和参数解压缩规则</li>
+<li>受影响的API们（不完全）：<code>func_get_args</code>，<code>call_user_func</code>系列，<code>__invoke()</code>，<code>__call()</code>和<code>__callStatic()</code>等等</li>
+<li>继承期间变量名的更改：是否将其视为错误？是，造成向下不兼容？否，违反里式替换原则怎么办？应遵循何种模型，其它哪些语言的实现值得参考？</li>
+<li>对于内核实现的影响（太多了，不扩展）</li>
+</ul>
+<p>有兴趣的同学可以自己阅读原版RFC，体会一下一个看似简单的新特性添加需要多么深入的考虑。</p>
+<h2 id="最让人难受的事情"><a href="#最让人难受的事情" class="headerlink" title="最让人难受的事情"></a>最让人难受的事情</h2><h3 id="修改参数名即是破坏向下兼容性"><a href="#修改参数名即是破坏向下兼容性" class="headerlink" title="修改参数名即是破坏向下兼容性"></a>修改参数名即是破坏向下兼容性</h3><p>CS领域中头号难题：命名！</p>
+<p>如果说命名空间、类名、函数方法名已经让我们快乐不堪，那么现在我们获得了数倍于之前的快乐，好好想想你的参数名吧，因为你以后不能随便改它了，并且这将是下划线派和驼峰派的又一个战争点，谁输谁赢，谁是新规范？</p>
+<p>PS：现在PHP内核开发者们正在快乐地进行着成千上万个参数命名的梳理工作…</p>
+<h3 id="文档和实现中参数名称不匹配"><a href="#文档和实现中参数名称不匹配" class="headerlink" title="文档和实现中参数名称不匹配"></a>文档和实现中参数名称不匹配</h3><p>很好，参数命名梳理工作量很轻松地翻倍了。</p>
+<h2 id="未来方向"><a href="#未来方向" class="headerlink" title="未来方向"></a>未来方向</h2><h3 id="简写语法"><a href="#简写语法" class="headerlink" title="简写语法"></a>简写语法</h3><p>我们常常会在栈上使用和参数名一样的变量名，那么我们可能可以简化这一行为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before:</span></span><br><span class="line"><span class="keyword">new</span> ParamNode(name: $name, type: $type, <span class="keyword">default</span>: $default, variadic: $variadic, byRef: $byRef);</span><br><span class="line"><span class="comment">// after:</span></span><br><span class="line"><span class="keyword">new</span> ParamNode(:$name, :$type, :$default, :$variadic, :$byRef);</span><br></pre></td></tr></table></figure>
+<p>也适用于数组的解构（比较实用）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before</span></span><br><span class="line">[<span class="string">'x'</span> =&gt; $x, <span class="string">'y'</span> =&gt; $y, <span class="string">'z'</span> =&gt; $z] = $point;</span><br><span class="line"><span class="comment">// after</span></span><br><span class="line">[:$x, :$y, :$z] = $point;</span><br></pre></td></tr></table></figure>
+<p>这样我们可以废弃<code>compact</code>这种魔法一般的函数，刚学PHP的时候我好一会才理解这函数是干嘛的，作为函数，它的能力却和eval一样邪恶，这种特性应当是语法级别的。</p>
+<h2 id="结语（键盘侠-马后炮时间）"><a href="#结语（键盘侠-马后炮时间）" class="headerlink" title="结语（键盘侠+马后炮时间）"></a>结语（键盘侠+马后炮时间）</h2><p>在我看来，这个特性的通过是必然的，这是一个迟早要实现的特性，对很多人来说更是一个姗姗来迟的特性。</p>
+<p>但很多人不了解的是，PHP的RFC常常要求起草者自己想办法实现（包括找人代为实现），而不是直接进入投票环节通过后就强制要求PHP核心开发者实现（你行你上），因此有些RFC由于缺少靠谱的实施者所以就没有下文了。</p>
+<p>我自然是投了赞成票，一是这个RFC诚意满满，二是因为nikic出品必属精品。但这个RFC争议也算不小，内部邮件列表中也不乏很多反对的声音，甚至已经有人为此提出了相关RFC「重命名参数」……但看起来为时已晚。</p>
+<p>尽管PHP8正式版发布时间离我们已经很近了，也有很多人已经在尝鲜JIT了，但是还有很多计划在PHP8中实施的RFC还没有来得及进行周密地讨论、投票和实施。尤其最近通过的注解符更名为”@@“的RFC，在内部邮件列表中存在相当大的争议（我个人也相当之讨厌@@这个选择乃至溢于言表），相关实施的合并也因此处于阻塞状态。而命名参数的通过，也不过是将将赶上了特性冷冻期前的末班车。</p>
+<p>此外，我所见的社区中的对于新特性反对声音大都是，PHP好好做本分事就行了，性能不如golang，现在还天天加语法糖，学不动了之类的。但其实PHP社区的惯性不是一般的大，十几年前的垃圾堆里捡的代码放PHP7上居然还能继续跑，写Python的见了都忍不住666，写JS的看了表示就这？就这就学不动了？不会真有人学不动吧？不会吧不会吧？（要不是我真学不动JS了我可能现在还是个全栈的套页面工程师）</p>
+<p>PHP8这个大版本是去其糟粕、辞旧迎新的好契机，恰逢nikic这样年轻有为的改革派，一些本不可能落地的deprecated和feature都已安全着陆（未来有空我会介绍一些PHP8中让人拍手称快的糟粕废弃项），PHP更加地「通用脚本语言」，而不再是「Personal Home Page」。</p>
+<p>PHP开始抛弃旧时代的残党，成为通往新时代的船，我不敢断言我们将迎来更好的时代，但毫无疑问我们将拥有更好的PHP。</p>
+
+    
+
+        <a href="/2020/07/17/php8-rfc-named-params/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php8/" rel="tag">php8</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rfc/" rel="tag">rfc</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-my-college-life"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -196,11 +317,11 @@
 <li>着手编写微信机器人(Custed雏形姬)，支持图灵聊天，网费充值，成绩查询，作业参考，网络报修，教务抢课，四六级代报代打印</li>
 </ul>
 <h4 id="2016年末"><a href="#2016年末" class="headerlink" title="2016年末"></a>2016年末</h4><ul>
-<li>黑掉了校园一卡通充值系统(免登陆任意充值漏洞)，前往学校信息化中心报告，并籍此向老师和领导展示了我自认为洋洋洒洒的校园信息化计划草案，并立志从此招兵买马，实现我的创想</li>
+<li>黑掉了校园一卡通充值系统(免登陆任意充值漏洞)，前往学校信息化中心报告，并籍此向老师和领导展示了我自认为牛逼哄哄的校园信息化计划草案，并立志从此招兵买马，实现我的创想</li>
 <li>开始自学PHP/JS，并花一周时间重写了机器人，实现了Web版的<a href="https://m.cust.edu.cn" target="_blank" rel="noopener">Custed</a>的雏形</li>
 </ul>
 <h4 id="2016年12月"><a href="#2016年12月" class="headerlink" title="2016年12月"></a>2016年12月</h4><ul>
-<li>短暂转型B站UP主，首次(也是最后一次)自制<a href="https://www.bilibili.com/video/av7495849" target="_blank" rel="noopener">AMV</a>，单日人气上动画分区TOP1 (当时B站流量真是不高啊)</li>
+<li>短暂转型B站UP主，首次(也是最后一次)自制<a href="https://www.bilibili.com/video/av7495849" target="_blank" rel="noopener">AMV</a>，单日人气上动画分区TOP1 (当时B站流量没现在这么高啊)</li>
 </ul>
 <h4 id="2017年3月"><a href="#2017年3月" class="headerlink" title="2017年3月"></a>2017年3月</h4><ul>
 <li>新学期万事俱备，APP上线公测，自制九图在本人的QQ空间进行了初步宣传获得3000点赞</li>
@@ -252,7 +373,7 @@
 </ul>
 <h4 id="2018年10月"><a href="#2018年10月" class="headerlink" title="2018年10月"></a>2018年10月</h4><ul>
 <li>成为<a href="https://github.com/php/php-src" target="_blank" rel="noopener">PHP</a>的Contributor，多次修复ZendVM的BUG和做出一些优化</li>
-<li>发布基于Swoole协程编写的的<a href="https://github.com/swoole/grpc" target="_blank" rel="noopener">Grpc/Etcd客户端</a></li>
+<li>发布基于Swoole协程编写的的<a href="https://github.com/swoole/grpc" target="_blank" rel="noopener">Grpc/Etcd</a>客户端</li>
 </ul>
 <h4 id="2018年末-2019年初"><a href="#2018年末-2019年初" class="headerlink" title="2018年末~2019年初"></a>2018年末~2019年初</h4><ul>
 <li>对<a href="https://github.com/swoole/swoole-src" target="_blank" rel="noopener">Swoole</a>整体进行了大量优化及重构，推进了协程特性的发展，遂成为项目Owner之一</li>
@@ -273,7 +394,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大学/">大学</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E5%AD%A6/" rel="tag">大学</a></li></ul>
 
     </div>
     
@@ -308,7 +429,10 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        <p><code>zend_read_property</code>返回了什么, 其实我从前也未深究, 它的返回值类型是一个<code>zval *</code>, 所以很理所当然的, 大家都会认为如果获取了一个不存在的属性, 它的返回值就是<code>NULL</code>.</p>
+        <blockquote>
+<p>2020更新：扩展对象使用“属性”来存储东西不是一个好的行为，我们可能需要花费很大代价来阻止来自PHP用户的破坏，至于更好的存储方法，我会在未来的文章中讲到</p>
+</blockquote>
+<p><code>zend_read_property</code>返回了什么, 其实我从前也未深究, 它的返回值类型是一个<code>zval *</code>, 所以很理所当然的, 大家都会认为如果获取了一个不存在的属性, 它的返回值就是<code>NULL</code>.</p>
 <p>比如<code>zend_hash_str_find</code>这个API, 它会从<code>HashTable</code>里寻找对应的bucket, 然后获取它的值, 如果这个值不存在, 就返回NULL.</p>
 <p>而且我们清楚, 不管是<code>array</code>, 还是<code>object</code>的<code>properties</code>, 都是用<code>HashTable</code>来存储的, 那么不存在的时候返回<code>NULL</code>, 也是理所当然.</p>
 <p>这里还要注意一点, 我所指的不存在, 是在<code>HashTable</code>里没有这个bucket, 举个例子:</p>
@@ -324,7 +448,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zend/">zend</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zend/" rel="tag">zend</a></li></ul>
 
     </div>
     
@@ -370,7 +494,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nagle/">nagle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodelay/">nodelay</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tcp/">tcp"</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nagle/" rel="tag">nagle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodelay/" rel="tag">nodelay</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tcp/" rel="tag">tcp"</a></li></ul>
 
     </div>
     
@@ -412,7 +536,7 @@
 </blockquote>
 <p>Swoole在<code>socket coro</code>中使用了别的模块没有用到的自定义zend_object属性的技巧, 但是PHP7中它需要做额外的处理, 导致了一些问题.</p>
 <h3 id="坑1"><a href="#坑1" class="headerlink" title="坑1"></a>坑1</h3><p>因为 <code>zend_object</code> 在存储属性表时用了结构体 hack 的技巧，<code>zend_object</code> 尾部存储的 PHP 属性会覆盖掉后续添加进去的内部成员。所以 PHP7 的实现中必须把自己添加的成员添加到标准对象结构的前面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct custom_object &#123;</span><br><span class="line">    uint32_t something;</span><br><span class="line">    // ...</span><br><span class="line">    zend_object std;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct custom_object &#123;</span><br><span class="line">    uint32_t something;</span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line">    zend_object std;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>不过这样也就意味着现在无法直接在 zend_object<em> 和 struct custom_object</em> 进行简单的转换了，因为两者都一个偏移分割开了。所以这个偏移量就需要被存储在对象 handler 表中的第一个元素中，这样在编译时通过 offsetof() 宏就能确定具体的偏移值</p>
     
 
@@ -423,7 +547,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zend/">zend</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zend/" rel="tag">zend</a></li></ul>
 
     </div>
     
@@ -475,7 +599,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li></ul>
 
     </div>
     
@@ -512,12 +636,12 @@
     
         <p>前一部分内容抄自振宇哥的博客: <a href="http://kuangjue.com/article/70" target="_blank" rel="noopener">旷绝一世</a>, 在此基础后续扩写一部分</p>
 <p>我们在写扩展的时候很常见的这样的宏，就比如swoole扩展中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)//名字,unused,引用返回,参数个数</span><br><span class="line">  ZEND_ARG_INFO(0, host)</span><br><span class="line">  ZEND_ARG_INFO(0, port)</span><br><span class="line">  ZEND_ARG_INFO(0, sock_type)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_INFO_EX(arginfo_swoole_server_listen, 0, 0, 3)&#x2F;&#x2F;名字,unused,引用返回,参数个数</span><br><span class="line">  ZEND_ARG_INFO(0, host)</span><br><span class="line">  ZEND_ARG_INFO(0, port)</span><br><span class="line">  ZEND_ARG_INFO(0, sock_type)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure>
 <p>这个宏组合是用来定义函数的参数，我们不妨去跟下<code>ZEND_BEGIN_ARG_INFO_EX</code> 与<code>ZEND_END_ARG_INFO</code>的定义。<br>定义在zend_API.h文件中，<code>ZEND_BEGIN_ARG_INFO_EX</code>的定义为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_BEGIN_ARG_INFO_EX(name, _unused, return_reference, required_num_args)  \</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info name[] = &#123; \</span><br><span class="line">   &#123;(<span class="keyword">const</span> <span class="keyword">char</span>*)(<span class="keyword">zend_uintptr_t</span>)(required_num_args), <span class="number">0</span>, return_reference, <span class="number">0</span> &#125;,</span><br></pre></td></tr></table></figure>
 <p>ZEND_END_ARG_INFO的定义为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ARG_INFO(pass_by_ref, name)&#123; #name, 0, pass_by_ref, 0&#125;,</span></span><br></pre></td></tr></table></figure>
-<p>那么组合起来变成c代码就是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info arginfo_swoole_server_listen[] = &#123; \</span><br><span class="line">   &#123;<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span> &#125;,</span><br><span class="line">   &#123; host, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; port, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; sock_type, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么组合起来变成c代码就是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> zend_internal_arg_info arginfo_swoole_server_listen[] = &#123; \</span><br><span class="line">   &#123;<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span> &#125;,</span><br><span class="line">   &#123; host, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; port, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">   &#123; sock_type, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>
     
 
         <a href="/2018/07/15/php-zend-arg-info/" class="post-more waves-effect waves-button">
@@ -527,7 +651,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li></ul>
 
     </div>
     
@@ -575,7 +699,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li></ul>
 
     </div>
     
@@ -623,7 +747,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/coroutine/">coroutine</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/coroutine/" rel="tag">coroutine</a></li></ul>
 
     </div>
     
@@ -680,7 +804,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
 
     </div>
     
@@ -729,7 +853,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
 
     </div>
     
@@ -785,7 +909,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li></ul>
 
     </div>
     
@@ -830,7 +954,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http2/">Http2</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http2/" rel="tag">Http2</a></li></ul>
 
     </div>
     
@@ -890,7 +1014,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mask/">mask</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mask/" rel="tag">mask</a></li></ul>
 
     </div>
     
@@ -929,7 +1053,7 @@
 <h1 id="使用set-u"><a href="#使用set-u" class="headerlink" title="使用set -u"></a>使用set -u</h1><p>你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chroot=$1</span><br><span class="line">...</span><br><span class="line">rm -rf $chroot/usr/share/doc</span><br></pre></td></tr></table></figure>
 <p>如果上面的代码你没有给参数就运行，你不会仅仅删除掉chroot中的文档，而是将系统的所有文档都删除。那你应该做些什么呢？好在bash提供了<em>set -u</em>，当你使用未初始化的变量时，让bash自动退出。你也可以使用可读性更强一点的<code>set -o nounset</code>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span><span class="bash"> bash /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">chroot=</span></span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"> bash -u /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span><span class="bash"> bash /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">chroot=</span></span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"> bash -u /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span></span><br></pre></td></tr></table></figure>
     
 
         <a href="/2018/03/18/stronger-shell/" class="post-more waves-effect waves-button">
@@ -939,7 +1063,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/" rel="tag">shell</a></li></ul>
 
     </div>
     
@@ -996,7 +1120,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/coredump/">coredump</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/coredump/" rel="tag">coredump</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
 
     </div>
     
@@ -1037,7 +1161,7 @@
 <p>那么，有没有办法声明一个PHPDoc标签来指定成员变量是<code>SomeObj</code>的数组？ <code>@var</code>数组是不够的，例如<code>@var array(SomeObj)</code>似乎没有效果。</p>
 <h2 id="最佳解决方案"><a href="#最佳解决方案" class="headerlink" title="最佳解决方案"></a>最佳解决方案</h2><p>在JetBrains的PhpStorm IDE中，您可以使用<code>/** @var SomeObj[] */</code>，例如：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> SomeObj[]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSomeObjects</span><span class="params">()</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="https://segmentfault.com/link.php?target=http%3A//phpdoc.org/docs/latest/references/phpdoc/types.html%23arrays" target="_blank" rel="noopener">phpdoc documentation</a>推荐这种方法：</p>
+<p><a href="https://segmentfault.com/link.php?target=http%3A//phpdoc.org/docs/latest/references/phpdoc/types.html%23arrays">phpdoc documentation</a>推荐这种方法：</p>
 <blockquote>
 <p>specified containing a single type, the Type definition informs the reader of the type of each array element. Only one Type is then expected as element for a given array.</p>
 <p>Example: <code>@return int[]</code></p>
@@ -1051,7 +1175,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/phpstorm/">phpstorm</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ide/" rel="tag">ide</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/phpstorm/" rel="tag">phpstorm</a></li></ul>
 
     </div>
     
@@ -1104,7 +1228,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/" rel="tag">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/" rel="tag">sql</a></li></ul>
 
     </div>
     
@@ -1143,14 +1267,14 @@
 <p>The 2018 Guide to Building Secure PHP Software！</p>
 </blockquote>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2018 年将至，一般程序员（特别是 Web 开发程序员）应当抛弃过去开发PHP程序的很多不好的习惯和观念了。虽然部分人不以为意，但是这确实是事实。</p>
-<p>这个指南应该以重点部分作为 <a href="https://link.juejin.im/?target=http%3A%2F%2Fwww.phptherightway.com%2F" target="_blank" rel="noopener">PHP: The Right Way</a> 安全章节的补充，而不是以一般的 PHP 编程话题。</p>
+<p>这个指南应该以重点部分作为 <a href="https://link.juejin.im/?target=http%3A%2F%2Fwww.phptherightway.com%2F">PHP: The Right Way</a> 安全章节的补充，而不是以一般的 PHP 编程话题。</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="PHP-版本"><a href="#PHP-版本" class="headerlink" title="PHP 版本"></a>PHP 版本</h2><blockquote>
 <p>请在 2018 年使用 PHP 7.2, 并且计划 2019 年初切换到 PHP 7.3。</p>
 </blockquote>
 <p>PHP 7.2 已于 2017 年 11 月 30 日发布。</p>
 <p>写这篇文章的时候，只有 7.1 和 7.2 版本还在被 PHP 官方积极维护，而 5.6 和 7.0 只在大概1年内提供安全补丁更新。</p>
 <p>对于其他官方不维护的 PHP 版本，虽然某些操作系统会提供长期支持和维护，但这其实通常是有害的。尤其是他们提供安全支持补丁却没有版本号，这使得很难解释系统的安全性（仅仅知道 PHP 版本）。</p>
-<p>因此，无论其他供应商提出了什么承诺，如果可以，你就应该在任何时候都坚决地使用<a href="https://link.juejin.im/?target=http%3A%2F%2Fphp.net%2Fsupported-versions.php" target="_blank" rel="noopener">官方提供支持的 PHP 版本</a>。这样，尽管最终是一个短暂的安全版本，但一个不断致力于升级的版本，总会让你收获一些意外的惊喜。</p>
+<p>因此，无论其他供应商提出了什么承诺，如果可以，你就应该在任何时候都坚决地使用<a href="https://link.juejin.im/?target=http%3A%2F%2Fphp.net%2Fsupported-versions.php">官方提供支持的 PHP 版本</a>。这样，尽管最终是一个短暂的安全版本，但一个不断致力于升级的版本，总会让你收获一些意外的惊喜。</p>
     
 
         <a href="/2018/01/06/php-app-security/" class="post-more waves-effect waves-button">
@@ -1160,7 +1284,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hack/" rel="tag">hack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/" rel="tag">security</a></li></ul>
 
     </div>
     
@@ -1211,7 +1335,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
 
     </div>
     
@@ -1258,7 +1382,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/">ai</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/" rel="tag">ai</a></li></ul>
 
     </div>
     
@@ -1303,7 +1427,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/">ai</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/" rel="tag">ai</a></li></ul>
 
     </div>
     
@@ -1364,7 +1488,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
 
     </div>
     
@@ -1422,7 +1546,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
 
     </div>
     
@@ -1470,7 +1594,7 @@
 <p>此外,PDO为参数绑定也提供了强类型的设定,默认传给Mysql的是string,常用的类型如下:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$data_types = [</span><br><span class="line">  <span class="string">'NULL'</span>    =&gt; PDO::PARAM_NULL,</span><br><span class="line">  <span class="string">'boolean'</span> =&gt; PDO::PARAM_BOOL,</span><br><span class="line">  <span class="string">'integer'</span> =&gt; PDO::PARAM_INT,</span><br><span class="line">  <span class="string">'string'</span>  =&gt; PDO::PARAM_STR,</span><br><span class="line">]</span><br><span class="line"><span class="keyword">$this</span>-&gt;sm-&gt;bindParam(<span class="string">':id'</span>, $id, $data_types[getType($id)]);</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>data<em>type: 使用[*PDO :: PARAM</em> ** 常量](<a href="http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO" target="_blank" rel="noopener">http://php.net/manual/en/pdo.constants.php)来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置`data_type`参数的PDO</a> :: PARAM_INPUT_OUTPUT位。</p>
+<p>data_type: 使用<a href="http://php.net/manual/en/pdo.constants.php" target="_blank" rel="noopener">*PDO :: PARAM_ ** 常量</a>来设定参数的显式数据类型。要从存储过程返回INOUT参数，请使用按位或运算符来设置<code>data_type</code>参数的PDO :: PARAM_INPUT_OUTPUT位。</p>
 </blockquote>
 
     
@@ -1482,7 +1606,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pdo/">pdo</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pdo/" rel="tag">pdo</a></li></ul>
 
     </div>
     
@@ -1498,7 +1622,7 @@
         <time class="post-time" title="2017-12-28 16:18:03" datetime="2017-12-28T08:18:03.000Z"  itemprop="datePublished">2017-12-28</time>
 
         
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程原理/">编程原理</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%8E%9F%E7%90%86/">编程原理</a></li></ul>
 
 
 
@@ -1541,7 +1665,7 @@
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpu/">cpu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/disk/">disk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memory/">memory</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpu/" rel="tag">cpu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/disk/" rel="tag">disk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memory/" rel="tag">memory</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/" rel="tag">network</a></li></ul>
 
     </div>
     
@@ -1613,11 +1737,11 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>Twosee &copy; 2003 - 2019</span>
+        <p><span>Twosee &copy; 2003 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>

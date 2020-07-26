@@ -21,17 +21,17 @@
     
     <meta name="keywords" content="mysql,swoole">
     <meta name="description" content="大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 为什么不要使用存储过程 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我">
-<meta name="keywords" content="mysql,swoole">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Swoole中实现MySQL存储过程">
 <meta property="og:url" content="http://www.twosee.cn/2018/07/16/mysql-procedure-implementation-in-swoole/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 为什么不要使用存储过程 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-16T16:06:50.182Z">
+<meta property="article:published_time" content="2018-07-16T15:59:58.000Z">
+<meta property="article:modified_time" content="2018-07-16T16:06:50.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="swoole">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在Swoole中实现MySQL存储过程">
-<meta name="twitter:description" content="大概是在一个月前了…那时候刚开始给swoole contribute代码, 初生牛犊, 修了不少小bug, 最后某位仁兄贴了个issue说swoole的mysql-client搞不掂存储过程, 当时我想想, 存储过程这东西实在没什么用, 甚至在很多大公司开发手册上是禁止使用的(某里粑粑), 具体的 为什么不要使用存储过程 戳这里, 但是考虑到一个作为一个底层扩展, 各种用户都有, rango就给我">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -42,7 +42,7 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body>
     <div id="loading" class="active"></div>
@@ -198,7 +198,7 @@
 <a id="more"></a>
 <h2 id="分离client和statement"><a href="#分离client和statement" class="headerlink" title="分离client和statement"></a>分离client和statement</h2><p>加了一个 <code>MYSQL_RESPONSE_BUFFER</code> 宏, 处理了一些代码分离了client和statement的buffer</p>
 <p>并给statement结构上也挂了一个result的zval指针</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    swString *buffer; <span class="comment">/* save the mysql multi responses data */</span></span><br><span class="line">    zval *result; <span class="comment">/* save the zval array result */</span></span><br><span class="line">&#125; mysql_statement;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    swString *<span class="built_in">buffer</span>; <span class="comment">/* save the mysql multi responses data */</span></span><br><span class="line">    zval *result; <span class="comment">/* save the zval array result */</span></span><br><span class="line">&#125; mysql_statement;</span><br></pre></td></tr></table></figure>
 <p>这样就可以实现以下代码:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$stmt1 = $db-&gt;prepare(<span class="string">'SELECT * FROM ckl LIMIT 1'</span>);</span><br><span class="line">$stmt1-&gt;execute();</span><br><span class="line">$stmt2 = $db-&gt;prepare(<span class="string">'SELECT * FROM ckl LIMIT 2'</span>);</span><br><span class="line">$stmt2-&gt;execute();</span><br><span class="line">$stmt1-&gt;fetchAll();</span><br><span class="line">$stmt2-&gt;fetchAll();</span><br></pre></td></tr></table></figure>
 <p>因为现在result是挂在statement上的, 和client分离干净, 就不会因为这样的写法产生错误</p>
@@ -234,7 +234,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-07-16T16:06:50.182Z" itemprop="dateUpdated">2018-07-17 00:06:50</time>
+    Last updated: <time datetime="2018-07-16T16:06:50.000Z" itemprop="dateUpdated">2018-07-17 00:06:50</time>
 </span><br>
 
 
@@ -259,7 +259,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/">swoole</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li></ul>
 
 
             
@@ -424,11 +424,11 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>Twosee &copy; 2003 - 2019</span>
+        <p><span>Twosee &copy; 2003 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>

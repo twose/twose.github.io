@@ -20,18 +20,17 @@
     
     
     <meta name="keywords" content="shell">
-    <meta name="description" content="许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。 使用set -u你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。 123chroot=$1...rm -rf $chroot/usr/share/doc 如果上面的代码你">
-<meta name="keywords" content="shell">
+    <meta name="description" content="许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。 使用set -u你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。 123chroot&#x3D;$1...rm -rf $chroot&#x2F;usr&#x2F;share&#x2F;doc 如果上面的代码你">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[整理] 写出健壮的Shell脚本及Shell异常处理">
 <meta property="og:url" content="http://www.twosee.cn/2018/03/18/stronger-shell/index.html">
 <meta property="og:site_name" content="TWO SEE">
-<meta property="og:description" content="许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。 使用set -u你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。 123chroot=$1...rm -rf $chroot/usr/share/doc 如果上面的代码你">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-05T08:45:31.256Z">
+<meta property="og:description" content="许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。 使用set -u你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。 123chroot&#x3D;$1...rm -rf $chroot&#x2F;usr&#x2F;share&#x2F;doc 如果上面的代码你">
+<meta property="article:published_time" content="2018-03-18T08:58:16.000Z">
+<meta property="article:modified_time" content="2018-04-05T08:45:31.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[整理] 写出健壮的Shell脚本及Shell异常处理">
-<meta name="twitter:description" content="许多人用shell脚本完成一些简单任务，而且变成了他们生命的一部分。不幸的是，shell脚本在运行异常时会受到非常大的影响。在写脚本时将这类问题最小化是十分必要的。本文中我将介绍一些让bash脚本变得健壮的技术。 使用set -u你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。 123chroot=$1...rm -rf $chroot/usr/share/doc 如果上面的代码你">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -42,7 +41,7 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body>
     <div id="loading" class="active"></div>
@@ -191,7 +190,7 @@
 <h1 id="使用set-u"><a href="#使用set-u" class="headerlink" title="使用set -u"></a>使用set -u</h1><p>你因为没有对变量初始化而使脚本崩溃过多少次？对于我来说，很多次。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chroot=$1</span><br><span class="line">...</span><br><span class="line">rm -rf $chroot/usr/share/doc</span><br></pre></td></tr></table></figure>
 <p>如果上面的代码你没有给参数就运行，你不会仅仅删除掉chroot中的文档，而是将系统的所有文档都删除。那你应该做些什么呢？好在bash提供了<em>set -u</em>，当你使用未初始化的变量时，让bash自动退出。你也可以使用可读性更强一点的<code>set -o nounset</code>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span><span class="bash"> bash /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">chroot=</span></span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"> bash -u /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">david%</span><span class="bash"> bash /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">chroot=</span></span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span><span class="bash"> bash -u /tmp/shrink-chroot.sh</span></span><br><span class="line"></span><br><span class="line">/tmp/shrink-chroot.sh: line 3: $1: unbound variable</span><br><span class="line"></span><br><span class="line"><span class="meta">david%</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h1 id="使用set-e"><a href="#使用set-e" class="headerlink" title="使用set -e"></a>使用set -e</h1><p>你写的每一个脚本的开始都应该包含<em>set -e</em>。这告诉bash一但有任何一个语句返回非真的值，则退出bash。使用-e的好处是避免错误滚雪球般的变成严重错误，能尽早的捕获错误。更加可读的版本：<code>set -o errexit</code></p>
 <p>使用-e把你从检查错误中解放出来。如果你忘记了检查，bash会替你做这件事。不过你也没有办法使用<em>$?</em>来获取命令执行状态了，因为bash无法获得任何非0的返回值。你可以使用另一种结构：</p>
@@ -244,7 +243,7 @@
 <p>在脚本最后需要使用trap关闭rollback调用，否则当脚本正常退出的时候rollback将会被调用，那么脚本等于什么都没做。</p>
 <h1 id="保持原子化"><a href="#保持原子化" class="headerlink" title="保持原子化"></a>保持原子化</h1><p>又是你需要一次更新目录中的一大堆文件，比如你需要将URL重写到另一个网站的域名。你也许会写：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for file in $(find /var/www -type f -name "*.html"); do</span><br><span class="line"></span><br><span class="line">perl -pi -e 's/www.example.net/www.example.com/' $file</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p>如果修改到一半是脚本出现问题，一部分使用www.example.com，而另一部分使用www.example.net。你可以使用备份和trap解决，但在升级过程中你的网站URL是不一致的。</p>
+<p>如果修改到一半是脚本出现问题，一部分使用<a href="http://www.example.com，而另一部分使用www.example.net。你可以使用备份和trap解决，但在升级过程中你的网站URL是不一致的。" target="_blank" rel="noopener">www.example.com，而另一部分使用www.example.net。你可以使用备份和trap解决，但在升级过程中你的网站URL是不一致的。</a></p>
 <p>解决方法是将这个改变做成一个原子操作。先对数据做一个副本，在副本中更新URL，再用副本替换掉现在工作的版本。你需要确认副本和工作版本目录在同一个磁盘分区上，这样你就可以利用Linux系统的优势，它移动目录仅仅是更新目录指向的inode节点。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cp -a /var/www /var/www-tmp</span><br><span class="line"></span><br><span class="line">for file in $(find /var/www-tmp -type -f -name "*.html"); do</span><br><span class="line"></span><br><span class="line">perl -pi -e 's/www.example.net/www.example.com/' $file</span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">mv /var/www /var/www-old</span><br><span class="line"></span><br><span class="line">mv /var/www-tmp /var/www</span><br></pre></td></tr></table></figure>
 <p>这意味着如果更新过程出问题，线上系统不会受影响。线上系统受影响的时间降低为两次mv操作的时间，这个时间非常短，因为文件系统仅更新inode而不用真正的复制所有的数据。</p>
@@ -256,7 +255,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2018-04-05T08:45:31.256Z" itemprop="dateUpdated">2018-04-05 16:45:31</time>
+    Last updated: <time datetime="2018-04-05T08:45:31.000Z" itemprop="dateUpdated">2018-04-05 16:45:31</time>
 </span><br>
 
 
@@ -281,7 +280,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/" rel="tag">shell</a></li></ul>
 
 
             
@@ -446,11 +445,11 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>Twosee &copy; 2003 - 2019</span>
+        <p><span>Twosee &copy; 2003 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
