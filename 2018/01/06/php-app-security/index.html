@@ -13,6 +13,7 @@
     
     
     
+    
     <title>[转] 2018 PHP 应用程序安全设计指北 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -37,7 +38,7 @@
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -163,12 +164,13 @@
 <div class="container body-wrap">
     
     <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
             <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正文"><span class="post-toc-number">2.</span> <span class="post-toc-text">正文</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#PHP-版本"><span class="post-toc-number">3.</span> <span class="post-toc-text">PHP 版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#依赖管理"><span class="post-toc-number">4.</span> <span class="post-toc-text">依赖管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#推荐扩展"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">推荐扩展</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HTTPS-和浏览器安全"><span class="post-toc-number">5.</span> <span class="post-toc-text">HTTPS 和浏览器安全</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安全头"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">安全头</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#子资源完整性"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">子资源完整性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文档关系"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">文档关系</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#开发安全的-PHP-程序"><span class="post-toc-number">6.</span> <span class="post-toc-text">开发安全的 PHP 程序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据库注入"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">数据库注入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文件上传"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">文件上传</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#跨站脚本"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">跨站脚本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#跨站请求伪造"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">跨站请求伪造</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XML-攻击-XXE-XPath-Injection"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">XML 攻击 (XXE, XPath Injection)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#反序列化和-PHP-对象注入"><span class="post-toc-number">6.6.</span> <span class="post-toc-text">反序列化和 PHP 对象注入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#密码散列"><span class="post-toc-number">6.7.</span> <span class="post-toc-text">密码散列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通用加密"><span class="post-toc-number">6.8.</span> <span class="post-toc-text">通用加密</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#随机性"><span class="post-toc-number">6.9.</span> <span class="post-toc-text">随机性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#服务器端-HTTPS-请求"><span class="post-toc-number">6.10.</span> <span class="post-toc-text">服务器端 HTTPS 请求</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#避免的事情"><span class="post-toc-number">6.11.</span> <span class="post-toc-text">避免的事情</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#专业用法"><span class="post-toc-number">7.</span> <span class="post-toc-text">专业用法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#可搜索的加密"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">可搜索的加密</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#没有-Side-Channels-的基于令牌的身份验证"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">没有 Side-Channels 的基于令牌的身份验证</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开发安全的API"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">开发安全的API</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用Chronicle记录安全事件"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">使用Chronicle记录安全事件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#作者的一些话"><span class="post-toc-number">8.</span> <span class="post-toc-text">作者的一些话</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源"><span class="post-toc-number">9.</span> <span class="post-toc-text">资源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结尾"><span class="post-toc-number">10.</span> <span class="post-toc-text">结尾</span></a></li></ol>
         </nav>
     </aside>
-    
+
+
 <article id="post-php-app-security"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -520,6 +522,7 @@
         </div>
 
         <blockquote class="post-copyright">
+    
     <div class="content">
         
 <span class="post-time">
@@ -531,6 +534,7 @@
         <a href="/2018/01/06/php-app-security/" target="_blank" rel="external">http://www.twosee.cn/2018/01/06/php-app-security/</a>
         
     </div>
+    
     <footer>
         <a href="http://www.twosee.cn">
             <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
@@ -667,6 +671,12 @@ The 2018 Guide to Building Secure PHP Software！
 
 
 
+
+
+
+
+
+
 </article>
 
 <div id="reward" class="page-modal reward-lay">
@@ -790,7 +800,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="/js/main.min.js?v=1.7.1"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -810,14 +820,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="/js/search.min.js?v=1.7.1" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 

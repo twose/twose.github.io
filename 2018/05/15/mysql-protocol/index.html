@@ -13,6 +13,7 @@
     
     
     
+    
     <title>[整理] MySQL协议分析 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -42,7 +43,7 @@
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -168,12 +169,13 @@
 <div class="container body-wrap">
     
     <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
             <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录"><span class="post-toc-number">1.</span> <span class="post-toc-text">目录</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-交互过程"><span class="post-toc-number">2.</span> <span class="post-toc-text">1 交互过程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-1-握手认证阶段"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1.1 握手认证阶段</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-命令执行阶段"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">1.2 命令执行阶段</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-基本类型"><span class="post-toc-number">3.</span> <span class="post-toc-text">2 基本类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-1-整型值"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">2.1 整型值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-2-字符串（以NULL结尾）（Null-Terminated-String）"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">2.2 字符串（以NULL结尾）（Null-Terminated String）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-3-二进制数据（长度编码）（Length-Coded-Binary）"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">2.3 二进制数据（长度编码）（Length Coded Binary）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-4-字符串（长度编码）（Length-Coded-String）"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">2.4 字符串（长度编码）（Length Coded String）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-报文结构"><span class="post-toc-number">4.</span> <span class="post-toc-text">3 报文结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-1-消息头"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">3.1 消息头</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-1-1-报文长度"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">3.1.1 报文长度</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-1-2-序号"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">3.1.2 序号</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-2-消息体"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">3.2 消息体</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-报文类型"><span class="post-toc-number">5.</span> <span class="post-toc-text">4 报文类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-登陆认证交互报文"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">4.1 登陆认证交互报文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-1-1-握手初始化报文（服务器-gt-客户端）"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">4.1.1 握手初始化报文（服务器 -&gt; 客户端）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-1-2-登陆认证报文（客户端-gt-服务器）"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">4.1.2 登陆认证报文（客户端 -&gt; 服务器）</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-客户端命令请求报文（客户端-gt-服务器）"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">4.2 客户端命令请求报文（客户端 -&gt; 服务器）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-1-COM-QUIT-消息报文"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">4.2.1 COM_QUIT 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-2-COM-INIT-DB-消息报文"><span class="post-toc-number">5.2.2.</span> <span class="post-toc-text">4.2.2 COM_INIT_DB 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-3-COM-QUERY-消息报文"><span class="post-toc-number">5.2.3.</span> <span class="post-toc-text">4.2.3 COM_QUERY 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-4-COM-FIELD-LIST-消息报文"><span class="post-toc-number">5.2.4.</span> <span class="post-toc-text">4.2.4 COM_FIELD_LIST 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-5-COM-CREATE-DB-消息报文"><span class="post-toc-number">5.2.5.</span> <span class="post-toc-text">4.2.5 COM_CREATE_DB 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-6-COM-DROP-DB-消息报文"><span class="post-toc-number">5.2.6.</span> <span class="post-toc-text">4.2.6 COM_DROP_DB 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-7-COM-REFRESH-消息报文"><span class="post-toc-number">5.2.7.</span> <span class="post-toc-text">4.2.7 COM_REFRESH 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-8-COM-SHUTDOWN-消息报文"><span class="post-toc-number">5.2.8.</span> <span class="post-toc-text">4.2.8 COM_SHUTDOWN 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-9-COM-STATISTICS-消息报文"><span class="post-toc-number">5.2.9.</span> <span class="post-toc-text">4.2.9 COM_STATISTICS 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-10-COM-PROCESS-INFO-消息报文"><span class="post-toc-number">5.2.10.</span> <span class="post-toc-text">4.2.10 COM_PROCESS_INFO 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-11-COM-PROCESS-KILL-消息报文"><span class="post-toc-number">5.2.11.</span> <span class="post-toc-text">4.2.11 COM_PROCESS_KILL 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-12-COM-DEBUG-消息报文"><span class="post-toc-number">5.2.12.</span> <span class="post-toc-text">4.2.12 COM_DEBUG 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-13-COM-PING-消息报文"><span class="post-toc-number">5.2.13.</span> <span class="post-toc-text">4.2.13 COM_PING 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-14-COM-CHANGE-USER-消息报文"><span class="post-toc-number">5.2.14.</span> <span class="post-toc-text">4.2.14 COM_CHANGE_USER 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-15-COM-BINLOG-DUMP-消息报文"><span class="post-toc-number">5.2.15.</span> <span class="post-toc-text">4.2.15 COM_BINLOG_DUMP 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-16-COM-TABLE-DUMP-消息报文"><span class="post-toc-number">5.2.16.</span> <span class="post-toc-text">4.2.16 COM_TABLE_DUMP 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-17-COM-REGISTER-SLAVE-消息报文"><span class="post-toc-number">5.2.17.</span> <span class="post-toc-text">4.2.17 COM_REGISTER_SLAVE 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-18-COM-PREPARE-消息报文"><span class="post-toc-number">5.2.18.</span> <span class="post-toc-text">4.2.18 COM_PREPARE 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-19-COM-EXECUTE-消息报文"><span class="post-toc-number">5.2.19.</span> <span class="post-toc-text">4.2.19 COM_EXECUTE 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-20-COM-LONG-DATA-消息报文"><span class="post-toc-number">5.2.20.</span> <span class="post-toc-text">4.2.20 COM_LONG_DATA 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-21-COM-CLOSE-STMT-消息报文"><span class="post-toc-number">5.2.21.</span> <span class="post-toc-text">4.2.21 COM_CLOSE_STMT 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-22-COM-RESET-STMT-消息报文"><span class="post-toc-number">5.2.22.</span> <span class="post-toc-text">4.2.22 COM_RESET_STMT 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-23-COM-SET-OPTION-消息报文"><span class="post-toc-number">5.2.23.</span> <span class="post-toc-text">4.2.23 COM_SET_OPTION 消息报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-2-24-COM-FETCH-STMT-消息报文"><span class="post-toc-number">5.2.24.</span> <span class="post-toc-text">4.2.24 COM_FETCH_STMT 消息报文</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-服务器响应报文（服务器-gt-客户端）"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">4.3 服务器响应报文（服务器 -&gt; 客户端）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-1-OK-响应报文"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">4.3.1 OK 响应报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-2-Error-响应报文"><span class="post-toc-number">5.3.2.</span> <span class="post-toc-text">4.3.2 Error 响应报文</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-3-Result-Set-消息"><span class="post-toc-number">5.3.3.</span> <span class="post-toc-text">4.3.3 Result Set 消息</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-4-Result-Set-Header-结构"><span class="post-toc-number">5.3.4.</span> <span class="post-toc-text">4.3.4 Result Set Header 结构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-5-Field-结构"><span class="post-toc-number">5.3.5.</span> <span class="post-toc-text">4.3.5 Field 结构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-6-EOF-结构"><span class="post-toc-number">5.3.6.</span> <span class="post-toc-text">4.3.6 EOF 结构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-7-Row-Data-结构"><span class="post-toc-number">5.3.7.</span> <span class="post-toc-text">4.3.7 Row Data 结构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-8-Row-Data-结构（二进制数据）"><span class="post-toc-number">5.3.8.</span> <span class="post-toc-text">4.3.8 Row Data 结构（二进制数据）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-9-PREPARE-OK-响应报文（Prepared-Statement）"><span class="post-toc-number">5.3.9.</span> <span class="post-toc-text">4.3.9 PREPARE_OK 响应报文（Prepared Statement）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-3-10-Parameter-响应报文（Prepared-Statement）"><span class="post-toc-number">5.3.10.</span> <span class="post-toc-text">4.3.10 Parameter 响应报文（Prepared Statement）</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-参考资料"><span class="post-toc-number">6.</span> <span class="post-toc-text">5 参考资料</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#来源"><span class="post-toc-number">7.</span> <span class="post-toc-text">来源</span></a></li></ol>
         </nav>
     </aside>
-    
+
+
 <article id="post-mysql-protocol"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -1879,6 +1881,7 @@
         </div>
 
         <blockquote class="post-copyright">
+    
     <div class="content">
         
 <span class="post-time">
@@ -1890,6 +1893,7 @@
         <a href="/2018/05/15/mysql-protocol/" target="_blank" rel="external">http://www.twosee.cn/2018/05/15/mysql-protocol/</a>
         
     </div>
+    
     <footer>
         <a href="http://www.twosee.cn">
             <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
@@ -2025,6 +2029,12 @@
 
 
 
+
+
+
+
+
+
 </article>
 
 <div id="reward" class="page-modal reward-lay">
@@ -2147,7 +2157,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="/js/main.min.js?v=1.7.1"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -2167,14 +2177,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="/js/search.min.js?v=1.7.1" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 

@@ -13,6 +13,7 @@
     
     
     
+    
     <title>在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -37,7 +38,7 @@
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -163,12 +164,13 @@
 <div class="container body-wrap">
     
     <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
             <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-开启容器特权"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. 开启容器特权</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-开启coredump文件配置"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.开启coredump文件配置</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-在容器里安装GDB"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 在容器里安装GDB</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-触发coredump测试"><span class="post-toc-number">4.</span> <span class="post-toc-text">4. 触发coredump测试</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#5-修改core文件命名"><span class="post-toc-number">5.</span> <span class="post-toc-text">5. 修改core文件命名</span></a></li></ol>
         </nav>
     </aside>
-    
+
+
 <article id="post-php-coredump-in-docker"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -217,6 +219,7 @@
         </div>
 
         <blockquote class="post-copyright">
+    
     <div class="content">
         
 <span class="post-time">
@@ -228,6 +231,7 @@
         <a href="/2018/03/04/php-coredump-in-docker/" target="_blank" rel="external">http://www.twosee.cn/2018/03/04/php-coredump-in-docker/</a>
         
     </div>
+    
     <footer>
         <a href="http://www.twosee.cn">
             <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
@@ -361,6 +365,12 @@
 
 
 
+
+
+
+
+
+
 </article>
 
 <div id="reward" class="page-modal reward-lay">
@@ -481,7 +491,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="/js/main.min.js?v=1.7.1"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -501,14 +511,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="/js/search.min.js?v=1.7.1" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 

@@ -13,6 +13,7 @@
     
     
     
+    
     <title>并发,协程与烧开水问题 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -37,7 +38,7 @@
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -163,12 +164,13 @@
 <div class="container body-wrap">
     
     <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
             <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言扯淡"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言扯淡</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#烧开水问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">烧开水问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IO阻塞"><span class="post-toc-number">3.</span> <span class="post-toc-text">IO阻塞</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#同步"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">同步</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">异步</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步-1"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">异步+</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步-2"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">异步++</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#协程"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">协程</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#协程不能解决的问题"><span class="post-toc-number">4.</span> <span class="post-toc-text">协程不能解决的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#并发和并行"><span class="post-toc-number">5.</span> <span class="post-toc-text">并发和并行</span></a></li></ol>
         </nav>
     </aside>
-    
+
+
 <article id="post-coroutine-boil-water"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -265,6 +267,7 @@
         </div>
 
         <blockquote class="post-copyright">
+    
     <div class="content">
         
 <span class="post-time">
@@ -276,6 +279,7 @@
         <a href="/2018/05/21/coroutine-boil-water/" target="_blank" rel="external">http://www.twosee.cn/2018/05/21/coroutine-boil-water/</a>
         
     </div>
+    
     <footer>
         <a href="http://www.twosee.cn">
             <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
@@ -410,6 +414,12 @@
 
 
 
+
+
+
+
+
+
 </article>
 
 <div id="reward" class="page-modal reward-lay">
@@ -531,7 +541,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="/js/main.min.js?v=1.7.1"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -551,14 +561,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="/js/search.min.js?v=1.7.1" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 

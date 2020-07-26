@@ -13,6 +13,7 @@
     
     
     
+    
     <title>Swoole的Mysql模块浅析-1 | TWO SEE | SEE is the sea of cc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -40,7 +41,7 @@
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -166,12 +167,13 @@
 <div class="container body-wrap">
     
     <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
             <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基础要求"><span class="post-toc-number">1.</span> <span class="post-toc-text">基础要求</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分析流程"><span class="post-toc-number">2.</span> <span class="post-toc-text">分析流程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#问题发现-swoole的疏漏"><span class="post-toc-number">3.</span> <span class="post-toc-text">问题发现: swoole的疏漏?</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#缺失的流程"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">缺失的流程</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#源码分析"><span class="post-toc-number">4.</span> <span class="post-toc-text">源码分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结论和进一步深思"><span class="post-toc-number">5.</span> <span class="post-toc-text">结论和进一步深思</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#验证-查看未关闭的连接"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">验证: 查看未关闭的连接</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最后验证-真的没有影响吗"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">最后验证: 真的没有影响吗?</span></a></li></ol></li></ol>
         </nav>
     </aside>
-    
+
+
 <article id="post-swoole-mysql-analyzation-1"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -276,6 +278,7 @@
         </div>
 
         <blockquote class="post-copyright">
+    
     <div class="content">
         
 <span class="post-time">
@@ -287,6 +290,7 @@
         <a href="/2018/05/11/swoole-mysql-analyzation-1/" target="_blank" rel="external">http://www.twosee.cn/2018/05/11/swoole-mysql-analyzation-1/</a>
         
     </div>
+    
     <footer>
         <a href="http://www.twosee.cn">
             <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
@@ -420,6 +424,12 @@
 
 
 
+
+
+
+
+
+
 </article>
 
 <div id="reward" class="page-modal reward-lay">
@@ -540,7 +550,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="/js/main.min.js?v=1.7.1"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -560,14 +570,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="/js/search.min.js?v=1.7.1" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
