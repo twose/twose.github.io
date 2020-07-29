@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="本文是对「命名参数RFC」的个人解读，先让我们来简单看下RFC的主要内容： 命名参数特性允许基于参数名称而不是参数位置来传递参数，这使得：  可以跳过默认值 参数的传递可与顺序无关 参数的含义可以自我记录">
 <meta property="article:published_time" content="2020-07-17T10:25:20.000Z">
-<meta property="article:modified_time" content="2020-07-26T19:17:41.305Z">
+<meta property="article:modified_time" content="2020-07-29T09:30:57.701Z">
 <meta property="article:author" content="Twosee">
 <meta property="article:tag" content="php8">
 <meta property="article:tag" content="rfc">
@@ -165,7 +165,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#命名参数的好处"><span class="post-toc-number">1.</span> <span class="post-toc-text">命名参数的好处</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#允许跳过默认值"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">允许跳过默认值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参数含义的自我记录及传递顺序无关性"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">参数含义的自我记录及传递顺序无关性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#对象属性的初始化"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">对象属性的初始化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更好的注解兼容性"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">更好的注解兼容性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中场休息"><span class="post-toc-number">2.</span> <span class="post-toc-text">中场休息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最让人难受的事情"><span class="post-toc-number">3.</span> <span class="post-toc-text">最让人难受的事情</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修改参数名即是破坏向下兼容性"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">修改参数名即是破坏向下兼容性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文档和实现中参数名称不匹配"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">文档和实现中参数名称不匹配</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#未来方向"><span class="post-toc-number">4.</span> <span class="post-toc-text">未来方向</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简写语法"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">简写语法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语（键盘侠-马后炮时间）"><span class="post-toc-number">5.</span> <span class="post-toc-text">结语（键盘侠+马后炮时间）</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#命名参数的好处"><span class="post-toc-number">1.</span> <span class="post-toc-text">命名参数的好处</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#允许跳过默认值"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">允许跳过默认值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参数含义的自我记录及传递顺序无关性"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">参数含义的自我记录及传递顺序无关性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更简便的API调用"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">更简便的API调用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更快捷的对象属性的初始化"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">更快捷的对象属性的初始化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更好的注解兼容性"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">更好的注解兼容性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中场休息"><span class="post-toc-number">2.</span> <span class="post-toc-text">中场休息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最让人难受的事情"><span class="post-toc-number">3.</span> <span class="post-toc-text">最让人难受的事情</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修改参数名即是破坏向下兼容性"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">修改参数名即是破坏向下兼容性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文档和实现中的参数名称不匹配"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">文档和实现中的参数名称不匹配</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#未来方向"><span class="post-toc-number">4.</span> <span class="post-toc-text">未来方向</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简写语法"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">简写语法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语（键盘侠-马后炮时间）"><span class="post-toc-number">5.</span> <span class="post-toc-text">结语（键盘侠+马后炮时间）</span></a></li></ol>
         </nav>
     </aside>
 
@@ -206,10 +206,10 @@
 <h3 id="参数含义的自我记录及传递顺序无关性"><a href="#参数含义的自我记录及传递顺序无关性" class="headerlink" title="参数含义的自我记录及传递顺序无关性"></a>参数含义的自我记录及传递顺序无关性</h3><p>比如对于某个我们我们不熟的函数（当然实际上来说，array系列函数都不熟的话可能连面试都通不过…）：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_fill(value: <span class="number">50</span>, start_index: <span class="number">0</span>, num: <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 <p>代码已经包含了对每个入参的意义的表达，并且传参顺序也可以任意改变。</p>
-<p>但我觉得这样的全命名写法一般来说是多此一举，容易造成书写风格的割裂，并且装了插件的编辑器或是IDE都能很好地显示出参数名。</p>
+<h3 id="更简便的API调用"><a href="#更简便的API调用" class="headerlink" title="更简便的API调用"></a>更简便的API调用</h3><p>但我觉得这样的全命名写法一般来说是多此一举，容易造成书写风格的割裂，并且装了插件的编辑器或是IDE都能很好地显示出参数名。</p>
 <p>所以这个特性最大的受益者应该是可选参数特别多或设计不合理的一些API，比如又臭又长的OpenSSL的API：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">openssl_encrypt</span><span class="params">(string $data, string $method, string $password, int $options = <span class="number">0</span>, string $iv = <span class="string">''</span>, &amp;$tag = UNKNOWN, string $aad = <span class="string">''</span>, int $tag_length = <span class="number">16</span>)</span>: <span class="title">string</span>|<span class="title">false</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="对象属性的初始化"><a href="#对象属性的初始化" class="headerlink" title="对象属性的初始化"></a>对象属性的初始化</h3><p>此外有所受益的是对象属性的初始化：</p>
+<h3 id="更快捷的对象属性的初始化"><a href="#更快捷的对象属性的初始化" class="headerlink" title="更快捷的对象属性的初始化"></a>更快捷的对象属性的初始化</h3><p>此外有所受益的是对象属性的初始化：</p>
 <p>其实在早前就有RFC探讨了如何更好地初始化对象属性，以使对象构造更符合人体工程学。写过C++的同学肯定很快就想到了「<a href="https://zh.cppreference.com/w/cpp/language/list_initialization" target="_blank" rel="noopener">初始化列表</a>」，PHP也有人专门为此建立了一个RFC「<a href="https://wiki.php.net/rfc/object-initializer" target="_blank" rel="noopener">对象初始化器</a>」，但是显然专门为此添加一个新语法并不那么值得，以反对票一边倒的结果被拒绝了。但现在我们有了命名参数以后，这个问题自然就解决了：</p>
 <blockquote>
 <p>以下展示还包含了另一个已落地的PHP8新特性，<a href="https://wiki.php.net/rfc/constructor_promotion" target="_blank" rel="noopener">构造函数属性升级</a>，我们可以在声明构造函数的参数的同时将其声明为对象的属性：</p>
@@ -253,9 +253,9 @@
 </ul>
 <p>有兴趣的同学可以自己阅读原版RFC，体会一下一个看似简单的新特性添加需要多么深入的考虑。</p>
 <h2 id="最让人难受的事情"><a href="#最让人难受的事情" class="headerlink" title="最让人难受的事情"></a>最让人难受的事情</h2><h3 id="修改参数名即是破坏向下兼容性"><a href="#修改参数名即是破坏向下兼容性" class="headerlink" title="修改参数名即是破坏向下兼容性"></a>修改参数名即是破坏向下兼容性</h3><p>CS领域中头号难题：命名！</p>
-<p>如果说命名空间、类名、函数方法名已经让我们快乐不堪，那么现在我们获得了数倍于之前的快乐，好好想想你的参数名吧，因为你以后不能随便改它了，并且这将是下划线派和驼峰派的又一个战争点，谁输谁赢，谁是新规范？</p>
-<p>PS：现在PHP内核开发者们正在快乐地进行着成千上万个参数命名的梳理工作…</p>
-<h3 id="文档和实现中参数名称不匹配"><a href="#文档和实现中参数名称不匹配" class="headerlink" title="文档和实现中参数名称不匹配"></a>文档和实现中参数名称不匹配</h3><p>很好，参数命名梳理工作量很轻松地翻倍了。</p>
+<p>如果说命名空间、类名、函数方法名已经让我们痛苦不堪，那么现在我们获得了数倍于之前的痛苦，好好想想你的参数名吧，因为你以后不能随便改它了，并且这将是下划线派和驼峰派的又一个战争点，谁输谁赢，谁是新规范？</p>
+<p>PS：现在PHP内核开发者们正在不辞辛劳地进行着成千上万个参数命名的梳理工作…</p>
+<h3 id="文档和实现中的参数名称不匹配"><a href="#文档和实现中的参数名称不匹配" class="headerlink" title="文档和实现中的参数名称不匹配"></a>文档和实现中的参数名称不匹配</h3><p>参数命名梳理的工作量很翻倍了。</p>
 <h2 id="未来方向"><a href="#未来方向" class="headerlink" title="未来方向"></a>未来方向</h2><h3 id="简写语法"><a href="#简写语法" class="headerlink" title="简写语法"></a>简写语法</h3><p>我们常常会在栈上使用和参数名一样的变量名，那么我们可能可以简化这一行为：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before:</span></span><br><span class="line"><span class="keyword">new</span> ParamNode(name: $name, type: $type, <span class="keyword">default</span>: $default, variadic: $variadic, byRef: $byRef);</span><br><span class="line"><span class="comment">// after:</span></span><br><span class="line"><span class="keyword">new</span> ParamNode(:$name, :$type, :$default, :$variadic, :$byRef);</span><br></pre></td></tr></table></figure>
 <p>也适用于数组的解构（比较实用）：</p>
@@ -276,7 +276,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-07-26T19:17:41.305Z" itemprop="dateUpdated">2020-07-27 03:17:41</time>
+    Last updated: <time datetime="2020-07-29T09:30:57.701Z" itemprop="dateUpdated">2020-07-29 17:30:57</time>
 </span><br>
 
 
