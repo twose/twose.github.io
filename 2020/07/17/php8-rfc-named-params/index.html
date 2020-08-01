@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="本文是对「命名参数RFC」的个人解读，先让我们来简单看下RFC的主要内容： 命名参数特性允许基于参数名称而不是参数位置来传递参数，这使得：  可以跳过默认值 参数的传递可与顺序无关 参数的含义可以自我记录">
 <meta property="article:published_time" content="2020-07-17T10:25:20.000Z">
-<meta property="article:modified_time" content="2020-08-01T01:52:16.796Z">
+<meta property="article:modified_time" content="2020-08-01T02:02:20.183Z">
 <meta property="article:author" content="Twosee">
 <meta property="article:tag" content="php8">
 <meta property="article:tag" content="rfc">
@@ -255,7 +255,7 @@
 <h2 id="最让人难受的事情"><a href="#最让人难受的事情" class="headerlink" title="最让人难受的事情"></a>最让人难受的事情</h2><h3 id="修改参数名即是破坏向后兼容性"><a href="#修改参数名即是破坏向后兼容性" class="headerlink" title="修改参数名即是破坏向后兼容性"></a>修改参数名即是破坏向后兼容性</h3><p>CS领域中头号难题：命名！</p>
 <p>如果说命名空间、类名、函数方法名已经让我们痛苦不堪，那么现在我们获得了数倍于之前的痛苦，好好想想你的参数名吧，因为你以后不能随便改它了，并且这将是下划线派和驼峰派的又一个战争点，谁输谁赢，谁是新潮流？</p>
 <blockquote>
-<p>PS：PHP内核开发者们正在对成千上万个参数命名进行梳理工作…</p>
+<p>PS：PHP内核开发者们正在对成千上万个内置函数的参数命名进行梳理工作…</p>
 </blockquote>
 <h3 id="文档和实现中的参数名称不匹配"><a href="#文档和实现中的参数名称不匹配" class="headerlink" title="文档和实现中的参数名称不匹配"></a>文档和实现中的参数名称不匹配</h3><p>参数命名的梳理的工作量翻倍了。</p>
 <h2 id="未来方向"><a href="#未来方向" class="headerlink" title="未来方向"></a>未来方向</h2><h3 id="简写语法"><a href="#简写语法" class="headerlink" title="简写语法"></a>简写语法</h3><p>我们常常会在栈上使用和参数名一样的变量名，那么我们可能可以简化这一行为：</p>
@@ -274,7 +274,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-08-01T01:52:16.796Z" itemprop="dateUpdated">2020-08-01 09:52:16</time>
+    Last updated: <time datetime="2020-08-01T02:02:20.183Z" itemprop="dateUpdated">2020-08-01 10:02:20</time>
 </span><br>
 
 
