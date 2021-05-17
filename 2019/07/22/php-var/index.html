@@ -24,11 +24,11 @@
     <meta name="description" content="这是一篇很久以前写的文章（大概是两年前），一直没发，可能囿于技术水平，有一些错误，已经草草修正了一些内容，如仍有写歪来的地方，欢迎拍砖。  我们每天都在和变量打交道，PHP的变量足够简单，当静态语言的初学者还在将类型推导（如C++写”auto foo &#x3D; 1”将自动推导foo为int类型）惊奇不已的时候，动态语言的开发者早已习以为常了。 但天下没有白吃的午餐，变量使用起来越方便，背后的原理就越复杂">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP变量浅析">
-<meta property="og:url" content="http://www.twosee.cn/2021/04/08/php-var/index.html">
+<meta property="og:url" content="http://www.twosee.cn/2019/07/22/php-var/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="这是一篇很久以前写的文章（大概是两年前），一直没发，可能囿于技术水平，有一些错误，已经草草修正了一些内容，如仍有写歪来的地方，欢迎拍砖。  我们每天都在和变量打交道，PHP的变量足够简单，当静态语言的初学者还在将类型推导（如C++写”auto foo &#x3D; 1”将自动推导foo为int类型）惊奇不已的时候，动态语言的开发者早已习以为常了。 但天下没有白吃的午餐，变量使用起来越方便，背后的原理就越复杂">
-<meta property="article:published_time" content="2021-04-08T03:11:42.000Z">
-<meta property="article:modified_time" content="2021-05-17T09:33:40.001Z">
+<meta property="article:published_time" content="2019-07-22T03:11:42.000Z">
+<meta property="article:modified_time" content="2021-05-17T10:07:55.878Z">
 <meta property="article:author" content="Twosee">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="zval">
@@ -126,7 +126,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -145,8 +145,8 @@
         <h1 class="title">PHP变量浅析</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-04-08T03:11:42.000Z" itemprop="datePublished" class="page-time">
-  2021-04-08
+                <time datetime="2019-07-22T03:11:42.000Z" itemprop="datePublished" class="page-time">
+  2019-07-22
 </time>
 
 
@@ -176,7 +176,7 @@
     <div class="post-card">
         <h1 class="post-card-title">PHP变量浅析</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-04-08 11:11:42" datetime="2021-04-08T03:11:42.000Z"  itemprop="datePublished">2021-04-08</time>
+            <time class="post-time" title="2019-07-22 11:11:42" datetime="2019-07-22T03:11:42.000Z"  itemprop="datePublished">2019-07-22</time>
 
             
 
@@ -316,12 +316,12 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-05-17T09:33:40.001Z" itemprop="dateUpdated">2021-05-17 17:33:40</time>
+    Last updated: <time datetime="2021-05-17T10:07:55.878Z" itemprop="dateUpdated">2021-05-17 18:07:55</time>
 </span><br>
 
 
         
-        <a href="/2021/04/08/php-var/" target="_blank" rel="external">http://www.twosee.cn/2021/04/08/php-var/</a>
+        <a href="/2019/07/22/php-var/" target="_blank" rel="external">http://www.twosee.cn/2019/07/22/php-var/</a>
         
     </div>
     
@@ -352,7 +352,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2021/04/08/php-var/&title=《PHP变量浅析》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2019/07/22/php-var/&title=《PHP变量浅析》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -362,24 +362,24 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/04/08/php-var/&title=《PHP变量浅析》 — TWO SEE&source=这是一篇很久以前写的文章（大概是两年前），一直没发，可能囿于技术水平，有一些错误，已经草草修正了一些内容，如仍有写歪来的地方，欢迎拍砖。
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2019/07/22/php-var/&title=《PHP变量浅析》 — TWO SEE&source=这是一篇很久以前写的文章（大概是两年前），一直没发，可能囿于技术水平，有一些错误，已经草草修正了一些内容，如仍有写歪来的地方，欢迎拍砖。
 
 我们每天都在和..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2021/04/08/php-var/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2019/07/22/php-var/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP变量浅析》 — TWO SEE&url=http://www.twosee.cn/2021/04/08/php-var/&via=http://www.twosee.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP变量浅析》 — TWO SEE&url=http://www.twosee.cn/2019/07/22/php-var/&via=http://www.twosee.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2021/04/08/php-var/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2019/07/22/php-var/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -399,14 +399,21 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/04/17/swoole-fpm-proxy/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">使用Swoole协程一键代理PHP-FPM服务</h4>
+      </a>
+    </div>
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2020/07/17/php8-rfc-named-params/" id="post-next" class="post-nav-link">
+      <a href="/2019/06/28/my-college-life/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">漫谈PHP8新特性：命名参数</h4>
+        <h4 class="title">9102记我刚刚结束的平平无奇的大学生活</h4>
       </a>
     </div>
   
@@ -508,7 +515,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
@@ -530,7 +537,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2021/04/08/php-var/&title=《PHP变量浅析》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2019/07/22/php-var/&title=《PHP变量浅析》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -540,24 +547,24 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/04/08/php-var/&title=《PHP变量浅析》 — TWO SEE&source=这是一篇很久以前写的文章（大概是两年前），一直没发，可能囿于技术水平，有一些错误，已经草草修正了一些内容，如仍有写歪来的地方，欢迎拍砖。
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2019/07/22/php-var/&title=《PHP变量浅析》 — TWO SEE&source=这是一篇很久以前写的文章（大概是两年前），一直没发，可能囿于技术水平，有一些错误，已经草草修正了一些内容，如仍有写歪来的地方，欢迎拍砖。
 
 我们每天都在和..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2021/04/08/php-var/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2019/07/22/php-var/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP变量浅析》 — TWO SEE&url=http://www.twosee.cn/2021/04/08/php-var/&via=http://www.twosee.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP变量浅析》 — TWO SEE&url=http://www.twosee.cn/2019/07/22/php-var/&via=http://www.twosee.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2021/04/08/php-var/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2019/07/22/php-var/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -568,7 +575,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwUlEQVR42u3ay4rDMAwF0Pz/T2dgVgOlzZXsqO1wvAoNcU+yENbjOOJ1/q6/14+/PN7Nn9q8cHFxl7nny5VwE2j+CZ7tg4uLO89NtnvNzUNe75VwcXE/k/s6eCUHF1xc3P/H7QWsfAdcXNxP4ybJz8rd/Ni0LVfDxcVd4PYKpnuvb6/v4uLibupK5GFlPeRF/4uLizvCTQqgSVRJ0puVNOnij3Fxcbdye4MU1RfIg+DFL7i4uCPcvNXRC3zVMmu1oYuLi3sfN2Hlw1gJYin84eLi3szNDzHVwYtbWim4uLgj3L2jFdUEqfqBcHFxZ7jbTklBXTY/Hj19ChcXd4SblCeqxYtqmCu3VXBxcW/mVksY5UQlTniinXFxcUe4zchXTJyS41ShJYOLizvCXSlYJIebI1jV4IiLizvJTR5O2irN6Y981AMXF3eE2xvF6A1bHMWFi4s7yT2Lq1e3TPaJyrW4uLgj3JXIVw1nvbu4uLjv4ubBq9omqVYzClkaLi7uCDen9Bqx1aB5MYSBi4v7VdzqU805Mlxc3I/h9ohJcaRQVMXFxR3k5kXSvSMaeZjDxcWd5K50ZXuIN7RScHFxU+4PgX3nHkl7nMUAAAAASUVORK5CYII=" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABx0lEQVR42u3ay47CMAwF0P7/T3e2SNBybZMMSCcrFDrlZBZW/DiOeJ0P63n/6snHb692jhULFxd3zD1vV5X1/PwV+n7/6s24uLg7uVcRo/eTebDLDbi4uL/ITS4ueaDExcX9FW5ylckvTLi4uN/PzX/gnp4nUctzNVxc3AE3r1Ku+7ykvouLi9vinsU1SZCqge/F3+Li4m7hfvZq0guLyXtwcXF3cvMQMx+wyAsflzu4uLj/yo0KlzGxWv6IbmS4uLiLub3ixdlak+oHLi7uTm6ezOSDF73PhYIILi7uMm6SfuSJULVBUhi5wMXF3c7Nmx8TUJ4mRYEVFxd3Gbd3lcmTn2pX501YxMXF3cLNW57V4Yn5bNXlUXFxcbdzq2El30mOcfTuTbi4uAu4o5GIIHWZtE8KJRJcXNyPcnsjFJOjjmqhuLi427m91CU55OTGUq7Z4OLiDrifGqvqDW3k7dsXg1m4uLjLuJNrR4LOSyr5O3Fxcfdwqy2NvI1afWf0D8LFxd3I7Q1GVENbNWiWZ0ZwcXG/gJsEsmpb981RcXFxf4TbozRLqLi4uBu5K9Kb/JlCgxYXF3cLtxpKJsMZk7YuLi7uFu4fyNYBL991AfAAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
