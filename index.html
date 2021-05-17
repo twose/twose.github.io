@@ -156,6 +156,65 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-zend-hash-load-factor"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2021-05-17 18:11:44" datetime="2021-05-17T10:11:44.000Z"  itemprop="datePublished">2021-05-17</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/05/17/zend-hash-load-factor/">有人发现PHP-7.3后内存占用变大了吗</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <p>分享会上讲到了PHP的packed array 与 hash array 对比</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$array = [];</span><br><span class="line">$mem = memory_get_usage();</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">10000</span>; $i++) &#123;</span><br><span class="line">    $array[$i] = $i;</span><br><span class="line">&#125;</span><br><span class="line">var_dump(<span class="string">'mem+='</span> . ($packed_arr_size = (memory_get_usage() - $mem)));</span><br><span class="line"></span><br><span class="line">$array = [];</span><br><span class="line">$mem = memory_get_usage();</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">10000</span>; $i &gt;= <span class="number">0</span>; $i--) &#123;</span><br><span class="line">    $array[$i] = $i;</span><br><span class="line">&#125;</span><br><span class="line">var_dump(<span class="string">'mem+='</span> . ($hash_arr_size = (memory_get_usage() - $mem)));</span><br><span class="line"></span><br><span class="line">var_dump((($hash_arr_size - $packed_arr_size) / <span class="number">1024</span>) . <span class="string">'K'</span>);</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string(11) &quot;mem+&#x3D;528480&quot;</span><br><span class="line">string(11) &quot;mem+&#x3D;659552&quot;</span><br><span class="line">string(4) &quot;128K&quot;</span><br></pre></td></tr></table></figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2021/05/17/W8kHUln3uq6RZMv.png" alt="image.png" title="">
+                </div>
+                <div class="image-caption">image.png</div>
+            </figure>
+<p>如图，根据理论，压缩数组和哈希数组应该只相差一个索引列表，索引列表每个元素都是uint32, 也就是4个字节, 10000个元素, 桶的个数是2的14次方也就是16384个桶, 那么多占用的就是<code>((4 *16384) / 1024) = 64K</code> ，但实际结果是128k，在课上这里的计算翻车了，算出来是错的。<br>这确实有点神奇，课后源码分析了一波，发现了原因，可以说是非常的amazing……<br>内核书的版本是PHP7.2，但在PHP7.3的时候，PHP内核的核心作者Dmitry在一个小小的提交中把HashTable的负载因子从1改成了0.5 (<a href="https://github.com/php/php-src/commit/34ed8e53fea63903f85326ea1d5bd91ece86b7ae)。" target="_blank" rel="noopener">https://github.com/php/php-src/commit/34ed8e53fea63903f85326ea1d5bd91ece86b7ae)。</a></p>
+<p>什么是负载因子呢，我们课上说了哈希冲突这个内容，显然，索引列表越大，哈希冲突率就越小，查找的速度相应就变快，但是与此同时占用的内存也会变多，在Java中，HashTable默认的负载因子是0.75，在时间和空间成本之间提供了很好的权衡。</p>
+<p>PHP在7.3突然改成0.5，那么索引数组的体积就变为原先的两倍，也就是128k了，我倾向于PHP在时间和空间中再次选择了时间，因此我们可以在PHP7.2升级到PHP7.3后看到可观的性能提升，但也可能会发现应用的内存占用变大了很多…</p>
+
+    
+
+        <a href="/2021/05/17/zend-hash-load-factor/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zend/" rel="tag">zend</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-php8-rfc-named-params"
   class="article-card article-type-post" itemprop="blogPost">
 
