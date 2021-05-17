@@ -156,6 +156,62 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-swoole-fpm-proxy"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2021-05-17 17:53:22" datetime="2021-05-17T09:53:22.000Z"  itemprop="datePublished">2021-05-17</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/05/17/swoole-fpm-proxy/">使用Swoole协程一键代理PHP-FPM服务</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        <h1 id="使用Swoole协程一键代理PHP-FPM服务"><a href="#使用Swoole协程一键代理PHP-FPM服务" class="headerlink" title="使用Swoole协程一键代理PHP-FPM服务"></a>使用Swoole协程一键代理PHP-FPM服务</h1><blockquote>
+<p>作者：陈曹奇昊</p>
+<p>首发于公众号: 学而思网校技术团队</p>
+</blockquote>
+<p>一丶 什么是FastCGI</p>
+<p>在Swoole最新发布的v4.5(RC)版本中，我们实现了一项非常有意思的新特性，那就是协程版本的FastCGI客户端。</p>
+<p>那么什么是FastCGI呢？首先先来一个官方解释：</p>
+<blockquote>
+<p><strong>快速通用网关接口</strong>（<strong>Fast</strong> <strong>C</strong>ommon <strong>G</strong>ateway <strong>I</strong>nterface／<strong>FastCGI</strong>）是一种让交互程序与Web服务器通信的协议。</p>
+</blockquote>
+<p>其实很简单，大家使用PHP-FPM搭建服务的时候必然少不了前面架一个Nginx丶Apache或者IIS之类的东西作为代理，我们应用程序和代理通信的时候，可能会使用各种各样的协议（常见的比如浏览器使用的是HTTP/1.1，HTTP2，QUIC等），而代理的职责就是把各种协议的请求翻译成FastCGI来和PHP-FPM通信，这样PHP服务就无需关心各种类型协议的解析，而可以只关心处理请求本身的内容，且FastCGI是二进制协议，相较于HTTP1.x这样的文本协议，FastCGI可以说是非常高效。</p>
+<p>实现了FastCGI客户端，那么我们就可以直接与PHP-FPM服务进行交互，但是这有什么用呢？</p>
+    
+
+        <a href="/2021/05/17/swoole-fpm-proxy/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fpm/" rel="tag">fpm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-php-var"
   class="article-card article-type-post" itemprop="blogPost">
 
