@@ -27,13 +27,13 @@
 <meta property="og:url" content="http://www.twosee.cn/2021/05/17/zend-hash-load-factor/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="分享会上讲到了PHP的packed array 与 hash array 对比 123456789101112131415$array &#x3D; [];$mem &#x3D; memory_get_usage();for ($i &#x3D; 0; $i &lt; 10000; $i++) &amp;#123;    $array[$i] &#x3D; $i;&amp;#125;var_dump(&#39;mem+&#x3D;&#39; . ($packed_arr_siz">
-<meta property="og:image" content="https://i.loli.net/2021/05/17/W8kHUln3uq6RZMv.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/18/VCAikxQ93tyFMD4.png">
 <meta property="article:published_time" content="2021-05-17T10:11:44.000Z">
-<meta property="article:modified_time" content="2021-05-17T10:14:14.646Z">
+<meta property="article:modified_time" content="2021-05-18T09:42:58.376Z">
 <meta property="article:author" content="Twosee">
 <meta property="article:tag" content="zend">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/05/17/W8kHUln3uq6RZMv.png">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/18/VCAikxQ93tyFMD4.png">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -190,9 +190,9 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://i.loli.net/2021/05/17/W8kHUln3uq6RZMv.png" alt="image.png" title="">
+                    <img src="https://i.loli.net/2021/05/18/VCAikxQ93tyFMD4.png" alt="hash.png" title="">
                 </div>
-                <div class="image-caption">image.png</div>
+                <div class="image-caption">hash.png</div>
             </figure>
 <p>如图，根据理论，压缩数组和哈希数组应该只相差一个索引列表，索引列表每个元素都是uint32, 也就是4个字节, 10000个元素, 桶的个数是2的14次方也就是16384个桶, 那么多占用的就是<code>((4 *16384) / 1024) = 64K</code> ，但实际结果是128k，在课上这里的计算翻车了，算出来是错的。<br>这确实有点神奇，课后源码分析了一波，发现了原因，可以说是非常的amazing……<br>内核书的版本是PHP7.2，但在PHP7.3的时候，PHP内核的核心作者Dmitry在一个小小的提交中把HashTable的负载因子从1改成了0.5 (<a href="https://github.com/php/php-src/commit/34ed8e53fea63903f85326ea1d5bd91ece86b7ae)。" target="_blank" rel="noopener">https://github.com/php/php-src/commit/34ed8e53fea63903f85326ea1d5bd91ece86b7ae)。</a></p>
 <p>什么是负载因子呢，我们课上说了哈希冲突这个内容，显然，索引列表越大，哈希冲突率就越小，查找的速度相应就变快，但是与此同时占用的内存也会变多，在Java中，HashTable默认的负载因子是0.75，在时间和空间成本之间提供了很好的权衡。</p>
@@ -205,7 +205,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2021-05-17T10:14:14.646Z" itemprop="dateUpdated">2021-05-17 18:14:14</time>
+    Last updated: <time datetime="2021-05-18T09:42:58.376Z" itemprop="dateUpdated">2021-05-18 17:42:58</time>
 </span><br>
 
 
