@@ -27,13 +27,13 @@
 <meta property="og:url" content="http://www.twosee.cn/2021/05/17/zend-hash-load-factor/index.html">
 <meta property="og:site_name" content="TWO SEE">
 <meta property="og:description" content="分享会上讲到了PHP的packed array 与 hash array 对比 123456789101112131415$array &#x3D; [];$mem &#x3D; memory_get_usage();for ($i &#x3D; 0; $i &lt; 10000; $i++) &amp;#123;    $array[$i] &#x3D; $i;&amp;#125;var_dump(&#39;mem+&#x3D;&#39; . ($packed_arr_siz">
-<meta property="og:image" content="https://i.loli.net/2021/05/18/VCAikxQ93tyFMD4.png">
+<meta property="og:image" content="https://ae03.alicdn.com/kf/H8a1991c6f3044993ab066ef38ae4992b1.png">
 <meta property="article:published_time" content="2021-05-17T10:11:44.000Z">
-<meta property="article:modified_time" content="2021-05-18T09:42:58.376Z">
+<meta property="article:modified_time" content="2021-07-20T08:59:01.529Z">
 <meta property="article:author" content="Twosee">
 <meta property="article:tag" content="zend">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/05/18/VCAikxQ93tyFMD4.png">
+<meta name="twitter:image" content="https://ae03.alicdn.com/kf/H8a1991c6f3044993ab066ef38ae4992b1.png">
     
         <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
     
@@ -187,12 +187,13 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$array = [];</span><br><span class="line">$mem = memory_get_usage();</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">10000</span>; $i++) &#123;</span><br><span class="line">    $array[$i] = $i;</span><br><span class="line">&#125;</span><br><span class="line">var_dump(<span class="string">'mem+='</span> . ($packed_arr_size = (memory_get_usage() - $mem)));</span><br><span class="line"></span><br><span class="line">$array = [];</span><br><span class="line">$mem = memory_get_usage();</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">10000</span>; $i &gt;= <span class="number">0</span>; $i--) &#123;</span><br><span class="line">    $array[$i] = $i;</span><br><span class="line">&#125;</span><br><span class="line">var_dump(<span class="string">'mem+='</span> . ($hash_arr_size = (memory_get_usage() - $mem)));</span><br><span class="line"></span><br><span class="line">var_dump((($hash_arr_size - $packed_arr_size) / <span class="number">1024</span>) . <span class="string">'K'</span>);</span><br></pre></td></tr></table></figure>
 <p>output:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string(11) &quot;mem+&#x3D;528480&quot;</span><br><span class="line">string(11) &quot;mem+&#x3D;659552&quot;</span><br><span class="line">string(4) &quot;128K&quot;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://i.loli.net/2021/05/18/VCAikxQ93tyFMD4.png" alt="hash.png" title="">
+                    <img src="https://ae03.alicdn.com/kf/H8a1991c6f3044993ab066ef38ae4992b1.png" alt="哈希表.jpeg" title="">
                 </div>
-                <div class="image-caption">hash.png</div>
+                <div class="image-caption">哈希表.jpeg</div>
             </figure>
 <p>如图，根据理论，压缩数组和哈希数组应该只相差一个索引列表，索引列表每个元素都是uint32, 也就是4个字节, 10000个元素, 桶的个数是2的14次方也就是16384个桶, 那么多占用的就是<code>((4 *16384) / 1024) = 64K</code> ，但实际结果是128k，在课上这里的计算翻车了，算出来是错的。<br>这确实有点神奇，课后源码分析了一波，发现了原因，可以说是非常的amazing……<br>内核书的版本是PHP7.2，但在PHP7.3的时候，PHP内核的核心作者Dmitry在一个小小的提交中把HashTable的负载因子从1改成了0.5 (<a href="https://github.com/php/php-src/commit/34ed8e53fea63903f85326ea1d5bd91ece86b7ae)。" target="_blank" rel="noopener">https://github.com/php/php-src/commit/34ed8e53fea63903f85326ea1d5bd91ece86b7ae)。</a></p>
 <p>什么是负载因子呢，我们课上说了哈希冲突这个内容，显然，索引列表越大，哈希冲突率就越小，查找的速度相应就变快，但是与此同时占用的内存也会变多，在Java中，HashTable默认的负载因子是0.75，在时间和空间成本之间提供了很好的权衡。</p>
@@ -205,7 +206,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2021-05-18T09:42:58.376Z" itemprop="dateUpdated">2021-05-18 17:42:58</time>
+    Last updated: <time datetime="2021-07-20T08:59:01.529Z" itemprop="dateUpdated">2021-07-20 16:59:01</time>
 </span><br>
 
 
@@ -251,7 +252,8 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/05/17/zend-hash-load-factor/&title=《有人发现PHP-7.3后内存占用变大了吗》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/05/17/zend-hash-load-factor/&title=《有人发现PHP-7.3后内存占用变大了吗》 — TWO SEE&source=分享会上讲到了PHP的packed array 与 hash array 对比
+123456789101112131415$array = [];$mem..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -286,7 +288,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/07/20/zhihu-sea-king/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？</h4>
+      </a>
+    </div>
   
 
   
@@ -427,7 +436,8 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/05/17/zend-hash-load-factor/&title=《有人发现PHP-7.3后内存占用变大了吗》 — TWO SEE&source=show you my code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/05/17/zend-hash-load-factor/&title=《有人发现PHP-7.3后内存占用变大了吗》 — TWO SEE&source=分享会上讲到了PHP的packed array 与 hash array 对比
+123456789101112131415$array = [];$mem..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>

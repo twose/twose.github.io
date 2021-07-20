@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？ | TWO SEE | SEE is the sea of cc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="php">
+    <meta name="description" content="知乎问题：多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别? - Twosee的回答： 有个叫@轩辕之风的答主用打电话和微信作比喻，让我觉得很有意思，所以作了这篇回答。 同步阻塞就是语音通话，一个人同时只能处理一个会话，对端不说话就是读阻塞，你说的太快对方听不过来就是写阻塞… 但是用短信作为多路复用的比喻让我感觉差了那么点意思，或许改成QQ微信聊天更佳，我斗胆扩写一下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？">
+<meta property="og:url" content="http://www.twosee.cn/2021/07/20/zhihu-sea-king/index.html">
+<meta property="og:site_name" content="TWO SEE">
+<meta property="og:description" content="知乎问题：多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别? - Twosee的回答： 有个叫@轩辕之风的答主用打电话和微信作比喻，让我觉得很有意思，所以作了这篇回答。 同步阻塞就是语音通话，一个人同时只能处理一个会话，对端不说话就是读阻塞，你说的太快对方听不过来就是写阻塞… 但是用短信作为多路复用的比喻让我感觉差了那么点意思，或许改成QQ微信聊天更佳，我斗胆扩写一下：">
+<meta property="article:published_time" content="2021-07-20T08:52:37.000Z">
+<meta property="article:modified_time" content="2021-07-20T08:54:42.201Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Twosee</h5>
+          <a href="mailto:twose@qq.com" title="twose@qq.com" class="mail">twose@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/twose" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/twoseee" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-07-20T08:52:37.000Z" itemprop="datePublished" class="page-time">
+  2021-07-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-zhihu-sea-king"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-07-20 16:52:37" datetime="2021-07-20T08:52:37.000Z"  itemprop="datePublished">2021-07-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>知乎问题：<a href="https://www.zhihu.com/question/456131257/answer/1985606916" target="_blank" rel="noopener">多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别? - Twosee的回答</a>：</p>
+<p>有个叫<a href="https://www.zhihu.com/people/a01b31c1866925866da206222911c20c" target="_blank" rel="noopener">@轩辕之风</a>的答主用打电话和微信作比喻，让我觉得很有意思，所以作了这篇回答。</p>
+<p>同步阻塞就是语音通话，一个人<strong>同时只能处理一个会话</strong>，对端不说话就是<strong>读阻塞</strong>，你说的太快对方听不过来就是<strong>写阻塞</strong>… 但是用短信作为多路复用的比喻让我感觉差了那么点意思，或许改成QQ微信聊天更佳，我斗胆扩写一下：</p>
+<a id="more"></a>
+<p>普通人：</p>
+<ul>
+<li>在和女神的单聊界面苦等（<strong>阻塞等待</strong>，对应阻塞的recv()等）</li>
+<li>工作的时候也要动不动关注女神有没有回复，陷入备胎陷阱，心思没办法维持在工作上，效率低下 （CPU时间被大量浪费在阻塞系统调用上，<strong>频繁陷入内核态</strong>，上下文切换开销很大）</li>
+<li>出现了新的恋爱机会，但是没办法同时处理，因此只能拱手让人（<strong>一个同步阻塞进程同时只能处理一个连接</strong>，当Master进程调度时或当其他进程也在监听同一端口时(REUSE_PORT)，新的连接会被分配给其它进程）</li>
+<li>虽然看起来很捞，但是很专一 ，并且这也是大多数普通人的求偶方式。（虽然性能不如多路复用，但是网络编程生态很大一部分都建立在同步阻塞的编程模型之上，并且它易于理解，对于开发者<strong>心智负担较低</strong>）</li>
+</ul>
+<p>海王：</p>
+<ul>
+<li>从不在工作的时候主动等消息，游刃有余（充分利用CPU时间，<strong>尽量跑在用户态</strong>上）</li>
+<li>有空摸鱼的时候才顺便打理鱼塘，看下手机有没有消息（CPU运算任务告一段落，检查是否有IO事件，对应<strong>epoll_wait()</strong>之类的调用）</li>
+<li>检查有多少个妹子给自己发消息了，点亮手机发现收到100个联系人的未读消息通知 （epoll_wait()返回了100，说明有100个<strong>文件描述符就绪</strong>）</li>
+<li>遍历处理，但绝不在和某个妹子的会话上单独等待，除非除了把妹之外没事可干了，否则处理完后马上就该干嘛干嘛，进入下一轮循环。（遍历处理<strong>可读可写事件</strong>，执行<strong>非阻塞</strong>IO操作，即不会长时间阻塞在某个socket上，而是进入下一轮事件循环再<strong>统一等待</strong>）</li>
+</ul>
+<p>那么，哪怕是一个只会把妹，别的人事啥也不干的海王，它搞定100个妹子的时间也不过是<code>MAX(搞定妹子0的时间, 搞定妹子1的时间, 搞定妹子2的时间, ...搞定妹子99的时间)</code>，而普通人可能就需要 <code>搞定妹子0的时间 + 搞定妹子1的时间 + 搞定妹子2的时间 + 搞定妹子99的时间</code> ，当妹子的数量越多，搞定妹子的时间越长，海王的优势就越明显。（如本地网络IO速度极快，多路复用的性能优势就不明显，而外部网络尤其是<strong>慢速网络环境下，多路复用技术就能体现出其巨大的性能优势</strong>）</p>
+<p>设计合理的高性能海王能快速祸害成百上千的妹子，而同步阻塞的普通人或许终其一生都无法达到十之一二就因为阳寿耗尽（<strong>ETIMEDOUT</strong>）被KILL了。</p>
+<p>原有的车马很慢书信很远一生只够爱一个人已不能满足当代人日渐空虚的内心和永远填不满的情感需求，海王之风因而大行其道（当原有的多进程多线程+同步阻塞模式不能满足<strong>日益增长的高并发需求</strong>，多路复用技术因此而兴起）。</p>
+<hr>
+<p>脑洞又开了开，每当出现一个新来的妹子时，伺机而动的单身狗们全都被惊动，变成舔狗，但它们之中只有一个人能得逞，这就是<strong>惊群</strong>，频繁的惊群极大地损害了得不到妹子的舔狗们的身心，造成了感情的浪费。（惊群问题是计算机科学中，当许多进程等待一个事件，事件发生后这些进程被唤醒，但<strong>只有一个进程能获得执行权</strong>，其他进程又得被阻塞，这造成了<strong>大量的系统上下文切换开销</strong>）</p>
+<p>而如果你是屌丝，你大概率会倒在这几步</p>
+<ul>
+<li>找不到妹子 （DNS resolution failed）</li>
+<li>找到心仪的妹子加微信被拒绝（Connection refused）</li>
+<li>加上妹子了妹子发现你是屌丝然后装死 （Connection timed out）</li>
+<li>加上妹子了妹子发现你是屌丝然后把你删了（Connection reset by peer）</li>
+<li>在你发消息的时候你发现妹子把你删了（Broken pipe）</li>
+<li>妹子把你拉黑了（加入防火墙黑名单）</li>
+</ul>
+<p>但是我们不用气馁，海王撩妹也是有上限的，因为微信有5000个好友的上限，那么即便是最顶级的海王，也只能同时搞定5000个妹子，这就是经典的<strong>C5K问题</strong>(笑，这里对应了<strong>单机能力是有上限的，不能无限扩展</strong>。</p>
+<p>但是坏了，写到这里我才想来，海王可以有多个手机，多个微信，这就升级到<strong>集群</strong>了……集群还可以解决单个微信每天加的妹子太多，被微信限制的问题，多个微信<strong>均衡负载</strong>，每天可以加的妹子数量又上升了…</p>
+<p>高级别的海王意识到用一个微信很容易出岔子，发个朋友圈还得小心翼翼地设置有谁可见，那么它就会对自己的<strong>服务</strong>作<strong>拆分</strong>，工作、家庭、亲戚、朋友、鱼塘全都<strong>解耦</strong>，于是<strong>分布式</strong>海王诞生了…</p>
+<p>注重安全的海王会和妹子用多种社交APP建立联系，防止某个约妹APP突然挂了或是被下架导致鱼塘损失，这是<strong>多活容灾</strong>。</p>
+<p>找到规律的海王会形成一套把妹话术，妹子多了很难一一应付，就在把妹之前<strong>预加载</strong>好话术，根据妹子的类型找到话术<strong>缓存</strong>，降低压力。</p>
+<p>知进退的高级海王知道有些妹子不好对付，引入了<strong>熔断降级</strong>机制，而普通人只知道在一棵树上吊死，感情失败黑化了，想学习海王，结果被妹子拒得心态血<strong>(雪)崩</strong>。</p>
+<p>虽然跑题跑远了… 但是这还可以告诉大家，网络编程到多路复用这里只是刚刚开始，C10K后面还有C10M，现在还喜欢动不动就百万千万亿万并发的，瞎几把编到这里我也编不下去了….</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-07-20T08:54:42.201Z" itemprop="dateUpdated">2021-07-20 16:54:42</time>
+</span><br>
+
+
+        
+        <a href="/2021/07/20/zhihu-sea-king/" target="_blank" rel="external">http://www.twosee.cn/2021/07/20/zhihu-sea-king/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.twosee.cn">
+            <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
+            Twosee
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/&title=《多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/&title=《多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？》 — TWO SEE&source=知乎问题：多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别? - Twosee的回答：
+有个叫@轩辕之风的答主用打电话和微信作比喻，让我觉得很有意思，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2021/07/20/zhihu-sea-king/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？》 — TWO SEE&url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/05/17/zend-hash-load-factor/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">有人发现PHP-7.3后内存占用变大了吗</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "BjOaCSsEoD25PlY0akiSOjLV-gzGzoHsz",
+            appKey: "vz7DaO87fpAiBNIJAJmcqGm0",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Twosee &copy; 2003 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/&title=《多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/&title=《多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？》 — TWO SEE&source=知乎问题：多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别? - Twosee的回答：
+有个叫@轩辕之风的答主用打电话和微信作比喻，让我觉得很有意思，..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2021/07/20/zhihu-sea-king/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《多路复用一样会阻塞用户线程，那它和同步阻塞有什么区别？》 — TWO SEE&url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2021/07/20/zhihu-sea-king/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aQY6jQAwF0Nz/0mlpNLs06NsmLWFerSIgqB4Lyy779YrX+986v/75+3Md3f28/vrGwsDAuC3jfbqOGOfPnD9/vtHkc/zyBgwMjAcw8tcl/+1Re89gYGBgVLebBMech4GBgXFtwE2Sv6RwxcDAwJgUsdUtJkVswri4FsfAwLgho9oY+MvfX+xvYGBg3ITxLq4kdFaP+yf7+f8GDAyM1YzzdmO1BJ2khjn48GNhYGAsZVS3lReQVx2iRa1TDAyM1Yw8aauWoL0CtTo0hoGB8QRGEsjyUjY/4p8nixgYGM9hzIcteqVv0hatXsfAwNjNyDuDk61XA25zOAwDA2MdY3KsP2o3XtrgxMDA2M2YdD7zZ3qthXK6iYGB8QBGHhbz4HhViomBgYGRl5q9g7C8hZk8H50aYmBgrGPMj9jmgxfJdqPhMAwMjHWMavgbHYe1yuAIhoGB8QDGZFRrPhCWtx8OPy4GBsZqRt6qzNPHyfNXhXIMDIxNjN5gRB6aR0EzL60xMDAewMiPzHoJYn434UXNSwwMjEWM3qDDZJisNxwW/QsDA2Mp411ckyO53jhFdBcDA2M1oxrsLig4Y8Y8rGNgYGxi5EH2qtQwCdzVtigGBsYTGHmZWnj1F4rYwz1jYGBgxG2DZAgsSRybcyIYGBgYQWOyHChbLYFRaoiBgXFbRi9oVpO/5A29sQ8MDIzdjEljINlur22ZNzIxMDBWM34Ayg2yUAuomM0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
