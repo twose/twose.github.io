@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>用0.04秒看出大佬的网络编程基本功素养 | TWO SEE | SEE is the sea of cc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="swoole,tcp&#34;,nodelay,nagle">
+    <meta name="description" content="起因  事情是这样的, 最近在做Swoole的Websocket的底层代码优化, 和编写更多的单元测试来保证代码正确和功能的稳定性, 写了很多高质量的”混沌”测试, 好吧, 其实并不是那么混沌, 只是这个词眼看起来很帅.以往的unit tests更像是一些带着assert的examples, 加之phpt的测试风格, 顶多再来个EXPECT(F&#x2F;REGEX)的预期输出对比, 只能测试出这个功能能否">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用0.04秒看出大佬的网络编程基本功素养">
+<meta property="og:url" content="http://www.twosee.cn/2018/09/16/tcp-nodelay/index.html">
+<meta property="og:site_name" content="TWO SEE">
+<meta property="og:description" content="起因  事情是这样的, 最近在做Swoole的Websocket的底层代码优化, 和编写更多的单元测试来保证代码正确和功能的稳定性, 写了很多高质量的”混沌”测试, 好吧, 其实并不是那么混沌, 只是这个词眼看起来很帅.以往的unit tests更像是一些带着assert的examples, 加之phpt的测试风格, 顶多再来个EXPECT(F&#x2F;REGEX)的预期输出对比, 只能测试出这个功能能否">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006DQdzWgy1fveqbea7h9j31fs0h4qaw.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006DQdzWgy1fveu8j5bqcj31j616e1kx.jpg">
+<meta property="article:published_time" content="2018-09-16T15:32:08.000Z">
+<meta property="article:modified_time" content="2018-09-19T07:30:15.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="swoole">
+<meta property="article:tag" content="tcp&quot;">
+<meta property="article:tag" content="nodelay">
+<meta property="article:tag" content="nagle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006DQdzWgy1fveqbea7h9j31fs0h4qaw.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Twosee</h5>
+          <a href="mailto:twose@qq.com" title="twose@qq.com" class="mail">twose@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/twose" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/twoseee" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">用0.04秒看出大佬的网络编程基本功素养</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">用0.04秒看出大佬的网络编程基本功素养</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-09-16T15:32:08.000Z" itemprop="datePublished" class="page-time">
+  2018-09-16
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#起因"><span class="post-toc-number">1.</span> <span class="post-toc-text">起因</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#测试流程"><span class="post-toc-number">2.</span> <span class="post-toc-text">测试流程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#蜜汁耗时"><span class="post-toc-number">3.</span> <span class="post-toc-text">蜜汁耗时</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前辈经验"><span class="post-toc-number">4.</span> <span class="post-toc-text">前辈经验</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-tcp-nodelay"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">用0.04秒看出大佬的网络编程基本功素养</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-09-16 23:32:08" datetime="2018-09-16T15:32:08.000Z"  itemprop="datePublished">2018-09-16</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>  事情是这样的, 最近在做Swoole的Websocket的底层代码优化, 和编写更多的单元测试来保证代码正确和功能的稳定性, 写了很多高质量的”混沌”测试, 好吧, 其实并不是那么混沌, 只是这个词眼看起来很帅.<br>以往的unit tests更像是一些带着assert的examples, 加之phpt的测试风格, 顶多再来个EXPECT(F/REGEX)的预期输出对比, 只能测试出这个功能能否跑通, 并没有覆盖到功能的健壮性.而每当底层出现BUG接着我们很快就发现了原因时, 都会感叹单元测试不够全面和完善.<br>  所以在新写的测试中, 我尽量引入随机数据和一定量的并发压力来简单的模拟各种情况, 在自动化的单元测试中这样的做法已经是权衡了测试敏捷和健全的最优解了, 比如以下这个名为<code>websocket-fin</code>的测试:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="variable">$pm</span> = <span class="keyword">new</span> ProcessManager;</span><br><span class="line"><span class="variable">$pm</span>-&gt;parentFunc = <span class="function"><span class="keyword">function</span> (<span class="params"><span class="keyword">int</span> <span class="variable">$pid</span></span>) <span class="keyword">use</span> (<span class="params"><span class="variable">$pm</span>, &amp;<span class="variable">$count</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$c</span> = MAX_CONCURRENCY; <span class="variable">$c</span>--;) &#123;</span><br><span class="line">        go(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) <span class="keyword">use</span> (<span class="params"><span class="variable">$pm</span>, &amp;<span class="variable">$count</span></span>) </span>&#123;</span><br><span class="line">            <span class="variable">$cli</span> = <span class="keyword">new</span> \Swoole\Coroutine\Http\Client(<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="variable">$pm</span>-&gt;getFreePort());</span><br><span class="line">            <span class="variable">$cli</span>-&gt;set([<span class="string">&#x27;timeout&#x27;</span> =&gt; <span class="number">5</span>]);</span><br><span class="line">            <span class="variable">$ret</span> = <span class="variable">$cli</span>-&gt;upgrade(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">            assert(<span class="variable">$ret</span>);</span><br><span class="line">            <span class="variable">$rand_list</span> = [];</span><br><span class="line">            <span class="variable">$times</span> = MAX_REQUESTS;</span><br><span class="line">            <span class="keyword">for</span> (<span class="variable">$n</span> = <span class="variable">$times</span>; <span class="variable">$n</span>--;) &#123;</span><br><span class="line">                <span class="variable">$rand</span> = openssl_random_pseudo_bytes(mt_rand(<span class="number">0</span>, <span class="number">1280</span>));</span><br><span class="line">                <span class="variable">$rand_list</span>[] = <span class="variable">$rand</span>;</span><br><span class="line">                <span class="variable">$opcode</span> = <span class="variable">$n</span> === <span class="variable">$times</span> - <span class="number">1</span> ? WEBSOCKET_OPCODE_TEXT : WEBSOCKET_OPCODE_CONTINUATION;</span><br><span class="line">                <span class="variable">$finish</span> = <span class="variable">$n</span> === <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (mt_rand(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">                    <span class="variable">$frame</span> = <span class="keyword">new</span> swoole_websocket_frame;</span><br><span class="line">                    <span class="variable">$frame</span>-&gt;opcode = <span class="variable">$opcode</span>;</span><br><span class="line">                    <span class="variable">$frame</span>-&gt;data = <span class="variable">$rand</span>;</span><br><span class="line">                    <span class="variable">$frame</span>-&gt;finish = <span class="variable">$finish</span>;</span><br><span class="line">                    <span class="variable">$ret</span> = <span class="variable">$cli</span>-&gt;push(<span class="variable">$frame</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="variable">$ret</span> = <span class="variable">$cli</span>-&gt;push(<span class="variable">$rand</span>, <span class="variable">$opcode</span>, <span class="variable">$finish</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                assert(<span class="variable">$ret</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable">$frame</span> = <span class="variable">$cli</span>-&gt;recv();</span><br><span class="line">            <span class="keyword">if</span> (assert(<span class="variable">$frame</span>-&gt;data === implode(<span class="string">&#x27;&#x27;</span>, <span class="variable">$rand_list</span>))) &#123;</span><br><span class="line">                <span class="variable">$count</span>++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    swoole_event_wait();</span><br><span class="line">    assert(<span class="variable">$count</span> === MAX_CONCURRENCY);</span><br><span class="line">    <span class="variable">$pm</span>-&gt;kill();</span><br><span class="line">&#125;;</span><br><span class="line"><span class="variable">$pm</span>-&gt;childFunc = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) <span class="keyword">use</span> (<span class="params"><span class="variable">$pm</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$serv</span> = <span class="keyword">new</span> swoole_websocket_server(<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="variable">$pm</span>-&gt;getFreePort(), mt_rand(<span class="number">0</span>, <span class="number">1</span>) ? SWOOLE_BASE : SWOOLE_PROCESS);</span><br><span class="line">    <span class="variable">$serv</span>-&gt;set([</span><br><span class="line">        <span class="string">&#x27;log_file&#x27;</span> =&gt; <span class="string">&#x27;/dev/null&#x27;</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="variable">$serv</span>-&gt;on(<span class="string">&#x27;WorkerStart&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) <span class="keyword">use</span> (<span class="params"><span class="variable">$pm</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$pm</span>-&gt;wakeup();</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="variable">$serv</span>-&gt;on(<span class="string">&#x27;Message&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">swoole_websocket_server <span class="variable">$serv</span>, swoole_websocket_frame <span class="variable">$frame</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mt_rand(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">            <span class="variable">$serv</span>-&gt;push(<span class="variable">$frame</span>-&gt;fd, <span class="variable">$frame</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$serv</span>-&gt;push(<span class="variable">$frame</span>-&gt;fd, <span class="variable">$frame</span>-&gt;data, <span class="variable">$frame</span>-&gt;opcode, <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="variable">$serv</span>-&gt;start();</span><br><span class="line">&#125;;</span><br><span class="line"><span class="variable">$pm</span>-&gt;childFirst();</span><br><span class="line"><span class="variable">$pm</span>-&gt;run();</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h2 id="测试流程"><a href="#测试流程" class="headerlink" title="测试流程"></a>测试流程</h2><p>  Swoole中涉及网络服务的测试模型一般都长这样, 一个PHP写的简易好用的<code>ProcessManager</code>来管理进程, 子进程(childFunc)一般为服务, 父进程(parentFunc)一般为客户端, 来测试收发处理是否正确.</p>
+<p>  首先子进程会先运行(<code>childFirst</code>), 服务创建成功后, 会进入<code>onWorkerStart</code>回调, 此时服务已经能进行请求处理, 通过<code>wakeup</code>唤起父进程,父进程会顺序执行, 创建多个协程, 在<code>swoole_event_wait</code>处进入事件循环, 待所有协程运行完毕后, 断言执行成功次数是否正确, 然后kill掉进程退出测试.</p>
+<p>  在这里我们并发了<code>MAX_CONCURRENCY</code>个数的协程来请求服务器(相当于<code>ab测试</code>的<code>-c</code>参数), 这里使用<code>MAX_CONCURRENCY</code>常量的原因是<code>TravisCI</code>(线上自动化集成测试)的配置并不是那么好, 不一定能承载住稍大的并发, 常量的值可以在不同环境下有所区别, 而积极使用常量也能让一个程序的可读性, 可移植性大大提升.</p>
+<p>  每个协程里都创建一个HTTP客户端(连接), 连接建立后, 通过<code>upgrade</code>升级到websocket协议, 执行<code>MAX_REQUESTS</code>次(相当于<code>ab测试</code>的<code>-n</code>参数)的请求逻辑, 每一次都会通过<code>openssl_random_pseudo_bytes</code>来生成一串0~1280字节的随机字符串, 添加到<code>$rand_list</code>的同时向服务器发送.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$opcode</span> = <span class="variable">$n</span> === <span class="variable">$times</span> - <span class="number">1</span> ? WEBSOCKET_OPCODE_TEXT : WEBSOCKET_OPCODE_CONTINUATION;</span><br><span class="line"><span class="variable">$finish</span> = <span class="variable">$n</span> === <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>  这两句代码的意思是, 在websocket中使用<code>分段发送帧</code>的时候, 第一帧的opcode是确切的帧类型(这里是TEXT), fin为0, 代表帧未结束, 后续帧的opcode都是<code>WEBSOCKET_OPCODE_CONTINUATION</code>, 表示这是一个连续帧, 直到最后一帧(n==0循环结束)fin变为1, 代表帧结束.</p>
+<p>  这个连续帧最多有<code>MAX_REQUESTS</code>帧, 值一般为100, 1280字节*100次也就是最大128K左右, 这个测试量也就是稀松平常, 对于swoole来说并不算是有什么压力, 称不上压力测试, 只是通过随机数据来尽可能保证各种情况下的可用性.</p>
+<h2 id="蜜汁耗时"><a href="#蜜汁耗时" class="headerlink" title="蜜汁耗时"></a>蜜汁耗时</h2><p>  而恰好我又在最近为自动化测试加上了一个耗时统计选项, 很奇怪的结果出现了, fin测试居然耗时超过20s, 这个问题在我的MacOS下并不存在, 但是却在Ubuntu复现了.</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://ws1.sinaimg.cn/large/006DQdzWgy1fveqbea7h9j31fs0h4qaw.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>  同样出现问题的还有greeter测试, 它们都有一个共同的问题, 就是它们使用了<strong>websocket通信单个连接多次发包.</strong></p>
+<p>  BUG能在Ubuntu下复现是个好事, 因为MacOS除了<code>LLDB</code>根本没有好用的调试工具, <code>valgrind</code>不可用, 而<code>strace</code>的替代品<code>dtruss</code>也不甚好用, 在Ubuntu下使用<code>strace</code>跟踪, 很快就能看到以下日志:</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://ws1.sinaimg.cn/large/006DQdzWgy1fveu8j5bqcj31j616e1kx.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>  如果是使用标准输出跟踪可以看到打印的信息非常正常, 由于数据量大屏幕会不断滚动, 但并没有出现卡顿, 数据传输也很均匀, 可以看到有很多<code>getpid</code>的系统调用, 第一反应是是不是这个的问题, 稍微确认一下就能发现这是<code>openssl_random_pseudo_bytes</code>的系统调用, 并没有什么关系.</p>
+<h2 id="前辈经验"><a href="#前辈经验" class="headerlink" title="前辈经验"></a>前辈经验</h2><p>  量大就慢是不可能的, 在MacOS下完成这个脚本只需眨眼之间, 且没有任何错误, 苦思了半天也不得解, 只能求助rango, rango刚开始看思路和我差不多, 也是先看到了大量的<code>getpid</code>, 稍加思索马上就排除了这个, 在标准输出中跟踪也发现非常正常, 然后觉得是不是数据量太大了, 但是稍加确认又马上排除.</p>
+<p>  很快, 他就注意到了epoll_wait的等待时间格外的长, 虽然我也注意到了, 但我只注意到了格外的长, 并没有留意长出来的时间是多少, 数据是不间断连续发送的, 却有<strong>40ms</strong>的延迟, 这对于本机的两端互发数据来说是一个很大的值了.</p>
+<p>  “0.04s, 不会是那个吧”, 说罢rango马上<strong>在配置项加上了一个<code>open_tcp_nodelay =&gt; false</code>, 再跑一次测试, 问题解决…</strong></p>
+<p>  这就是名震江湖的<strong>调参术</strong>吗…像以前用windows的时候, 经常能看到一个水文, <strong><code>一招让你电脑网速提升20%</code></strong>  , 大概是通过配置关闭了TCP的<strong>慢启动</strong>, 让测速结果更加好看, 实际上可能并没有什么效果, 反而让这个优秀的设计在相关网络场景下失去效用, 造成<strong>拥塞</strong>.</p>
+<p>  但是这个东西完全是关于**<code>基本功</code>和<code>经验</code>**, 我压根不知道这个东西, 看破脑袋也看不出这个关键的40ms, 而我没有相关的经验, 就算有相关的网络编程知识也一时很难联系起来.</p>
+<p>##TCP_NOLAY 与 Nagle合并算法</p>
+<p>  开启  <code>TCP_NOLAY</code>实际是关闭<code>Nagle合并算法</code>, 这个算法在网上的讲解有很多, 而且原理也非常简单, 写的肯定比我好多了, 如维基上的伪码:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> there is <span class="keyword">new</span> data to send</span><br><span class="line">  <span class="keyword">if</span> the window size &gt;= MSS <span class="keyword">and</span> available data is &gt;= MSS</span><br><span class="line">    send complete MSS segment now</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> there is unconfirmed data still in the pipe</span><br><span class="line">      enqueue data in the buffer until an acknowledge is received</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      send data immediately</span><br><span class="line">    end <span class="keyword">if</span></span><br><span class="line">  end <span class="keyword">if</span></span><br><span class="line">end <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+
+<p> 而<a href="https://www.zhihu.com/question/42308970/answer/246334766" target="_blank" rel="noopener">Nagle算法是时代的产物，因为当时网络带宽有限</a>, 于是我就把Swoole的<code>TCP_NODELAY</code>改为默认开启了, 不要急, <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#tcp_nodelay" target="_blank" rel="noopener">Nginx-tcp_nodelay</a>和php_stream等也是这么做的, 大家都有自己的缓冲区, 无需立即发送的小数据包是不会马上发出去的, 例如最重要的HTTP, 它是<code>读-写-读-写</code>模式的, 数据都是等请求<code>end</code>了之后才会一并发出(除非使用了chunk), 也就是说, 如果数据确实发出了, 那么它就有发出的必要性(哪怕它是个小数据包), 开发者希望它总是保持低延迟的, 而不是动不动就出来40ms, 若想要底层防止拥塞, 那么届时再手动开启<code>Nagle合并算法</code>.</p>
+<p>  在我写完以上内容后, 我搜了一下, 发现这个问题有很多让我哭笑的标题:</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zheng0518/article/details/78561246" target="_blank" rel="noopener">神秘的40毫秒延迟与 TCP_NODELAY</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/historyasamirror/article/details/6122284" target="_blank" rel="noopener">写socket的“灵异事件”</a></p>
+</li>
+<li><p><a href="https://cloud.tencent.com/developer/article/1004431" target="_blank" rel="noopener">再说TCP神奇的40ms</a></p>
+<p>好吧, 肯来很多前人都被这个神奇的40ms困扰过, 说明写个博客还是很能造福后人的.</p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-09-19T07:30:15.000Z" itemprop="dateUpdated">2018-09-19 15:30:15</time>
+</span><br>
+
+
+        
+        <a href="/2018/09/16/tcp-nodelay/" target="_blank" rel="external">http://www.twosee.cn/2018/09/16/tcp-nodelay/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.twosee.cn">
+            <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
+            Twosee
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nagle/" rel="tag">nagle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodelay/" rel="tag">nodelay</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swoole/" rel="tag">swoole</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tcp/" rel="tag">tcp"</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/09/16/tcp-nodelay/&title=《用0.04秒看出大佬的网络编程基本功素养》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/09/16/tcp-nodelay/&title=《用0.04秒看出大佬的网络编程基本功素养》 — TWO SEE&source=起因  事情是这样的, 最近在做Swoole的Websocket的底层代码优化, 和编写更多的单元测试来保证代码正确和功能的稳定性, 写了很多高质量的”混..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/09/16/tcp-nodelay/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《用0.04秒看出大佬的网络编程基本功素养》 — TWO SEE&url=http://www.twosee.cn/2018/09/16/tcp-nodelay/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/09/16/tcp-nodelay/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/09/23/what-are-zend-read-property-doing/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">PHP内核浅析: zend_read_property在键值不存在的时候究竟返回了什么?</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/17/custom-zend-object-hack-way/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">自定义zend_object的结构体的hack技巧</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "BjOaCSsEoD25PlY0akiSOjLV-gzGzoHsz",
+            appKey: "vz7DaO87fpAiBNIJAJmcqGm0",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Twosee &copy; 2003 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/09/16/tcp-nodelay/&title=《用0.04秒看出大佬的网络编程基本功素养》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/09/16/tcp-nodelay/&title=《用0.04秒看出大佬的网络编程基本功素养》 — TWO SEE&source=起因  事情是这样的, 最近在做Swoole的Websocket的底层代码优化, 和编写更多的单元测试来保证代码正确和功能的稳定性, 写了很多高质量的”混..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/09/16/tcp-nodelay/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《用0.04秒看出大佬的网络编程基本功素养》 — TWO SEE&url=http://www.twosee.cn/2018/09/16/tcp-nodelay/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/09/16/tcp-nodelay/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aQY6DMBAEwPz/01lpzyHqHsNqMcUpihLj4tDYnnm94uv9ex19PrqOfpOM87riwsDAuC0jn0pLSh5EQv0+NwwMjOcw8pBtE2+GyeeGgYGBcXSDWVwmYAwMDIyzAnf9m1koY2BgPJmRH5nlG9H8X9/vcvJeHAMD44aM9cLAdZ//tL6BgYHxLxnv0bV+6DaL7MORMTAwtmYkR2nJdNtx2vaLKIgxMDA2ZeRFxDxAkzGTiX5/HB/eGxgYGJsykhBMSghtQ8a5Y2JgYDyBsRKjbdmgDfdiGYqBgbEpIx9olm/nhnJx0IaBgbERo22AWAnf9mBu+N7AwMDYlJFEbVvaTI778/av4pWAgYGxHaNd/LVlg/ahJA/iwzcYGBhbM9orGTpvkpgtFts2NQwMjD0Ys7hcKQCslB/qGiwGBsZGjNkB/foSsz28O7wjBgbG1ow8gvOIzG/fLhCLX2JgYGzBaP/WhmD+OPJAr/vaMDAwbs5oF4jJojCZxIxdNFtgYGBsx5gdmc02lnn4LlUtMDAwtmYUfWRfy4ptY9nsQR8GLgYGxnaMs5otZvHaTuXynhEMDIx/xniXV0uajZ8XSjEwMJ7AuGKjm5c5Z7tRDAyMZzLyEJxNIonUk+uxGBgYmzKuO2lvo3y2JcbAwMDIt6ltiM9GWOoWwcDA2JqxcjTWtnHUO28MDIwHMGYby1nhcxbQdW0TAwNjI8ZKm8UscJMpXoLEwMC4H+MHNm6TYZbut+kAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

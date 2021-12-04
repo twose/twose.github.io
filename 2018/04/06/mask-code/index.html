@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>[整理]【位运算经典应用】 标志位与掩码 | TWO SEE | SEE is the sea of cc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="mask">
+    <meta name="description" content="[整理]【位运算经典应用】 标志位与掩码 本文原文来源自 http:&#x2F;&#x2F;www.cnblogs.com&#x2F;zichi&#x2F;p&#x2F;4792589.html 相关内容经过整理, ABCD几个水果单词更加容易对应起来  前面我们已经了解了六大位操作符（&amp; | ~ ^ &lt;&lt; &gt;&gt;)的用法（javascript 位运算），也整理了一些常用的位运算操作（常用位运算整理），本文我们继续深">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[整理]【位运算经典应用】 标志位与掩码">
+<meta property="og:url" content="http://www.twosee.cn/2018/04/06/mask-code/index.html">
+<meta property="og:site_name" content="TWO SEE">
+<meta property="og:description" content="[整理]【位运算经典应用】 标志位与掩码 本文原文来源自 http:&#x2F;&#x2F;www.cnblogs.com&#x2F;zichi&#x2F;p&#x2F;4792589.html 相关内容经过整理, ABCD几个水果单词更加容易对应起来  前面我们已经了解了六大位操作符（&amp; | ~ ^ &lt;&lt; &gt;&gt;)的用法（javascript 位运算），也整理了一些常用的位运算操作（常用位运算整理），本文我们继续深">
+<meta property="article:published_time" content="2018-04-06T15:03:01.000Z">
+<meta property="article:modified_time" content="2018-04-06T15:03:43.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="mask">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Twosee</h5>
+          <a href="mailto:twose@qq.com" title="twose@qq.com" class="mail">twose@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/twose" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/twoseee" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">[整理]【位运算经典应用】 标志位与掩码</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">[整理]【位运算经典应用】 标志位与掩码</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-06T15:03:01.000Z" itemprop="datePublished" class="page-time">
+  2018-04-06
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#整理-【位运算经典应用】-标志位与掩码"><span class="post-toc-number">1.</span> <span class="post-toc-text">[整理]【位运算经典应用】 标志位与掩码</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-mask-code"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">[整理]【位运算经典应用】 标志位与掩码</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-06 23:03:01" datetime="2018-04-06T15:03:01.000Z"  itemprop="datePublished">2018-04-06</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="整理-【位运算经典应用】-标志位与掩码"><a href="#整理-【位运算经典应用】-标志位与掩码" class="headerlink" title="[整理]【位运算经典应用】 标志位与掩码"></a>[整理]【位运算经典应用】 标志位与掩码</h3><blockquote>
+<p>本文原文来源自 <a href="http://www.cnblogs.com/zichi/p/4792589.html" target="_blank" rel="noopener">http://www.cnblogs.com/zichi/p/4792589.html</a></p>
+<p>相关内容经过整理, ABCD几个水果单词更加容易对应起来</p>
+</blockquote>
+<p>前面我们已经了解了六大位操作符（<code>&amp;</code> <code>|</code> <code>~</code> <code>^</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code>)的用法（<a href="http://www.cnblogs.com/zichi/p/4787145.html" target="_blank" rel="noopener">javascript 位运算</a>），也整理了一些常用的位运算操作（<a href="http://www.cnblogs.com/zichi/p/4789439.html" target="_blank" rel="noopener">常用位运算整理</a>），本文我们继续深入位运算，来了解下二进制的经典应用-标志位与掩码。</p>
+<p>位运算经常被用来创建、处理以及读取标志位序列——一种类似二进制的变量。虽然可以使用变量代替标志位序列，但是这样可以节省内存（1/32）。</p>
+<p>例如有4个标志位：</p>
+<ol>
+<li>标志位A： 我们有 Apple</li>
+<li>标志位B： 我们有 Banana</li>
+<li>标志位C： 我们有 Cherry</li>
+<li>标志位D： 我们有 Dew</li>
+</ol>
+<p>标志位通过位序列DCBA来表示，当一个位置被置为1时，表示有该项，置为0时，表示没有该项。例如一个变量flag=9，二进制表示为1001，就表示我们有D和A。</p>
+<p>掩码 (bitmask) 是一个通过与/或来读取标志位的位序列。典型的定义每个标志位的原语掩码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> FLAG_A = <span class="number">1</span>; <span class="comment">// 0001</span></span><br><span class="line"><span class="keyword">var</span> FLAG_B = <span class="number">2</span>; <span class="comment">// 0010</span></span><br><span class="line"><span class="keyword">var</span> FLAG_C = <span class="number">4</span>; <span class="comment">// 0100</span></span><br><span class="line"><span class="keyword">var</span> FLAG_D = <span class="number">8</span>; <span class="comment">// 1000</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>新的掩码可以在以上掩码上使用逻辑运算创建。例如，掩码 1011 可以通过 FLAG_A、FLAG_B 和 FLAG_D 逻辑或得到：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mask = FLAG_A | FLAG_B | FLAG_D; <span class="comment">// 0001 | 0010 | 1000 =&gt; 1011</span></span><br></pre></td></tr></table></figure>
+
+<p>某个特定的位可以通过与掩码做逻辑与运算得到，通过与掩码的与运算可以去掉无关的位，得到特定的位。例如，掩码 0100 可以用来检查标志位 C 是否被置位：（<strong>核心就是判断某位上的数</strong> 参考<a href="http://www.cnblogs.com/zichi/p/4789439.html" target="_blank" rel="noopener">常用位运算整理</a> 下同）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果我们有 Cherry</span></span><br><span class="line"><span class="keyword">if</span> (flags &amp; FLAG_C) &#123; <span class="comment">// 0101 &amp; 0100 =&gt; 0100 =&gt; true</span></span><br><span class="line">   <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个有多个位被置位的掩码表达任一/或者的含义。例如，以下两个表达是等价的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果我们有 Banana 或者 Cherry 至少一个</span></span><br><span class="line"><span class="comment">// (0101 &amp; 0010) || (0101 &amp; 0100) =&gt; 0000 || 0100 =&gt; true</span></span><br><span class="line"><span class="keyword">if</span> ((flags &amp; FLAG_B) || (flags &amp; FLAG_C)) &#123;</span><br><span class="line">   <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mask = FLAG_B | FLAG_C; <span class="comment">// 0010 | 0100 =&gt; 0110</span></span><br><span class="line"><span class="keyword">if</span> (flags &amp; mask) &#123; <span class="comment">// 0101 &amp; 0110 =&gt; 0100 =&gt; true</span></span><br><span class="line">   <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以通过与掩码做或运算设置标志位，掩码中为 1 的位可以设置对应的位。例如掩码 1100 可用来设置位 C 和 D：（<strong>核心就是将某位变为1</strong> ）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们有 Cherry 和 Dew</span></span><br><span class="line"><span class="keyword">var</span> mask = FLAG_C | FLAG_D; <span class="comment">// 0100 | 1000 =&gt; 1100</span></span><br><span class="line">flags |= mask;   <span class="comment">// 0101 | 1100 =&gt; 1101</span></span><br></pre></td></tr></table></figure>
+
+<p>可以通过与掩码做与运算清除标志位，掩码中为 0 的位可以设置对应的位。掩码可以通过对原语掩码做非运算得到。例如，掩码 1010 可以用来清除标志位 A 和 C ：（<strong>核心就是将某位变为0</strong>）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们没有 Apple 也没有 Cherry</span></span><br><span class="line"><span class="keyword">var</span> mask = ~(FLAG_A | FLAG_C); <span class="comment">// ~0101 =&gt; 1010</span></span><br><span class="line">flags &amp;= mask;   <span class="comment">// 1101 &amp; 1010 =&gt; 1000</span></span><br></pre></td></tr></table></figure>
+
+<p>如上的掩码同样可以通过 ~FLAG_A &amp; ~FLAG_C 得到（德摩根定律）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们没有 Apple 也没有 Cherry</span></span><br><span class="line"><span class="keyword">var</span> mask = ~FLAG_A &amp; ~FLAG_C;</span><br><span class="line">flags &amp;= mask;   <span class="comment">// 1101 &amp; 1010 =&gt; 1000</span></span><br></pre></td></tr></table></figure>
+
+<p>标志位可以使用异或运算切换。所有值为 1 的为可以切换对应的位。例如，掩码 0110 可以用来切换标志位 B 和 C：（<strong>核心就是将某位取反</strong>）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果我们以前没有 Banana ，那么我们现在有 Banana</span></span><br><span class="line"><span class="comment">// 但是如果我们已经有了一个，那么现在没有了</span></span><br><span class="line"><span class="comment">// 对 Cherry 也是相同的情况</span></span><br><span class="line"><span class="keyword">var</span> mask = FLAG_B | FLAG_C;</span><br><span class="line">flags = flags ^ mask;   <span class="comment">// 1100 ^ 0110 =&gt; 1010</span></span><br></pre></td></tr></table></figure>
+
+<p>最后，所有标志位可以通过非运算翻转：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entering parallel universe...</span></span><br><span class="line">flags = ~flags;    <span class="comment">// ~1010 =&gt; 0101</span></span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-04-06T15:03:43.000Z" itemprop="dateUpdated">2018-04-06 23:03:43</time>
+</span><br>
+
+
+        
+        <a href="/2018/04/06/mask-code/" target="_blank" rel="external">http://www.twosee.cn/2018/04/06/mask-code/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.twosee.cn">
+            <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
+            Twosee
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mask/" rel="tag">mask</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/04/06/mask-code/&title=《[整理]【位运算经典应用】 标志位与掩码》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/04/06/mask-code/&title=《[整理]【位运算经典应用】 标志位与掩码》 — TWO SEE&source=[整理]【位运算经典应用】 标志位与掩码
+本文原文来源自 http://www.cnblogs.com/zichi/p/4792589.html
+相关内容..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/04/06/mask-code/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[整理]【位运算经典应用】 标志位与掩码》 — TWO SEE&url=http://www.twosee.cn/2018/04/06/mask-code/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/04/06/mask-code/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/04/09/why-not-http2/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">why-not-http2</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/18/stronger-shell/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">[整理] 写出健壮的Shell脚本及Shell异常处理</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "BjOaCSsEoD25PlY0akiSOjLV-gzGzoHsz",
+            appKey: "vz7DaO87fpAiBNIJAJmcqGm0",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Twosee &copy; 2003 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/04/06/mask-code/&title=《[整理]【位运算经典应用】 标志位与掩码》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/04/06/mask-code/&title=《[整理]【位运算经典应用】 标志位与掩码》 — TWO SEE&source=[整理]【位运算经典应用】 标志位与掩码
+本文原文来源自 http://www.cnblogs.com/zichi/p/4792589.html
+相关内容..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/04/06/mask-code/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《[整理]【位运算经典应用】 标志位与掩码》 — TWO SEE&url=http://www.twosee.cn/2018/04/06/mask-code/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/04/06/mask-code/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABvklEQVR42u3aQY7DMAgF0N7/0pkDpBl9jI1S6XlVqWn83AXCwOcTr+u27t8+PXn/1dN7ti1cXNw2t7PB/Zmn9/9/7MSAi4s7z0226Wz/9AflBlxc3DdzkzSlGvhwcXF/nZsnKMnzuLi4b+YmWyavWwteR+5quLi4DW5epTz3+Uh9FxcXd4l7FVf1YpMXR6LdcXFxR7h5QFlLgJK3lZ/ExcU9zM2bImtNlCTMFUY9cHFxR7jV0sZa2aIzthXFXVxc3K3cTpNjbcwib+F8MeDi4o5wq03QanujmsREB8bFxR3krrVdNzdHk3YLLi7uCDdPbpKEJi+SdoosuLi457hJ0OmHsGpRtXBXw8XFPcxttTfiNmpr1AMXF3eEu9bqqJZO8rZrVFjBxcUd5PZLG8mW+XhHVN/FxcU9zO2XP3LEhiYrLi7uCLc6hLHrmpQfAxcXd4Z7FVeesqy1aaNz4OLiHuZWg0t0OVlKlfJ0BxcXd4ZbDV7VgarqyEUr0cHFxd3K7WyfJysbUhlcXNwXcztlkfxahYuL+4vcfMtqwvQoxMXFHeSuFTerAWttFAMXF3eeu3bj6Aem/LKEi4s7yP0DckdxsN/3v/QAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

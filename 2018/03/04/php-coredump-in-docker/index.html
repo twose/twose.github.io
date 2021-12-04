@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用 | TWO SEE | SEE is the sea of cc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="php,coredump,docker">
+    <meta name="description" content="前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需要在dev设置中开启), 写起来也是十分舒服, 爬完数据并处理过后通过xhr扔给后端服务器即可, 后端是用Swoole负责接收并向数据库进行大文本插入, 不幸的是在这时候错误出现了. 在数千个请求后nginx代理的后端挂掉了,返回了502BadG">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用">
+<meta property="og:url" content="http://www.twosee.cn/2018/03/04/php-coredump-in-docker/index.html">
+<meta property="og:site_name" content="TWO SEE">
+<meta property="og:description" content="前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需要在dev设置中开启), 写起来也是十分舒服, 爬完数据并处理过后通过xhr扔给后端服务器即可, 后端是用Swoole负责接收并向数据库进行大文本插入, 不幸的是在这时候错误出现了. 在数千个请求后nginx代理的后端挂掉了,返回了502BadG">
+<meta property="article:published_time" content="2018-03-04T13:03:01.000Z">
+<meta property="article:modified_time" content="2018-03-05T07:13:05.000Z">
+<meta property="article:author" content="Twosee">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="coredump">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="TWO SEE" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Twosee</h5>
+          <a href="mailto:twose@qq.com" title="twose@qq.com" class="mail">twose@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/twose" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/twoseee" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">在Docker中处理coredump &amp;&amp; PHP-coredump与gdb使用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-04T13:03:01.000Z" itemprop="datePublished" class="page-time">
+  2018-03-04
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-开启容器特权"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. 开启容器特权</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-开启coredump文件配置"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.开启coredump文件配置</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-在容器里安装GDB"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 在容器里安装GDB</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#4-触发coredump测试"><span class="post-toc-number">4.</span> <span class="post-toc-text">4. 触发coredump测试</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#5-修改core文件命名"><span class="post-toc-number">5.</span> <span class="post-toc-text">5. 修改core文件命名</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-php-coredump-in-docker"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">在Docker中处理coredump && PHP-coredump与gdb使用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-04 21:03:01" datetime="2018-03-04T13:03:01.000Z"  itemprop="datePublished">2018-03-04</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需要在dev设置中开启), 写起来也是十分舒服, 爬完数据并处理过后通过xhr扔给后端服务器即可, 后端是用Swoole负责接收并向数据库进行大文本插入, 不幸的是在这时候错误出现了.</p>
+<p>在数千个请求后nginx代理的后端挂掉了,返回了502BadGateWay,肯定要去上游找原因了,由于swoole是跑在docker容器中的, 于是马上查看容器日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker logs custed_swoole_1 --tail 100</span><br></pre></td></tr></table></figure>
+
+<p>可以看到如下报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ WARNING	swProcessPool_wait: worker<span class="comment">#0 abnormal exit, status=0, signal=11</span></span><br></pre></td></tr></table></figure>
+
+<p>google了一下没找到相关问题, 只能请教rango, 说是signal11是coredump了, 让我抓一下core文件</p>
+<p>然后就开始踩坑了, 我的服务是运行在docker中的, docker里要抓core文件需要一波操作了…</p>
+<p>废话不多说直接总结一下坑</p>
+<h4 id="1-开启容器特权"><a href="#1-开启容器特权" class="headerlink" title="1. 开启容器特权"></a>1. 开启容器特权</h4><p>没有特权模式, 容器里就无法使用gdb调试</p>
+<p>我用的是docker-compose 所以配置里需要加这么一行</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">privileged:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是run的话, 加:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--privileged</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h4 id="2-开启coredump文件配置"><a href="#2-开启coredump文件配置" class="headerlink" title="2.开启coredump文件配置"></a>2.开启coredump文件配置</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ulimits:</span></span><br><span class="line">      <span class="attr">core:</span> <span class="number">-1</span> <span class="comment"># core_dump debug</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--<span class="built_in">ulimit</span> core=-1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-在容器里安装GDB"><a href="#3-在容器里安装GDB" class="headerlink" title="3. 在容器里安装GDB"></a>3. 在容器里安装GDB</h4><p>重新做镜像是不可能的了, 临时装一个吧(ps: 如果你不想在配置文件里开启core可以在这里临时设置)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br><span class="line">apt-get install -y gdb</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-触发coredump测试"><a href="#4-触发coredump测试" class="headerlink" title="4. 触发coredump测试"></a>4. 触发coredump测试</h4><p>我们可以用一段c代码死循环来尝试触发一个coredump</p>
+<p>使用<code>g++ -g</code>编译, 加-g选项是为了保证debug信息生成在应用程序当中.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;  </span><br><span class="line">  <span class="keyword">int</span>* p = <span class="literal">NULL</span>;  </span><br><span class="line">  *p = <span class="number">10</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb a.out core</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-修改core文件命名"><a href="#5-修改core文件命名" class="headerlink" title="5. 修改core文件命名"></a>5. 修改core文件命名</h4><p>坑爹的是, 项目里根目录恰好有个Core文件夹,我的mac硬盘分区给的又是大小写不敏感, GG, 改一波命名..</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;core.%e.%p&#x27;</span> &gt; /proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-03-05T07:13:05.000Z" itemprop="dateUpdated">2018-03-05 15:13:05</time>
+</span><br>
+
+
+        
+        <a href="/2018/03/04/php-coredump-in-docker/" target="_blank" rel="external">http://www.twosee.cn/2018/03/04/php-coredump-in-docker/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.twosee.cn">
+            <img src="https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" alt="Twosee">
+            Twosee
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/coredump/" rel="tag">coredump</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&source=前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/18/stronger-shell/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">[整理] 写出健壮的Shell脚本及Shell异常处理</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/28/PHPDoc-type-hinting-for-array-of-objects/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">[译] PHPDoc类型提示数组的对象</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "BjOaCSsEoD25PlY0akiSOjLV-gzGzoHsz",
+            appKey: "vz7DaO87fpAiBNIJAJmcqGm0",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Twosee &copy; 2003 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&pic=https://avatars2.githubusercontent.com/u/25978241?s=460&v=4" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&title=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&source=前几天在计划写一个爬虫脚本时, 由于涉及到html的浏览器渲染, 干脆用就用浏览器和控制台运行js脚本来作为爬虫工具, chrome支持ES6语法(有些需..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《在Docker中处理coredump && PHP-coredump与gdb使用》 — TWO SEE&url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/&via=http://www.twosee.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.twosee.cn/2018/03/04/php-coredump-in-docker/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3aS46DQAxFUfa/aXraUifFfTa0hOsyigifOgwsl+3jwMf55/h9/tvv9V3r88cThwwZMl7LOJdHZ1nkXw67eI4MGTI2YHx79DqYdq5fY/jaZMiQIYMsi4dsslwZMmTIuIuxDpTk3zRwy5AhQwYPl/zeNH3kZTsZMmTsxuBV9////Uh/Q4YMGa9inOGRPmedSq4/U7AqGTJkjGbwAMc3omnDkt91sR4ZMmSMZtTK/enwRNoETa+UIUPGbAZvOnYGKcjH4uv5cEaGDBlDGekGtROm04oZb0jIkCFjNwZJ5oIBiJvC7gVYhgwZGzDSsQaeJvKA3grfMmTIGM0gmCBFKw1q8JIc2ovLkCFjHCNNCp8r66d9jCA1lCFDxjgGD3YkpPKyGn/OxbSIDBkyxjFI5pgmdmkDki8d1fBkyJAxjpGW2NJX8iBee+OH/oYMGTLGMXjwJYlabcDrroEzGTJkTGX0w2v6CXhLMjgvQ4aM0YzOhrZzpjNsEWxrZciQMYhRaxzyLWit3N+aGZEhQ8ZQBkkTyXaUD2fUtspBe0CGDBnjGLXCHGHwe2tvlCFDxmzGGR68GdlPH4OWpwwZMkYzauGVj2jwBJSPa7T6tDJkyHgtgwfZWvszHfJIN8wyZMjYh8EDHy/SdYr+aTiWIUOGDN5K7AyT8WZn0BiQIUOGjNJzOonjbamhDBkyXshImwFPpIDplTJkyNiHUQt5acq4/mS1Qp4MGTI2YPwAjCz6CFFa6D0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
